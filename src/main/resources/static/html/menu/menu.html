@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>菜单管理</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="/js/vue.js"></script>
+<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+<script src="/js/component/elementUI/index.js"></script>
+<link rel="stylesheet" type="text/css"  href="/js/component/elementUI/theme-chalk/index.css" />
+<link rel="icon" href='/images/icon1.png' />
+<!-- 系统CSS或JS -->
+<link rel="stylesheet" href="/css/systab.css">
+
+<style>
+</style>
+<body>
+	<div id="app">
+
+		<el-row> 
+			<el-col :span="24">
+				<h2>菜单管理</h2>
+			</el-col> 
+		</el-row>
+
+		<div class='bh2'></div>
+		<div class='bg-content'>
+					<el-row> 
+						<el-col :span="24"> 
+								<el-form :inline="true"  :model="formInline"  class="demo-form-inline"   size="mini"> 
+										<el-form-item label="节点编码：">
+												<el-input v-model="formInline.nodeCode" ></el-input> 
+										</el-form-item> 
+										
+										<el-form-item  label="父节编码：">
+											 <el-input v-model="formInline.parentNodeCode" ></el-input>  
+										 </el-form-item> 
+										 
+										 <el-form-item  label="节点名称：">
+											 <el-input v-model="formInline.nodeName" ></el-input>  
+										 </el-form-item> 
+										 
+										 <el-form-item  label="子节点数：">
+											 <el-input v-model="formInline.childNum" ></el-input>  
+										 </el-form-item> 
+										 
+										 <p/>
+										  <el-form-item label="节点地址：">
+												<el-input v-model="formInline.pageUrl" ></el-input> 
+										</el-form-item> 
+										<el-form-item label="节点描述：">
+												<el-input v-model="formInline.nodeDescription" ></el-input> 
+										</el-form-item> 
+										 <el-form-item  label="节点生效："  >
+											 <el-select v-model="formInline.isDeleted"   style="width:178px">
+													  <el-option label="有效"  value="0"></el-option> 	 
+													  <el-option label="无效"  value="1"></el-option> 	 
+											 </el-select> 
+										 </el-form-item> 
+										  <p/>
+										 <el-form-item size="medium"> 
+										 		<el-button type="primary"@click="query">查询菜单</el-button> 
+										 </el-form-item> 
+										 
+										  <el-form-item size="medium"> 
+										 		<el-button type="primary"@click="addMenu()">新增菜单</el-button> 
+										 </el-form-item> 
+							</el-form> 
+					</el-col>
+				</el-row>
+		</div>
+		
+		<div class='bh5'></div>
+
+		<div class='bg-content'>
+			<div>菜单表结果：</div>
+			<div class='bh2'></div>
+			<div>
+			<template>
+				  <el-table :data="tableData"  stripe  style="width: 100%"  border size="mini"  highlight-current-row >
+				      <el-table-column type="selection" width="55"></el-table-column>
+				    	 <el-table-column sortable prop="id" min-width="100px" label="菜单编号"></el-table-column>
+				    	<el-table-column   sortable prop="nodeCode" label="节点编码" width="180">
+                				<template scope="scope" >
+                						<span v-if="scope.row.flag">
+                    						<el-input size="small" v-model="scope.row.nodeCode" placeholder="请输入内容" ></el-input>
+                    					</span> 
+                    					<span v-else>{{scope.row.nodeCode}}</span>
+                				</template>
+           				 </el-table-column>
+           				 
+           				<el-table-column sortable prop="nodeName" min-width="100px" label="节点名称"  width="120px;" ></el-table-column>
+				    	<el-table-column sortable prop="parentNodeCode"   min-width="100px" label="父级编码"></el-table-column>
+				    	<el-table-column sortable prop="childNum"  min-width="100px;"  label="子节点数"></el-table-column>
+				    				
+				    	<el-table-column  sortable prop="pageUrl"   label="URL" min-width="250px;" >
+				    			
+                				<template  slot-scope="scope">
+                				<span v-if="scope.row.flag">
+                    					<el-input size="small" v-model="scope.row.pageUrl" placeholder="请输入内容" ></el-input> 
+                    					</span> 
+                    					<span v-else>{{scope.row.pageUrl}}</span>
+                				</template>
+           				 </el-table-column>
+				    	<el-table-column sortable  min-width="250px;" prop="nodeDescription"  label="描述"></el-table-column>
+				    	<el-table-column sortable  min-width="100px;" prop="isDeleted"  label="是否失效"></el-table-column>
+				    	
+				    	  <el-table-column label="操作" width="150px;">
+      							<template slot-scope="scope">
+							        <el-button size="mini"  @click="handleEdit (scope.$index, scope.row, 'op')"> {{scope.row.flag?'保存':"修改"}}</el-button>  
+							        <el-button size="mini" type="warning" v-show="scope.row.flag" @click="handleEdit(scope.$index, scope.row, 'cancle' )">取消</el-button>
+							        <el-button size="mini" type="danger" v-show="!scope.row.flag"  @click="handleDelete (scope.$index, scope.row)">删除</el-button>
+      							</template>
+    					</el-table-column>
+    					
+  				 </el-table>
+			</template>
+  
+	  
+			  <div class="page">
+					<el-pagination  @size-change="handleSizeChange"  @current-change="handleCurrentChange"
+					 		  :current-page="paginations.page_index"
+							  :page-sizes="paginations.page_sizes"
+							  :page-size="paginations.page_size"
+							  :layout="paginations.layout"
+							  :total="paginations.total">
+					</el-pagination>
+			</div>
+		</div>
+
+	</div>
+	 
+ </div>
+</body>
+<script>
+var vm=new Vue({
+  el: '#app',
+  data : {
+	  formInline: { id: null, nodeCode: '', parentNodeCode: '', nodeName: '', childNum: '', pageUrl: '', nodeDescription: '', isDeleted: '' },
+      info: [],
+      tableData:[], //数据
+	  paginations:{
+			page_index:1, //当前页
+			total:0, //总数
+			page_size:5, //一页显示多少
+			page_sizes:[5,10,15,20], //每页显示多少条
+			layout:'prev, pager, next, jumper, sizes,total '
+		},
+      allTableData:[]  
+  },
+   mounted () {
+ 
+		  axios({
+			  method: 'post',           
+			  url: '/fenyeQueryMenu',  								//全量查询表格显示数据[后台有限制]
+			  data: {		
+						msg:this.formInline
+			  },
+			}).then(res=>{ 
+				this.allTableData = res.data.list	;
+				console.log(this.allTableData)
+				this.setPaginations();
+			} ,error=>{				
+			}); 
+    
+  }, 
+
+  methods:{
+	  setPaginations(){
+				this.paginations.total = this.allTableData.length; //数据的数量
+				this.paginations.page_index = 1; //默认显示第一页
+				this.paginations.page_size = 5; //每页显示多少数据
+				//显示数据
+				this.tableData = this.allTableData.filter((item,index) => {
+				return index < this.paginations.page_size;
+			})
+		},
+		handleSizeChange(page_size) {
+				this.paginations.page_index = 1; //第一页
+				this.paginations.page_size = page_size; //每页先显示多少数据
+				this.tableData = this.allTableData.filter((item,index) => {
+				return index < page_size
+			})
+		},
+		handleCurrentChange(page){
+			// 跳转页数
+			//获取当前页
+			let index = this.paginations.page_size * (page -1);
+			//获取总数
+			let allData = this.paginations.page_size * page;
+			let tablist=[];
+			for(let i = index;i<allData;i++) {
+				if (this.allTableData[i]) {
+					tablist.push(this.allTableData[i])
+				}
+				this.tableData = tablist
+			}
+		},
+	  	  handleEdit(index, row,type) {
+			var temp=row.flag;
+			if(row.flag){
+				//说明当前是激活状态，用户可编辑中,此时做保存或取消操作。
+				if(type=='op'){  //保存操作
+					 axios({
+						  method: 'post',           
+						  url: '/updateMenu',  
+						  data: {		
+							  msg: row
+						  },
+						}).then(resrm=>{ 
+							this.message(resrm.data,"success");
+						} ,error=>{		
+							this.message( "操作异常 !","error")
+						}); 
+				}
+				 row.flag=false
+			}
+			else{
+				 row.flag=true
+			}
+			if((temp==true || temp == false)){
+				open('menu.html','_self'); //强制刷新。
+			}
+		
+			
+	      },
+	      handleDelete(index, row) {
+	    	  this.model("此操作不可逆, 是否继续?",row.id)
+	      },
+	      message(msg,type) {   //消息框
+	          this.$message({
+	            message: msg,
+	            type: type
+	          });
+	        },
+	  
+	 	 query() {	                 //查询按钮
+	    	    	  axios({
+	    				  method: 'post',           
+	    				  url: '/fenyeQueryMenu',  								 
+	    				  data: {		
+	    							msg:this.formInline
+	    				  },
+	    				}).then(res=>{ 
+	    					this.allTableData = res.data.list	;
+	    					console.log(this.allTableData)
+	    					this.setPaginations();
+	    				} ,error=>{				
+	    				}); 
+	      } ,
+	  
+		addMenu() {
+	    	  if ((this.formInline.nodeCode != '' && this.formInline.nodeCode != null) && (this.formInline.parentNodeCode != '' && this.formInline.parentNodeCode != null) && (this.formInline.nodeName != '' && this.formInline.nodeName != null)
+						&& (this.formInline.childNum != '' && this.formInline.childNum != null) && (this.formInline.pageUrl != '' && this.formInline.pageUrl != null) && (this.formInline.nodeDescription != '' && this.formInline.nodeDescription != null) && (this.formInline.isDeleted != '' && this.formInline.isDeleted != null)) {
+							axios({
+							method: 'put',
+							url: '/addMenu',
+							data: {
+								msg: this.formInline
+							},
+						}).then(res => {
+							this.message( res.data,"success")
+							this.query();
+						}, error => {
+							this.message( "操作异常 !","error")
+						});
+				}
+				 else{
+		    	    	this.message("亲，添加菜单时，七要素必须同时填写！","error")
+		    	    }  
+			},
+	 	 
+	 	 
+	 	model(msg,id) {
+	         this.$confirm(msg, '提示', {
+	           confirmButtonText: '确定',
+	           cancelButtonText: '取消',
+	           type: 'warning'
+	         }).then((value ) => {
+	        	 axios({
+					  method: 'delete',           
+					  url: '/deleteMenu',  
+					  data: {		
+						  msg: id
+					  },
+					}).then(resrm=>{ 			 
+						this.message(resrm.data,"success");					
+						open('menu.html','_self');
+					} ,error=>{	
+						this.message( "操作异常 !","error")
+					}); 
+	         }).catch(() => {
+	           this.$message({
+	             type: 'info',
+	             message: '操作取消'
+	           });   
+	           return false;
+	         });
+	       }
+ 	 }
+})
+
+</script>
+</html>

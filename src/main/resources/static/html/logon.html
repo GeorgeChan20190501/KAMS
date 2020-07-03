@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>欢迎使用KAMS系统</title>
+<script src="/js/vue.js"></script>
+<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+<script src="/js/component/elementUI/index.js"></script>
+<link rel="stylesheet" type="text/css"  href="/js/component/elementUI/theme-chalk/index.css" />
+<link rel="icon" href='/images/icon1.png' />
+<style type="text/css">
+body, html {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	background: #f0f0f0;
+	min-width: 980px;
+}
+
+#app {
+	display: flex;
+	height: 100%;
+	flex-direction: column;
+	align-items: stretch;
+}
+
+.header {
+	flex: 1;
+	background-image: url('/images/logo.png' );
+	background-position: 50% 90%;
+	background-repeat: no-repeat;
+	background-size: 200px 60px;
+	width: 100%;
+}
+
+.center {
+	background: #03468a;
+	flex: 1;
+	background-image: url('/images/ad.png' );
+	background-position: 20% 90%;
+	background-repeat: no-repeat;
+	background-size: auto 80%;
+	width: 100%;
+	display: flex;
+	flex-direction: row-reverse;
+	align-items: center
+}
+
+.footer {
+	flex: 1;
+}
+
+.form1 {
+	position: relative;
+	right: 20%
+}
+
+input {
+	font-size: 14px;
+	width: 300px;
+	line-height: 30px;
+	height: 30px;
+	border: 0;
+	margin: 0;
+	outline: none;
+	padding: 0 0 0 15px;
+}
+
+#btn {
+	width: 315px;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	color: white;
+	background: #4CAF50;
+	cursor: pointer;
+}
+
+.form1  #btn:hover {
+	background: rgb(33, 136, 56)
+}
+
+.title {
+	width: 315px;
+	font-size: 18px;
+	color: white;
+	margin-bottom: 30px;
+}
+</style>
+</head>
+<body>
+	<div id="app">
+		<div class="header"></div>
+		<div class="center">
+			<div class='form1'>
+				<div class='title'>欢迎使用KAMS运维管理系统</div>
+				<form>
+					<input type='text' placeholder='域账号' autofocus v-model="username"
+						required />
+					<p />
+					<br /> <input type='password' placeholder='密码' required
+						v-model='password' required />
+					<p />
+					<input type='button' id="btn" value='登录' @click="logon" />
+				</form>
+				
+			</div>
+		</div>
+		<div class="footer"></div>
+	</div>
+</body>
+<script>
+    new Vue({
+        el: '#app',
+        data: function() {
+            return {
+            	username:'',
+            	password:''
+            }
+        },
+        methods: {
+        	logon() {
+     
+				axios({
+					method: 'post',
+					url: '/logon',
+					data: {
+					    msg:this.username,
+					    msg1:this.password
+					}
+				}).then(res => {
+				   isValidUser=res.data;					
+					if(isValidUser==true){
+							if(typeof(Storage)!=="undefined")
+								{
+									localStorage.username=this.username;
+								}
+							else
+							{
+								 this.$message({
+							          message: '抱歉，您的浏览器不支持 web 存储',
+							          type: 'warning'
+							        });
+							}
+							
+							open('index.html','_self');
+							
+							
+					}
+					else{
+						 this.$message.error('用户名或密码错误');
+					}
+				}, error => {
+				});
+              }
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,32 @@
+body, html {
+	margin: 0;
+	padding: 10px 25px;
+	min-width: 980px;
+	background: rgb(242, 242, 242)
+}
+
+.bh2 {
+	height: 20px;
+	width: 100%;
+}
+
+.bg-content {
+	background: white;
+	padding: 15px;
+}
+
+.bh5 {
+	height: 50px;
+	width: 100%;
+}
+
+.list {
+	margin: 20px;
+}
+.page {
+	margin-left:50%;
+	transform:translateX(-50%);
+	margin-top: 40px;
+}
+
+	

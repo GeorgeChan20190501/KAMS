@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>欢迎使用KAMS系统</title>
+<script src="/js/vue.js"></script>
+<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+<script src="/js/component/elementUI/index.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="/js/component/elementUI/theme-chalk/index.css" />
+<link rel="icon" href='/images/icon1.png' />
+<style>
+body, html {
+	margin: 0;
+	padding: 0%;
+	height: 100%;
+	 
+	
+}
+
+.container {
+	display: flex;
+	height: 100%;
+	flex-direction: column;
+}
+
+.content {
+	display: flex;
+	flex: 1;
+	border-top: 3px solid rgb(1, 105, 181);
+}
+
+.left {
+	width: 230px;
+	border-right: 1px solid rgb(230, 230, 230);
+}
+
+.right {
+	flex: 1;
+}
+
+.header {
+	min-height: 70px;
+	background-image: url("/images/logo.png");
+	background-repeat: no-repeat;
+	background-position: 26px;
+	background-size: 168px 50px;
+}
+
+.tac {
+	width: 231px;
+}
+
+el-menu-item {
+	line-height: 30px;
+	height: 30px
+}
+
+.myheader {
+	background-color: rgb(1, 105, 181);
+	color: white;
+	padding: 8px 10px 10px 5px;
+	text-align: center;
+}
+
+.myfooter {
+	position: absolute;
+	background-color: rgb(1, 105, 181);
+	color: white;
+	padding: 10px 0px 10px 0px;
+	bottom: 0;
+	border: 0;
+	width: 230px;
+	font-size: 12px;
+}
+.el-dropdown-link {
+    cursor: pointer;
+    color: #409EFF;
+  }
+  .el-icon-arrow-down {
+    font-size: 12px;
+  }
+</style>
+</head>
+
+<body>
+	<div class="container" id="app">
+		<div class="header">
+		<el-row type="flex" class="row-bg"  justify="end"  style="top:25px;right:30px;">	
+				<el-dropdown @command="handleCommand">
+  						<span class="el-dropdown-link"> 欢迎您，{{username}}<i class="el-icon-arrow-down el-icon--right"></i></span>
+					  <el-dropdown-menu slot="dropdown">
+					    <el-dropdown-item command="self">个人资料</el-dropdown-item>
+					    <el-dropdown-item command="logout">重新登陆</el-dropdown-item>
+					    
+					  </el-dropdown-menu>
+				</el-dropdown>
+			</el-row>
+		</div>
+		<div class="content">
+			<div class="left">
+				<div class="myheader">系统导航</div>
+				<el-row class="tac" > 
+					<el-col :span="24"> 
+						<el-menu class="el-menu-vertical-demo"   @open="handleOpen"  @close="handleClose" v-for="(item,index) in userMenus" v-if="item.parentNodeCode==0"> 
+						
+						   
+							<el-submenu index="1" >
+									<template slot="title"  >
+										<i style="font-size: 14px;color: #0061a0;" class="el-icon-folder"></i>
+										<span style="font-size: 12px;color: #0061a0;" >{{item.nodeName}} </span>
+									</template>
+			
+									<el-menu-item index="1-1" style="line-height: 36px; height: 36px"  v-for="item1 in userMenus"  v-if="item.nodeCode==item1.parentNodeCode">
+											<div style="font-size: 12px; color: #0061a0;margin-left: 10px; text-decoration:none" target='ifra'  @click="href(item1.pageUrl)">{{item1.nodeName}}</div>
+							</el-menu-item> 
+				
+								 
+						</el-submenu> 
+						
+						
+						
+				</el-menu> 
+				</el-col>
+			</el-row>
+				
+				<div class="myfooter">&nbsp;Copyright &copy; 2020 KAMS团队版权所有</div>
+			</div>
+			<div class="right">
+				<iframe src="welcome.html" id="ifra" name='ifra'
+					style="border: 0; height: 100%; width: 100%;"></iframe>
+			</div>
+		</div>
+
+	</div>
+</body>
+<script>
+    new Vue({
+        el: '#app',
+        data: function() {
+            return {
+                flag: true,
+                username:'',
+                userMenus:[]
+            }
+        },
+        created(){
+			this.getUserName();
+			this.getUserMenu();
+		},
+        methods: {
+        	handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+              },
+              handleClose(key, keyPath) {
+                console.log(key, keyPath);
+              },
+        	getUserMenu(){
+        		axios({
+					method: 'post',
+					url: '/getUserMenu',
+					data: {
+					    msg:localStorage.username
+					}
+				}).then(res => {
+					this.userMenus=res.data.list;
+					console.log(this.userMenus)
+				}, error => {
+				});
+        	},
+        	getUserName() {
+                this.username=localStorage.username;
+            },
+           
+            handleCommand(command) {
+            	if(command=='logout'){   
+            		axios({
+    					method: 'post',
+    					url: '/logout',
+    					data: {
+    					    msg:localStorage.username
+    					}
+    				}).then(res => {
+    					open('logon.html','_self');
+    				}, error => {
+    				});
+            	}
+              }
+            ,
+            href(url){
+            		ifra.location.href=url;
+            }
+        }
+    })
+</script>
+
+</html>
