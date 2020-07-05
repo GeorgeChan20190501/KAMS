@@ -1,0 +1,23 @@
+USER: 'root',
+PSWD: 'EyJfjoa<i2xw',
+ 
+ alter table sm_applist modify id int auto_increment primary key;
+  alter table sm_config modify id int auto_increment primary key;
+	 alter table sm_efforts modify id int auto_increment primary key;
+	  alter table sm_fun modify id int auto_increment primary key;
+		 alter table sm_sn modify id int auto_increment primary key;
+		  alter table sm_userjf modify id int auto_increment primary key;
+			 alter table sm_userjfmx modify id int auto_increment primary key;
+			 alter table sys_menu modify id int auto_increment primary key;
+			 alter table sys_role modify id int auto_increment primary key;
+			 alter table sys_role_menu modify id int auto_increment primary key;;
+			 alter table sys_user modify id int auto_increment primary key;
+
+			 
+update sys_user set certifyflag=0		 
+	
+select * from	 sm_config where type='scheduler'    ===== com.kams.scheduler.KaiJiangPLCScheduler   0 0 9,12,15,18,21 * * ? 
+
+
+select * from		sm_userjfmx  where account='SYSTEM' ORDER BY create_time desc
+select * from		sys_user	
