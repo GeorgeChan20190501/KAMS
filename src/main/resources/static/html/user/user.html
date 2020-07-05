@@ -14,7 +14,7 @@
 
 <style>
 </style>
-<body>
+<body onkeydown="keyEnter();">
 	<div id="app">
 
 		<el-row> 
@@ -28,8 +28,8 @@
 					<el-row> 
 						<el-col :span="24"> 
 								<el-form :inline="true"  :model="formInline"  class="demo-form-inline"   size="mini"> 
-										<el-form-item label="用户名：">
-												<el-input v-model="formInline.account" placeholder="用户名"></el-input> 
+										<el-form-item label="用户账号：">
+												<el-input v-model="formInline.account" placeholder="用户账号"></el-input> 
 										</el-form-item> 
 										
 										<el-form-item  label="用户角色：">
@@ -47,7 +47,7 @@
 										 <p/>
 										 
 										 <el-form-item size="medium"> 
-										 		<el-button type="primary"@click="query">查询用户</el-button> 
+										 		<el-button type="primary"@click="query" id="enter">查询用户</el-button> 
 										 </el-form-item> 
 										 
 										  <el-form-item size="medium"> 
@@ -65,7 +65,7 @@
 			<div class='bh2'></div>
 			<div>
 			<template>
-				  <el-table :data="tableData"  stripe  style="width: 100%" :default-sort = "{prop: 'account', order: 'descending'}" border size="mini"  highlight-current-row >
+				  <el-table :data="tableData"  stripe  style="width: 100%" :default-sort = "{prop: 'account', order: 'descending'}" border size="mini"  highlight-current-row :header-cell-style="{fontSize:'14px',color:'black'}">
 				      <el-table-column type="selection" width="55"></el-table-column>
 				    	 <el-table-column sortable prop="id" min-width="100px" label="用户编号"></el-table-column>
 				    	<el-table-column   sortable prop="account" label="用户账号" width="180">
@@ -135,7 +135,8 @@ var vm=new Vue({
 			page_sizes:[5,10,15,20], //每页显示多少条
 			layout:'prev, pager, next, jumper, sizes,total '
 		},
-      allTableData:[]  
+      allTableData:[],
+      currentPage:1
   },
    mounted () {
 	    axios.get('/user.html').then(res1 =>{   //分公司列表初始化
@@ -186,6 +187,7 @@ var vm=new Vue({
 		handleCurrentChange(page){
 			// 跳转页数
 			//获取当前页
+			this.currentPage=page;
 			let index = this.paginations.page_size * (page -1);
 			//获取总数
 			let allData = this.paginations.page_size * page;
@@ -209,7 +211,13 @@ var vm=new Vue({
 							  msg: row
 						  },
 						}).then(resrm=>{ 
-							this.message(resrm.data,"success");
+							var msg=resrm.data;
+							if(msg.indexOf('成功')!=-1){
+								this.message(msg,"success");
+							}
+							else{
+								this.message(msg,"error");
+							}
 						} ,error=>{		
 							this.message( "操作异常 !","error")
 						}); 
@@ -220,13 +228,13 @@ var vm=new Vue({
 				 row.flag=true
 			}
 			if((temp==true || temp == false)){
-				open('user.html','_self'); //强制刷新。
+				this.handleCurrentChange(this.currentPage)
 			}
 			 
 			 
 	      },
 	      handleDelete(index, row) {
-	    	  this.model("此操作不可逆, 是否继续?",row.id)
+	    	  this.model("此操作不可逆, 是否继续?",row)
 	      },
 	      message(msg,type) {   //消息框
 	          this.$message({
@@ -258,7 +266,7 @@ var vm=new Vue({
     							msg:this.formInline
     				  },
     				}).then(res=>{ 			    					
-    					this.message( res.data,"success")
+    					var msg=resrm.data;if(msg.indexOf('成功')!=-1){this.message(msg,"success");}else{this.message(msg,"error");}
     					this.query();
     					
     				} ,error=>{
@@ -269,7 +277,7 @@ var vm=new Vue({
     	    	this.message("亲，添加用户时，三要素必须同时填写！","error")
     	    }  
 	 	 },
-	 	model(msg,id) {
+	 	model(msg,row) {
 	         this.$confirm(msg, '提示', {
 	           confirmButtonText: '确定',
 	           cancelButtonText: '取消',
@@ -279,11 +287,12 @@ var vm=new Vue({
 					  method: 'delete',           
 					  url: '/deleteUser',  
 					  data: {		
-						  msg: id
+						  msg: row.id
 					  },
 					}).then(resrm=>{ 			 
-						this.message(resrm.data,"success");					
-						open('user.html','_self');
+						var msg=resrm.data;if(msg.indexOf('成功')!=-1){this.message(msg,"success");}else{this.message(msg,"error");}			
+						this.allTableData= this.allTableData.filter(item => item !== row)
+						this.handleCurrentChange(this.currentPage)
 					} ,error=>{	
 						this.message( "操作异常 !","error")
 					}); 

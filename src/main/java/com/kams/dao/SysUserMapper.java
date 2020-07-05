@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.kams.bean.SysMenu;
 import com.kams.bean.SysUser;
 import com.kams.bean.SysUserExample;
 
@@ -43,6 +44,8 @@ public interface SysUserMapper {
 	void updateUser(List<SysUser> userlist);
 
 	void grantUser(List<SysUser> userlist);
+
+	List<SysMenu> queryRightByRole(String parseInt);
 
 	
 }

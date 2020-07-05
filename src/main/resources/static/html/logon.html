@@ -90,7 +90,7 @@ input {
 }
 </style>
 </head>
-<body>
+<body onkeydown="keyLogin();">
 	<div id="app">
 		<div class="header"></div>
 		<div class="center">
@@ -157,5 +157,9 @@ input {
               }
         }
     })
+    function keyLogin(){
+		 if (event.keyCode==13)  //回车键的键值为13
+		   document.getElementById("btn").click(); //调用登录按钮的登录事件
+   }
 </script>
 </html>

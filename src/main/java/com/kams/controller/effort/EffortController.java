@@ -269,7 +269,7 @@ public class EffortController {
 			int startindex = fileName.indexOf("_");
 			int endindex = fileName.indexOf(".");
 			if (endindex - startindex != 7) {
-				message = "Effort格式有误！  例如:  Effort Tracker George_202006";
+				message = "文件名称格式有误！范例:  Effort Tracker George_202006";
 				return false;
 			}
 			String YearMonth = fileName.substring(startindex + 1, startindex + 7);

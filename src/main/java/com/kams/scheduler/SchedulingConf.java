@@ -33,7 +33,7 @@ public class SchedulingConf implements SchedulingConfigurer {
 		List<SmConfig> list = serviceMonitorService.getScheduleConfigInfo();
 		System.out.println(list.size());
 		for (SmConfig s : list) {
-			//scheduledTaskRegistrar.addTriggerTask(getRunnable(s), getTrigger(s));
+			scheduledTaskRegistrar.addTriggerTask(getRunnable(s), getTrigger(s));
 		}
 	}
 

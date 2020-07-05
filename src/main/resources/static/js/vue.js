@@ -11942,3 +11942,229 @@
   return Vue;
 
 }));
+
+function keyEnter(){
+	 if (event.keyCode==13)  
+	   document.getElementById("enter").click();  
+}
+
+
+/*=======================alert自定义==开始=============================*/
+function ams_alert(message){
+	var time=new Date().getTime();
+
+	$('#ss').after("<div onselectstart='return false' class='tc' id='divSlider"+time+"'><div class='head'>提示： <button class='clo' id='clo' onclick='closetips("+time+")'>&#10005;</button></div><div class='content' style='font-size:14px;'>"+message+"<br/><button class='ans' onclick='closetips("+time+")'>确定</button></div></div>")	 
+}	
+function closetips(time){
+	$('#'+"divSlider"+time).css("display","none");
+}
+/*=======================alert自定义==结束=============================*/
+
+/*=======================console自定义==开始=============================*/
+function log(message){
+console.log(message);
+}
+/*=======================console自定义==结束=============================*/
+
+/*=======================sort自定义==开始=============================*/
+function mpsort(arr){
+	 var length= arr.length;
+	 for(var i=0;i<length-1;i++){
+		 for(var j=i+1;j<length;j++){
+			 var temp = 0;
+			 if(arr[i]>arr[j]){
+				 temp=arr[i];
+				 arr[i]=arr[j];
+				 arr[j]=temp;
+			 }
+		 }
+	 }
+	 return arr;
+}
+/*=======================sort自定义==结束=============================*/
+
+/*=======================随机数自定义==开始=============================*/
+function random(n){
+	 return Math.ceil(Math.random()*n);
+}
+/*=======================随机数自定义==结束=============================*/
+
+/*=======================日期格式化==开始=============================*/
+function stdData(date){
+	var curryear= date.getFullYear();
+	var currmonth= date.getMonth()+1;
+	var currdate= date.getDate();
+	var hour = date.getHours();
+	var min = date.getMinutes();
+	var sec = date.getSeconds();
+	if(currmonth<10){
+		currmonth='0'+currmonth;
+	}
+	if(currdate<10){
+		currdate='0'+currdate;
+	}
+	if(hour<10){
+		hour='0'+hour;
+	}
+	if(min<10){
+		min='0'+min;
+	}
+	if(sec<10){
+		sec='0'+sec;
+	}
+	return curryear+'-'+currmonth+'-'+currdate+" "+hour+":"+min+":"+sec ;
+}
+/*=======================日期格式化==结束=============================*/
+
+function filterTime(time) {
+    //  补0
+    let filterZero = (i) => {
+        return i < 10 ? `0${i}` : i
+    }
+    let [t1, t2, t3, t4, t5] = [
+        new Date(time).getFullYear(),
+        filterZero(new Date(time).getMonth() + 1),
+        filterZero(new Date(time).getDate()),
+        filterZero(new Date(time).getHours()),
+        filterZero(new Date(time).getMinutes()),
+    ]
+    console.log(`默认日期：${t1}-${t2}-${t3} ${t4}:${t5}`);
+
+    filterRang()
+    function filterRang() {
+        //  分钟取整运算
+        let i = parseInt(t5)
+        if (i >= 0 && i <= 10) {
+            t5 = 10
+        } else if (i >= 11 && i <= 20) {
+            t5 = 20
+        } else if (i >= 21 && i <= 30) {
+            t5 = 30
+        } else if (i >= 31 && i <= 40) {
+            t5 = 40
+        } else if (i >= 41 && i <= 50) {
+            t5 = 50
+        } else {
+            // 小时进位 
+            t5 = `00`
+            t4 = parseInt(t4) + 1
+            filterHours(t4)
+        }
+    }
+    function filterHours(i) {
+        i = parseInt(i)
+        // 现在是24小时制，可修改为12小时制
+        if (i >= 0 && i < 24) {
+            t4 = filterZero(i)
+        } else {
+            // 天数进位 
+            t4 = `00`
+            t3 = parseInt(t3) + 1
+            filterDay(t3)
+        }
+    }
+    function filterDay(i) {
+        //  获取当月有多少天
+        let nowMD = parseInt(new Date(t1, t2, 0).getDate())
+
+        i = parseInt(i)
+        if (i >= 0 && i <= nowMD) {
+            t3 = filterZero(i)
+        } else {
+            // 月份进位 
+            t3 = `01`
+            t2 = parseInt(t2) + 1
+            filterMonth(t2)
+        }
+    }
+    function filterMonth(i) {
+        i = parseInt(i)
+        if (i >= 0 && i <= 12) {
+            t2 = filterZero(i)
+        } else {
+            // 年进位 
+            t2 = `01`
+            t1 = parseInt(t1) + 1
+        }
+    }
+    console.log(`${t1}-${t2}-${t3} ${t4}:${t5}`);
+    return `${t1}-${t2}-${t3} ${t4}:${t5}`;
+}
+
+function exportExcel(JSONData, FileName, title, filter) {
+	log("开始导出effort报表");
+	log(JSONData);
+    if (!JSONData) return;
+    //转化json为object
+    var arrData = typeof JSONData != "object" ? JSON.parse(JSONData) : JSONData;
+    var excel = "<table>";
+    //设置表头
+    var row = "<tr>";
+    if (title) { //使用标题项
+      for (var i in title) {
+        row += "<th align='left'>" + title[i] + "</th>";
+      }
+    } else {//不使用标题项
+      for (var i in arrData[0]) {
+        row += "<th align='left'>" + i + "</th>";
+      }
+    }
+    excel += row + "</tr>";
+    //设置数据
+    for (var i = 0; i < arrData.length; i++) {
+      var row = "<tr>";
+      for (var index in arrData[i]) {
+        //判断是否有过滤行
+        if (filter) {
+          if (filter.indexOf(index) == -1) {
+            var value = arrData[i][index] == null ? "" : arrData[i][index];
+            row += "<td>" + value + "</td>";
+          }
+        } else {
+          var value = arrData[i][index] == null ? "" : arrData[i][index];
+          row += "<td align='left'>" + value + "</td>";
+        }
+      }
+      excel += row + "</tr>";
+    }
+    excel += "</table>";
+    var excelFile =
+      "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns='http://www.w3.org/TR/REC-html40'>";
+    excelFile +=
+      '<meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8">';
+    excelFile +=
+      '<meta http-equiv="content-type" content="application/vnd.ms-excel';
+    excelFile += '; charset=UTF-8">';
+    excelFile += "<head>";
+    excelFile += "<!--[if gte mso 9]>";
+    excelFile += "<xml>";
+    excelFile += "<x:ExcelWorkbook>";
+    excelFile += "<x:ExcelWorksheets>";
+    excelFile += "<x:ExcelWorksheet>";
+    excelFile += "<x:Name>";
+    excelFile += "{worksheet}";
+    excelFile += "</x:Name>";
+    excelFile += "<x:WorksheetOptions>";
+    excelFile += "<x:DisplayGridlines/>";
+    excelFile += "</x:WorksheetOptions>";
+    excelFile += "</x:ExcelWorksheet>";
+    excelFile += "</x:ExcelWorksheets>";
+    excelFile += "</x:ExcelWorkbook>";
+    excelFile += "</xml>";
+    excelFile += "<![endif]-->";
+    excelFile += "</head>";
+    excelFile += "<body>";
+    excelFile += excel;
+    excelFile += "</body>";
+    excelFile += "</html>";
+    var uri =
+      "data:application/vnd.ms-excel;charset=utf-8," +
+      encodeURIComponent(excelFile);
+    var link = document.createElement("a");
+    link.href = uri;
+    link.style = "visibility:hidden";
+    link.download = FileName + ".xls";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}

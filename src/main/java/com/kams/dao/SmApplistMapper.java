@@ -28,4 +28,6 @@ public interface SmApplistMapper {
 	void updateConfig(List<SmApplist> list);
 
 	void deleteConfig(List<String> list);
+
+	void deleteByPrimaryKey(int parseInt);
 }

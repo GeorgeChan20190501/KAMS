@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
 import com.kams.bean.Organization;
+import com.kams.bean.SysMenu;
 import com.kams.bean.SysRole;
 import com.kams.bean.SysUser;
 import com.kams.bean.common.JsonReqObject;
@@ -151,6 +152,7 @@ public class UserController {
 			return "操作异常";
 		}
 	}
+	
 
 	@PostMapping("/updateUser")
 	public String updateUser(@RequestBody String param) { // axios传递json串

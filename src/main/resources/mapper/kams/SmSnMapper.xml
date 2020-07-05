@@ -288,25 +288,26 @@
   
   <select id='insertNewSN' parameterType='list' >
   		<foreach collection="list" item="smSn"  open=""  close=""  separator=";" >		
-					insert into sm_sn values(#{smSn.ticketNo},#{smSn.appName},#{smSn.incidentState},#{smSn.assignTo},#{smSn.priority},#{smSn.caller},#{smSn.assignmentGroup},#{smSn.createTime},#{smSn.wipTime},#{smSn.pendingTime},#{smSn.resolvedTime},#{smSn.slaFlag},'false');
+					insert into sm_sn values(null,#{smSn.ticketNo},#{smSn.appName},#{smSn.incidentState},#{smSn.assignTo},#{smSn.priority},#{smSn.caller},#{smSn.assignmentGroup},#{smSn.createTime},#{smSn.wipTime},#{smSn.pendingTime},#{smSn.resolvedTime},#{smSn.slaFlag},'false')
 		</foreach>
   </select>
   
   <update id='updateSN' parameterType='list' >
   		<foreach collection="list" item="smSn"  open=""  close=""  separator=";" >	
-					update sm_sn  set app_name=#{smSn.appName},incident_state=#{smSn.incidentState},assign_to=#{smSn.assignTo},priority=#{smSn.priority},caller=#{smSn.caller},assignment_group=#{smSn.assignmentGroup},create_time=#{smSn.createTime},wip_time=#{smSn.wipTime},pending_time=#{smSn.pendingTime},resolved_time=#{smSn.resolvedTime},SLA_Flag=#{smSn.slaFlag},chk='false' where ticket_no= #{smSn.ticketNo};
+					update sm_sn  set app_name=#{smSn.appName},incident_state=#{smSn.incidentState},assign_to=#{smSn.assignTo},priority=#{smSn.priority},caller=#{smSn.caller},assignment_group=#{smSn.assignmentGroup},create_time=#{smSn.createTime},wip_time=#{smSn.wipTime},pending_time=#{smSn.pendingTime},resolved_time=#{smSn.resolvedTime},SLA_Flag=#{smSn.slaFlag},chk='false' where ticket_no= #{smSn.ticketNo}
 		</foreach>
   </update>
   
   <select id="queryFenyeSN" parameterType="com.kams.bean.SmSn" resultMap="BaseResultMap">
-		select top 495 * from sm_sn
+		select   * from sm_sn
 		<where>
 			<if test="ticketNo != null  and ticketNo !='' ">
 				and ticket_no = #{ticketNo}
 			</if>
 			<if test="appName != null  and appName !='' ">
-				and app_name like '%'+#{appName}+'%'
+				and app_name like   concat(concat('%',#{appName}),'%')  
 			</if>
 		</where>
+		LIMIT 0,1000
 	</select>
 </mapper>

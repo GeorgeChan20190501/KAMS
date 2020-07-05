@@ -2,643 +2,624 @@
 <html>
 
 <head>
-<title>Effort</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="/css/bootstrap-all.css">
-<script src="/js/bootstrap-all.js"></script>
-<script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
-<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
-<script src="/js/page.js"></script>
-<!-- 系统CSS或JS -->
-<link rel="stylesheet" href="/css/iconfont1.css">
-<link rel="stylesheet" href="/css/system.css">
+    <title>Effort 填写</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/js/vue.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+    <script src="/js/component/elementUI/index.js"></script>
+    <link rel="stylesheet" type="text/css" href="/js/component/elementUI/theme-chalk/index.css" />
+    <link rel="icon" href='/images/icon1.png' />
+    <!-- 系统CSS或JS -->
+    <link rel="stylesheet" href="/css/systab.css">
+  
+    <body onkeydown="keyEnter();">
+        <div id="app">
 
-<style>
-</style>
-</head>
+            <el-row>
+                <el-col :span="24">
+                    <h2>Effort 填写</h2>
+                </el-col>
+            </el-row>
 
-<body style="-webkit-user-select: none; ">
-	<div id="container">
-		<div class="row">
-			<div class="col-3">
-				<h4>Effort 填写</h4>
-			</div>
-		</div>
-		<div class="bh2"></div>
-		<div class="bg-content">
+            <div class='bh2'></div>
+            <div class='bg-content myfont'>
 
-			<div class="row">
-				<div class="col-sm-3 ">
-					<div style="width: 80px; height: 25px; float: left">Effort
-						Ower</div>
-					<select id="user" v-model="currUser.usercode"  :disabled="userclass!='SYSTEM'? 'disabled': false" style="width: 200px;">
-						<option :selected="true" value=""></option>
-						<option v-for="user in useroption" :value="user.account">
-							{{user.account}}</option>
-					</select>
-				</div>
+                <el-row>
+                    <el-col :span="24">
+                        <el-row>
 
-				<div class="col-sm-3 ">
-					<div style="width: 115px; height: 25px; float: left">Start
-						Workdate</div>
-					<input type="date" name='candiv' v-model="startworkday"
-						style="width: 150px; height: 25px;" />
-				</div>
+                            <el-form :inline="true" class="demo-form-inline" size="mini" :label-position="labelPosition">
+                                <el-form-item label="Effort Ower：" label-width="110px">
+                                    <el-select v-model="currUser.usercode" placeholder="Effort Ower" :disabled="userclass!='SYSTEM'? 'disabled': false">
+                                        <el-option :label="item.account" :value="item.account" v-for="(item,index) in useroption"></el-option>
+                                    </el-select>
+                                </el-form-item>
 
-				<div class="col-sm-3 ">
-					<div style="width: 100px; height: 25px; float: left">End
-						Workdate</div>
-					<input type="date" name='candiv' v-model="endworkday"
-						style="width: 150px; height: 25px;" />
-				</div>
-			</div>
-			<div class="bh2"></div>
-			<div class="bh2"></div>
-			<div
-				 style="border: 2px solid rgb(222, 226, 230); padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
-				<div class="row">
-					<div class="col-sm-3">
-						<div style="width: 80px; height: 25px; float: left">Date</div>
-						<input :disabled="userclass=='SYSTEM'? 'disabled': false"  type="date" name='candiv' v-model="effortObj.workday"
-							style="width: 200px; height: 25px;" />
-					</div>
+                                <el-form-item label="Start Date：" label-width="100px">
+                                    <el-date-picker v-model="startworkday" size="mini" type="date" placeholder="选择日期" style="width:193px;"> </el-date-picker>
+                                </el-form-item>
+                                <el-form-item label="End Date：" label-width="100px">
+                                    <el-date-picker v-model="endworkday" size="mini" type="date" placeholder="选择日期" style="width:193px;"> </el-date-picker>
+                                </el-form-item>
 
+                            </el-form>
+                        </el-row>
+                        <div class="bh1"></div>
+                        <div style="border: 2px solid rgb(222, 226, 230); padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
+                            <el-row>
+                                <el-col :span="24">
+                                    <el-form :inline="true" class="demo-form-inline" size="mini" label-width="100px" :label-position="labelPosition">
+                                        <el-form-item label="Effort Date：">
+                                            <el-date-picker :disabled="userclass=='SYSTEM'? 'disabled': false" v-model="effortObj.workday" size="mini" type="date" placeholder="选择日期" style="width:193px;"> </el-date-picker>
+                                        </el-form-item>
+                                    </el-form>
+                                </el-col>
+                            </el-row>
+                            <div class="bh1"></div>
+                            <el-row>
+                                <el-col :span="24">
+                                    <el-form :inline="true" class="demo-form-inline" size="mini" :label-position="labelPosition">
+                                        <el-form-item label="Task Type：" label-width="100px">
+                                            <el-select v-model="effortObj.tasktype" placeholder="Task Type" :disabled="userclass=='SYSTEM'? 'disabled': false">
+                                                <el-option :label="tasktype.type" :value="tasktype.type" v-for="tasktype in tasktypeList"></el-option> 													 
+											 </el-select> 
+									</el-form-item>
+									<el-form-item  label="App Name： "  label-width="100px " >
+													<el-select v-model="effortObj.eaicode "  placeholder="App Name "  :disabled="userclass=='SYSTEM' ? 'disabled': false " >
+																	<el-option :label="app.cval1"  :value="app.ckey "v-for="app in appList "></el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                        <el-form-item label="Ticket No：" label-width="100px">
+                                            <el-input size="mini" v-model="effortObj.ticketnumber" placeholder="Ticket Number" :disabled="userclass=='SYSTEM'? 'disabled': false" style="width:193px;"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="Hours：" label-width="100px">
+                                            <el-input size="mini" v-model="effortObj.efforthours" placeholder="Hours" :disabled="userclass=='SYSTEM'? 'disabled': false" style="width:193px;"></el-input>
+                                        </el-form-item>
 
-
-
-
-				</div>
-				<div class="bh1"></div>
-				<div class="row">
-					<div class="col-sm-3">
-						<div style="width: 80px; height: 25px; float: left">Task
-							Type</div>
-						<select :disabled="userclass=='SYSTEM'? 'disabled': false"  v-model="effortObj.tasktype" style="width: 200px;">
-							<option value=""></option>
-							<option v-for="tasktype in tasktypeList" :value="tasktype.type">{{tasktype.type}}</option>
-						</select>
-					</div>
-					<div class="col-sm-3">
-						<div style="width: 115px; height: 25px; float: left">Application
-							Name</div>
-						<select :disabled="userclass=='SYSTEM'? 'disabled': false"  v-model="effortObj.eaicode" style="width: 150px;">
-							<option :selected="true" value=""></option>
-							<option v-for="app in appList" :value="app.ckey">
-								{{app.cval1}}</option>
-						</select>
+                                    </el-form>
 
 
-					</div>
-					<div class="col-sm-3">
-						<div style="width: 100px; height: 25px; float: left">Ticket
-							Number</div>
-						<input  :disabled="userclass=='SYSTEM'? 'disabled': false"  type="text" name="childNum"
-							v-model="effortObj.ticketnumber"
-							style="width: 150px; height: 25px;" />
-					</div>
-					<div class="col-sm-2">
-						<div  style="width: 50px; height: 25px; float: left">Hours</div>
-						<input :disabled="userclass=='SYSTEM'? 'disabled': false"  type="text" name="pageUrl" v-model="effortObj.efforthours"
-							style="width: 150px; height: 25px;" />
-					</div>
-				</div>
-			</div>
-			<div class="row" style="padding: 15px;">
+                                </el-col>
+                            </el-row>
 
-				<button class="mybtn bg-primary" style="margin-left: 15px;"
-					@click="addConfig()">保存</button>
-				<button class="mybtn bg-primary" style="margin-left: 45px;"
-					@click="query">查询</button>
-				<form> 
-						<button  id="filebtn" style="margin-left: 45px;" class="bg-primary mybtn iconfont  icon-ziyuanxcx"  ><input  type="file" name="file"  @change="getFile($event)"><span style="font-size:10px; margin-left:5px;">{{fileName | format }}</span></button>
-						<button  style="margin-left: 45px;"  class="bg-primary mybtn"  type="button" @click="upload">上传</button><span style="color:red">请选择当前登陆用户Effort进行导入</span>
-				</form>
-			</div>
-
-
-		</div>
-		<div class="bh5"></div>
-
-		<div class="bg-content">
-			<div>
-				Effort Tracker 结果：
-				<button class="bg-primary mybtn1 iconfont  icon-daochu"
-					@click="download"></button>
-			</div>
-			<div class="bh2"></div>
-			<div>
-				<table class="table   table-bordered   table-sm" >
-					<thead>
-						<tr>
-							<th width="50px;"><input type="checkbox"
-								class=" batch checkbox"  v-model="isAll" /></th>
-							<th>Effort ID</th>
-							<th>AD Owner</th>
-							<th>Date</th>
-							<th>Associate Name</th>
-							<th>Task Type</th>
-							<th>EAI Code</th>
-							<th>Application Name</th>
-							<th>Ticket Number</th>
-							<th>Hours</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-for="item in dataShow">
-							<td width=" 50px;"><input type="checkbox"
-								class="batch checkbox"  @click="chk(item.id, event)"   v-model='item.chk'/></td>
-							<td>{{item.id}}</td>
-							<td><input class="tableinput" :value="item.appower"
-								v-model="item.appower" :readonly="status ? false : 'readonly'" /></td>
-							<td><input class="tableinput" :value="item.workday"
-								v-model="item.workday" :readonly="status ? false : 'readonly'" /></td>
-							<td><input class="tableinput" :value="item.username"
-								v-model="item.username" :readonly="status ? false : 'readonly'" /></td>
-							<td><input class="tableinput" :value="item.tasktype"
-								v-model="item.tasktype" :readonly="status ? false : 'readonly'" /></td>
-							<td><input class="tableinput" :value="item.eaiCode"
-								v-model="item.eaiCode" :readonly="status ? false : 'readonly'" /></td>
-							<td><input class="tableinput" :value="item.appname"
-								v-model="item.appname" :readonly="status ? false : 'readonly'" /></td>
-							<td><input class="tableinput" :value="item.ticketNumber"
-								v-model="item.ticketNumber"
-								:readonly="status ? false : 'readonly'" /></td>
-							<td><input class="tableinput" :value="item.effortsHours"
-								v-model="item.effortsHours"
-								:readonly="status ? false : 'readonly'" /></td>
-							<td><button class="bg-danger table-btn" @click="change()">{{edit}}</button></td>
-						</tr>
-					</tbody>
-				</table>
-				<div class="row"></div>
-				<button data-toggle="modal" data-target="#myModal"
-					class="bg-danger table-btn a-btn text-white"
-					@click="deleteConfig()">删除此条</button>
-				<button class="bg-danger a-btn myleft-2 text-white"
-					data-toggle="modal" data-target="#myModal" @click="updateConfig()">我要修改</button>
-
-			</div>
-			<fenye v-bind:parentmsg="url" @myfunc="dataDisplay" ref="fenye" />
-		</div>
-
-		<!-- 模态框 -->
-		<div class="modal fade myalert" id="myModal">
-			<div class="modal-dialog modal-sm">
-				<div class="modal-content">
-					<!-- 模态框头部 -->
-					<div class="modal-header">
-						<span class="modal-title">系统提示：</span>
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-					</div>
-					<!-- 模态框主体 -->
-					<div class="modal-body">
-						{{info2}}
-						<!-- 模态框底部 -->
-						<div class="modal-footer">
-							<button class="btn btn-success btn-sm" data-dismiss="modal"
-								id="modal-1" @click="confirmbtn(info2)">确 认</button>
-							<button type="button" class="btn btn-secondary btn-sm"
-								data-dismiss="modal" @click="cancle()">取 消</button>
-						</div>
-
-					</div>
-				</div>
-			</div>
-		</div>
-
-	</div>
-	<div id="ss"></div>
-</body>
-<script>
-	var vm = new Vue({
-		el: '#container',
-		data: {
-			appList:[],
-			tasktypeList:[],
-			workday: '2020-05-20',
-			currUser:{usercode: '', username: ''},
-			effortObj: { id: null, userid: '', username:'', appower: '', appname: '', workday: '', eaicode:'',tasktype:'',ticketnumber:'',efforthours:'' },
-			info: [],
-			role: [],
-			status: false,
-			check: true,
-			file: '',
-			fileName:'',
-			edit: '启用编辑',
-			info2: '',
-			configs: [],
-			checkGrp: [],
-			ids: [],
-			flag: false,
-			dataShow:[],
-			allEfforts:[],
-			exportObj: {ADOwer: '' ,Date: '',AssociateName: '',TaskType: '',EAICode: '',ApplicationName: '',TicketNumber: '',Hours: ''},
-			url:'/efforts/query',
-			startworkday: '',
-			endworkday:  '',
-			useroption : [],
-			userclass:'',
-			condition: {usercode:'',startworkday:'', endworkday:''},
-		},
-		filters:{
-			format(data){
-				if(data!=null && data!=''){
-					data=data.substring(0,1)+".."+data.substring(data.length-4,data.length);
-					
-				}
-				return data;
-			}
-		},
-		created() {
-			this.getAppInfo();
-			this.getType();
-			this.queryEffort();
-			this.getUsers();
-			this.getCurrUser();
-			let date=this.newdate();
-			this.effortObj.workday=date.substring(0,4)+"-"+date.substring(4,6)+"-"+date.substring(6,8);
-			this.startworkday=this.effortObj.workday;
-			this.endworkday=this.effortObj.workday;
-			
- 		},
- 		computed: {
-			isAll: {
-				 get: function () { 
-					return this.dataShow.every(item => item.chk);
-				},
-				 set: function (value) { 
-					 this.checkGrp=[];
-					this.dataShow.forEach(item => {
-						item.chk = value;
-						if (value) {
-							this.checkGrp.push(item.id);
-						}
-						else {
-							this.checkGrp.splice(this.checkGrp.indexOf(item.id), 1);
-						}
-						
-						
-					})
-				}
-			}
-		}
-		,
- 		
-		methods: {
-			queryEffort(){
-				axios({
-					method: 'post',
-					url: "/efforts/query",
-					data: {
-						startworkday: this.startworkday,
-						endworkday: this.endworkday,
-						usercode: this.currUser.usercode
-					},
-				}).then(res => {
-					this.allEfforts=[];
-					res.data.list.forEach((item,index)=>{
-						this.allEfforts.push({"AD Ower": item.appower ,"Date":  item.workday,"Associate Name": item.username ,"Task Type": item.tasktype ,"EAI Code": item.eaiCode
-							,"Application Name": item.appname ,"Ticket Number":item.ticketNumber ,"Hours":item.effortsHours});
-						});
-					log("导出：--》")
-					log(this.allEfforts);
-				}, error => {
-					log(error);
-				})
-			},
-			download(){
-				log("start ...");
-				log(this.allEfforts)
-				var filename="Effort_"+this.currUser.username+"_"+this.newdate();
-				exportExcel(this.allEfforts,filename);
-				ams_alert("下载成功！");
-			},
-			exportExcel(){
-				axios({
-					method: 'post',
-					url: "/efforts/export",
-					data: {
-						startworkday: this.startworkday,
-						endworkday:this.endworkday,
-						usercode:this.currUser.usercode
-					},
-				}).then(res => {
-					ams_alert("下载成功");					  
-
-				}, error => {
-					log(error);
-				})
-			},
-			newdate(){
-		        var date = new Date();
-		        var YYYY = date.getFullYear();
-		        var MM = date.getMonth() + 1;
-		        var DD = date.getDate();
-		        var hh = date.getHours();
-		        var mm = date.getMinutes();
-		        var ss = date.getSeconds();
-
-		        MM = MM < 10 ? ('0' + MM) : MM;
-		        DD = DD < 10 ? ('0' + DD) : DD;
-		        hh = hh < 10 ? ('0' + hh) : hh;
-		        mm = mm < 10 ? ('0' + mm) : mm;
-		        ss = ss < 10 ? ('0' + ss) : ss;
-
-		        return YYYY + MM  + DD + hh + mm + ss+"";
-			},
-			getAppInfo(){
-				axios({
-					method: 'get',
-					url: '/efforts/applist',
-				}).then(res => {
-					log(res.data);
-					this.appList = res.data;
-				
-				}, error => {
-				});
-			},
-			getUsers(){
-				axios({
-					method: 'get',
-					url: '/efforts/users',
-				}).then(res => {
-					log(res.data);
-					this.useroption = res.data;
-					log(this.useroption);
-					
-				}, error => {
-				});
-			},
-			getCurrUser(){
-				axios({
-					method: 'get',
-					url: '/efforts/loginuser',
-				}).then(res => {
-					log(res.data);
-					this.currUser.usercode = res.data;
-					this.userclass=res.data;
-					this.useroption.forEach((item,index)=>{
-						if((item.usercode).toLowerCase()==this.currUser.usercode.toLowerCase()){
-							this.currUser.username=item.account;
-						}
-					})
-				}, error => {
-				});
-			},
-			getType(){
-				axios({
-					method: 'get',
-					url: '/json/tasktype.json',
-				}).then(res => {
-					log(res.data);
-					this.tasktypeList = res.data;
-					log(this.tasktypeList);
-					
-				}, error => {
-				});
-		},
-			dataDisplay(dataShow){	 
-			this.dataShow=dataShow;
-			this.dataShow.forEach(item => {
-				item.chk = false;
-			})
-		},
-			query() {	
-				this.condition.usercode=this.currUser.usercode;
-				this.condition.startworkday=this.startworkday;
-				this.condition.endworkday=this.endworkday;
-				this.$refs.fenye.condition(this.condition);
-			    this.queryEffort();
-			    },
-		
-			 
-			addConfig() {
-			    	this.effortObj.userid=this.currUser.usercode;
-					this.effortObj.username=this.currUser.username;
-					
-			    	if(this.currUser.usercode=='SYSTEM'){
-						ams_alert('管理员无法填写Effort ! ');
-						return false;
-					}	
-			    	
-				if (
-					   (this.effortObj.workday == '' || this.effortObj.workday == null) || 
-						(this.effortObj.eaicode == '' || this.effortObj.eaicode == null) || 
-						(this.effortObj.tasktype == '' || this.effortObj.tasktype == null) || 
-						(this.effortObj.ticketnumber == '' || this.effortObj.ticketnumber == null) || 
-						(this.effortObj.efforthours == '' || this.effortObj.efforthours == null) ) {
-					ams_alert( '好像还有什么没填~');
-					return false;
-				}
-				axios({
-					method: 'put',
-					url: '/efforts/save',
-					data: this.effortObj,
-				}).then(res => {
-					if(res.data==1){
-						
-						ams_alert("已保存！");
-						this.startworkday=this.effortObj.workday;
-						this.endworkday=this.effortObj.workday;
-						this.query();
-						
-					}
-				}, error => {
-				});
-			},
-			confirmbtn(info) {
-				if (info.indexOf('确定要删除所选记录吗') != -1) {
-					axios({
-						method: 'delete',
-						url: '/efforts/delete',
-						data: { msg: this.checkGrp},
-						
-					}).then(resrm => {
-						ams_alert(resrm.data);
-						
-						this.query();
-						this.checkGrp = [];
-					}, error => {
-					});
-				}
-
-				if (info.indexOf('确定修改记录') != -1) {
-					var checkGrp = this.checkGrp;
-					var configs = this.dataShow;
-					var myarr = [];
-					for (x in configs) {
-						for (y in checkGrp) {
-							if (configs[x].id == checkGrp[y]) {
-								//effortObj: { id: null, appId: '', appName: '', appDescrib: '', appOwner: '', ownerEmail: '', appMaintenance: '', maintenanceEmail: '', appUrl1: '', appUrl2: '', appUrl3: '' },
-								var param = '{"id":"' + configs[x].id + '","userid":"' + configs[x].userid + '","username":"' + configs[x].username +
-									'","workday":"' + configs[x].workday + '","tasktype":"' + configs[x].tasktype + '","eaiCode":"' + configs[x].eaiCode + '","appname":"' + configs[x].appname +
-									'","appower":"' + configs[x].appower + '","ticketNumber":"'+configs[x].ticketNumber+'" ,"effortsHours":"'+configs[x].effortsHours+ '"}';
-								myarr.push(param);
-							}
-						}
-					}
-					axios({
-						method: 'post',
-						url: '/efforts/update',
-						data: {
-							msg: myarr
-						},
-					}).then(resrm => {
-						ams_alert(resrm.data);
-						this.checkGrp = [];
-						this.flag = false;
-						this.query();
-					}, error => {
-					});
-				}
-				return;
-			},
-			chk(id, e) {
-				if (e.target.checked) {
-					this.checkGrp.push(id);
-				}
-				else {
-					this.checkGrp.splice(this.checkGrp.indexOf(id), 1);
-				}
-			},
-			deleteConfig() {
-				if (this.checkGrp == '') {
-					this.info2 = "请先选择要操作的记录";
-					return;
-				}
-				this.info2 = "确定要删除所选记录吗：{" + this.checkGrp + "}";
-			},
-
-			cancle() {
-				this.flag = false;
-			},
-			updateConfig() {
-				if (this.checkGrp == '') {
-					this.info2 = "请先选择要操作的记录";
-					return false;
-				}
-				this.info2 = "确定修改记录：{" + this.checkGrp + "}";
-			},
-			change() {
-				this.status = !this.status;
-				if (this.status == true) {
-					this.edit = '关闭编辑';
-				}
-				else {
-					this.edit = '启用编辑';
-				}
-			},
-			upload(event){
-				
-		        let formData = new FormData();
-		        formData.append('file', this.file);
-		        formData.append("effortuser",this.currUser.usercode);
-		        formData.append("startworkday",this.startworkday);
-		        formData.append("endworkday",this.endworkday);
-		        let config = {
-		          headers: {
-		            'Content-Type': 'multipart/form-data'
-		          }
-		        }
-		      axios.post("/efforts/upload", formData, config).then(function (res) {
-		        			alert(res.data);
-  	
-		      }) 
-				
-			},
-			getFile(event) {
-		        this.file = event.target.files[0];
-		        this.fileName=this.file.name;
-		        
-		      },
-
-		}
-	})
+                        </div>
+                        <div class="bh2"></div>
+                        <el-row>
+                        <el-col :span="2">
+                        <el-button type="primary" @click="addConfig()">保存</el-button>
+                        </el-col>
+                        <el-col :span="2">
+                        <el-button type="primary" @click="query" id="enter">查询</el-button>
+						</el-col>
+						<el-col :span="6">
+						<el-upload  class="upload-demo"  :on-preview="handlePreview"  :on-remove="handleRemove"  :before-remove="beforeRemove"  
+									  action="/efforts/upload"
+									  :limit="1"
+									  :on-exceed="handleExceed"
+									  :on-success="handleUploadSuccess"
+  									  :on-error="handleUploadError"
+									  :file-list="fileList">
+  									<el-button   type="primary">上传<i class="el-icon-upload2"></i></el-button>
+  									<span slot="tip" class="el-upload__tip"  >只能上传Excle文件</span>
+						</el-upload>
+						</el-col>
+						</el-row>
+                    </el-col>
+                </el-row>
 
 
+            </div>
 
-/**
- * JS报表导出插件
- */
-function exportExcel(JSONData, FileName, title, filter) {
-	log("开始导出effort报表");
-	log(JSONData);
-    if (!JSONData) return;
-    //转化json为object
-    var arrData = typeof JSONData != "object" ? JSON.parse(JSONData) : JSONData;
-    var excel = "<table>";
-    //设置表头
-    var row = "<tr>";
-    if (title) { //使用标题项
-      for (var i in title) {
-        row += "<th align='left'>" + title[i] + "</th>";
-      }
-    } else {//不使用标题项
-      for (var i in arrData[0]) {
-        row += "<th align='left'>" + i + "</th>";
-      }
-    }
-    excel += row + "</tr>";
-    //设置数据
-    for (var i = 0; i < arrData.length; i++) {
-      var row = "<tr>";
-      for (var index in arrData[i]) {
-        //判断是否有过滤行
-        if (filter) {
-          if (filter.indexOf(index) == -1) {
-            var value = arrData[i][index] == null ? "" : arrData[i][index];
-            row += "<td>" + value + "</td>";
-          }
-        } else {
-          var value = arrData[i][index] == null ? "" : arrData[i][index];
-          row += "<td align='left'>" + value + "</td>";
-        }
-      }
-      excel += row + "</tr>";
-    }
-    excel += "</table>";
-    var excelFile =
-      "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:excel' xmlns='http://www.w3.org/TR/REC-html40'>";
-    excelFile +=
-      '<meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8">';
-    excelFile +=
-      '<meta http-equiv="content-type" content="application/vnd.ms-excel';
-    excelFile += '; charset=UTF-8">';
-    excelFile += "<head>";
-    excelFile += "<!--[if gte mso 9]>";
-    excelFile += "<xml>";
-    excelFile += "<x:ExcelWorkbook>";
-    excelFile += "<x:ExcelWorksheets>";
-    excelFile += "<x:ExcelWorksheet>";
-    excelFile += "<x:Name>";
-    excelFile += "{worksheet}";
-    excelFile += "</x:Name>";
-    excelFile += "<x:WorksheetOptions>";
-    excelFile += "<x:DisplayGridlines/>";
-    excelFile += "</x:WorksheetOptions>";
-    excelFile += "</x:ExcelWorksheet>";
-    excelFile += "</x:ExcelWorksheets>";
-    excelFile += "</x:ExcelWorkbook>";
-    excelFile += "</xml>";
-    excelFile += "<![endif]-->";
-    excelFile += "</head>";
-    excelFile += "<body>";
-    excelFile += excel;
-    excelFile += "</body>";
-    excelFile += "</html>";
-    var uri =
-      "data:application/vnd.ms-excel;charset=utf-8," +
-      encodeURIComponent(excelFile);
-    var link = document.createElement("a");
-    link.href = uri;
-    link.style = "visibility:hidden";
-    link.download = FileName + ".xls";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
-</script>
+            <div class='bh5'></div>
+
+            <div class='bg-content'>
+            	
+                <el-row>
+                		<el-col :span="23">Effort Tracker 结果：</el-col>
+
+						<el-col :span="1">
+								<el-button   size='mini' type="success" @click='download'>下载<i class="el-icon-download"></i></el-button>
+						</el-col>
+				 </el-row>
+                <div class='bh2'></div>
+                <div>
+                    <template>
+				  <el-table :data="tableData"  stripe  style="width: 100%"  border size="mini"  highlight-current-row :header-cell-style="{fontSize:'14px',color:'black'}">
+				      <el-table-column type="selection" width="55"></el-table-column>
+				    	<el-table-column   sortable prop="appower" label="AD Owner" min-width="130">
+                				<template scope="scope" >
+                						<span v-if="scope.row.flag">
+                    						<el-input size="small" v-model="scope.row.appower" placeholder="请输入内容" ></el-input>
+                    					</span> 
+                    					<span v-else>{{scope.row.appower}}</span>
+                				</template>
+                    </el-table-column>
+
+                    <el-table-column sortable prop="workday" min-width="100px" label="Date">
+                   			 <template scope="scope" >
+                						<span v-if="scope.row.flag">
+                    						<el-input size="small" v-model="scope.row.workday" placeholder="请输入内容" ></el-input>
+                    					</span> 
+                    					<span v-else>{{scope.row.workday}}</span>
+                				</template>
+                    </el-table-column>
+                    <el-table-column sortable prop="username" min-width="160px" label="Associate Name">
+                    		<template scope="scope" >
+                						<span v-if="scope.row.flag">
+                    						<el-input size="small" v-model="scope.row.username" placeholder="请输入内容" ></el-input>
+                    					</span> 
+                    					<span v-else>{{scope.row.username}}</span>
+                				</template>
+                    </el-table-column>
+                    <el-table-column sortable prop="tasktype" width="300px;" label="Task Type" :show-overflow-tooltip='true' >
+                    			<template scope="scope" >
+                						<span v-if="scope.row.flag">
+                    						<el-input size="small" v-model="scope.row.tasktype" placeholder="请输入内容" ></el-input>
+                    					</span> 
+                    					<span v-else>{{scope.row.tasktype}}</span>
+                				</template>
+                    </el-table-column>
+
+                    <el-table-column sortable prop="eaiCode" label="EAI Code" min-width="120px;">
+
+                        <template slot-scope="scope">
+                				<span v-if="scope.row.flag">
+                    					<el-input size="small" v-model="scope.row.eaiCode" placeholder="请输入内容" ></el-input> 
+                    					</span> 
+                    					<span v-else>{{scope.row.eaiCode}}</span>
+                				</template>
+                    </el-table-column>
+                    <el-table-column sortable min-width="180px;" prop="appname" label="Application Name">
+                    			<template scope="scope" >
+                						<span v-if="scope.row.flag">
+                    						<el-input size="small" v-model="scope.row.appname" placeholder="请输入内容" ></el-input>
+                    					</span> 
+                    					<span v-else>{{scope.row.appname}}</span>
+                				</template>
+                    </el-table-column>
+					<el-table-column  sortable min-width="150px;" prop="ticketNumber" label="Ticket Number" :show-overflow-tooltip='true' >
+								<template scope="scope" >
+                						<span v-if="scope.row.flag">
+                    						<el-input size="small" v-model="scope.row.ticketNumber" placeholder="请输入内容" ></el-input>
+                    					</span> 
+                    					<span v-else>{{scope.row.ticketNumber}}</span>
+                				</template>
+					</el-table-column>
+					<el-table-column sortable min-width="90px;" prop="effortsHours" label="Hours">
+								<template scope="scope" >
+                						<span v-if="scope.row.flag">
+                    						<el-input size="small" v-model="scope.row.effortsHours" placeholder="请输入内容" ></el-input>
+                    					</span> 
+                    					<span v-else>{{scope.row.effortsHours}}</span>
+                				</template>
+					</el-table-column>
+                    <el-table-column label="操作" width="150px;">
+                        <template slot-scope="scope">
+							        <el-button size="mini"  @click="handleEdit (scope.$index, scope.row, 'op')"> {{scope.row.flag?'保存':"修改"}}</el-button>  
+							        <el-button size="mini" type="warning" v-show="scope.row.flag" @click="handleEdit(scope.$index, scope.row, 'cancle' )">取消</el-button>
+							        <el-button size="mini" type="danger" v-show="!scope.row.flag"  @click="handleDelete (scope.$index, scope.row)">删除</el-button>
+      							</template>
+                    </el-table-column>
+
+                    </el-table>
+                    </template>
+
+
+                    <div class="page">
+                        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="paginations.page_index" :page-sizes="paginations.page_sizes" :page-size="paginations.page_size" :layout="paginations.layout" :total="paginations.total">
+                        </el-pagination>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </body>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                labelPosition: 'left',
+                appList: [],
+                tasktypeList: [],
+                workday: '2020-05-20',
+                currUser: {
+                    usercode: '',
+                    username: ''
+                },
+                effortObj: {
+                    id: null,
+                    userid: '',
+                    username: '',
+                    appower: '',
+                    appname: '',
+                    workday: '',
+                    eaicode: '',
+                    tasktype: '',
+                    ticketnumber: '',
+                    efforthours: ''
+                },
+                file: '',
+                fileName: '',
+ 
+                condition: {usercode:'',startworkday:'', endworkday:''},
+                configs: [],
+                fileList:[],
+       
+                flag: false,
+       
+                allEfforts: [],
+                exportObj: {
+                    ADOwer: '',
+                    Date: '',
+                    AssociateName: '',
+                    TaskType: '',
+                    EAICode: '',
+                    ApplicationName: '',
+                    TicketNumber: '',
+                    Hours: ''
+                },
+             
+                startworkday: '',
+                endworkday: '',
+                useroption: [],
+                userclass: '',
+                info: [],
+                role: [],
+           
+                tableData: [], //数据
+                paginations: {
+                    page_index: 1, //当前页
+                    total: 0, //总数
+                    page_size: 5, //一页显示多少
+                    page_sizes: [5, 10, 15, 20], //每页显示多少条
+                    layout: 'prev, pager, next, jumper, sizes,total '
+                },
+                allTableData: [],
+                currentPage: 1
+            },
+            filters: {
+                format(data) {
+                    if (data != null && data != '') {
+                        data = data.substring(0, 1) + ".." + data.substring(data.length - 4, data.length);
+
+                    }
+                    return data;
+                }
+            },
+            created() {
+                this.getAppInfo();
+                this.getType();
+                this.queryEffort();
+                this.getUsers();
+                this.getCurrUser();
+                let date = this.newdate();
+                this.effortObj.workday = date.substring(0, 4) + "-" + date.substring(4, 6) + "-" + date.substring(6, 8);
+                this.startworkday = this.effortObj.workday;
+                this.endworkday = this.effortObj.workday;
+
+            },
+            mounted() {
+             
+ 					this.query();
+
+            },
+
+            methods: {
+            	
+           
+                handleUploadSuccess(res, file, fileList) {
+                 
+            		var msg=res;
+            		if(msg.indexOf('成功')!=-1){this.message(msg,"success");}else{this.message(msg,"error");}
+                },
+                handleUploadError(err, file, fileList){
+                    //文件上传失败后的操作
+                   this.message('文件上传失败','error')
+
+                },
+            	  handleRemove(file, fileList) {
+                    console.log(file, fileList);
+                  },
+                  handlePreview(file) {
+                    console.log(file);
+                  },
+                  handleExceed(files, fileList) {
+                    this.$message.warning(`老铁，一次只能传一个文件!`);
+                  },
+                  beforeRemove(file, fileList) {
+                    return this.$confirm(`确定移除 ${ file.name }？`);
+                  },
+                setPaginations() {
+                    this.paginations.total = this.allTableData.length; //数据的数量
+                    this.paginations.page_index = 1; //默认显示第一页
+                    this.paginations.page_size = 5; //每页显示多少数据
+                    //显示数据
+                    this.tableData = this.allTableData.filter((item, index) => {
+                        return index < this.paginations.page_size;
+                    })
+                },
+                handleSizeChange(page_size) {
+                    this.paginations.page_index = 1; //第一页
+                    this.paginations.page_size = page_size; //每页先显示多少数据
+                    this.tableData = this.allTableData.filter((item, index) => {
+                        return index < page_size
+                    })
+                },
+                handleCurrentChange(page) {
+                    // 跳转页数
+                    //获取当前页
+                    this.currentPage = page;
+                    let index = this.paginations.page_size * (page - 1);
+                    //获取总数
+                    let allData = this.paginations.page_size * page;
+                    let tablist = [];
+                    for (let i = index; i < allData; i++) {
+                        if (this.allTableData[i]) {
+                            tablist.push(this.allTableData[i])
+                        }
+                        this.tableData = tablist
+                    }
+                },
+                handleEdit(index, row, type) {
+                    var temp = row.flag;
+                    if (row.flag) {
+                        //说明当前是激活状态，用户可编辑中,此时做保存或取消操作。
+                        if (type == 'op') { //保存操作
+                            axios({
+                                method: 'post',
+                                url: '/efforts/update',
+                                data: {
+                                    msg: row
+                                },
+                            }).then(resrm => {
+                                var msg = resrm.data;
+                                if (msg.indexOf('成功')!=-1) {
+                                    this.message(msg, "success");
+                                } else {
+                                    this.message(msg, "error");
+                                }
+                            }, error => {
+                                this.message("操作异常 !", "error")
+                            });
+                        }
+                        row.flag = false
+                    } else {
+                        row.flag = true
+                    }
+                    if ((temp == true || temp == false)) {
+                        this.handleCurrentChange(this.currentPage)
+                    }
+
+
+                },
+                handleDelete(index, row) {
+                    this.model("此操作不可逆, 是否继续?", row)
+                },
+                message(msg, type) { //消息框
+                    this.$message({
+                        message: msg,
+                        type: type
+                    });
+                },
+
+ 
+                model(msg, row) {
+                    this.$confirm(msg, '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then((value) => {
+                        axios({
+                            method: 'delete',
+                            url: '/efforts/delete',
+                            data: {
+                                msg: row.id
+                            },
+                        }).then(resrm => {
+                            var msg = resrm.data;
+                            if (msg.indexOf('成功')!=-1) {
+                                this.message(msg, "success");
+                            } else {
+                                this.message(msg, "error");
+                            }
+                            this.allTableData = this.allTableData.filter(item => item !== row)
+                            this.handleCurrentChange(this.currentPage)
+                        }, error => {
+                            this.message("操作异常 !", "error")
+                        });
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '操作取消'
+                        });
+                        return false;
+                    });
+                },
+                queryEffort() {
+                    axios({
+                        method: 'post',
+                        url: "/efforts/query",
+                        data: {
+                            startworkday: this.startworkday,
+                            endworkday: this.endworkday,
+                            usercode: this.currUser.usercode
+                        },
+                    }).then(res => {
+                        this.allEfforts = [];
+                        this.allTableData = res.data.list	;
+    					this.setPaginations();
+                        res.data.list.forEach((item, index) => {
+                            this.allEfforts.push({
+                                "AD Ower": item.appower,
+                                "Date": item.workday,
+                                "Associate Name": item.username,
+                                "Task Type": item.tasktype,
+                                "EAI Code": item.eaiCode,
+                                "Application Name": item.appname,
+                                "Ticket Number": item.ticketNumber,
+                                "Hours": item.effortsHours
+                            });
+                        });
+                        log("导出：--》")
+                        log(this.allEfforts);
+                    }, error => {
+                        log(error);
+                    })
+                },
+                download() {
+                    log("start ...");
+                    log(this.allEfforts)
+                    var filename = "Effort_" + this.currUser.username + "_" + this.newdate();
+                    exportExcel(this.allEfforts, filename);
+                    this.message("下载成功！",'success');
+                },
+                exportExcel() {
+                    axios({
+                        method: 'post',
+                        url: "/efforts/export",
+                        data: {
+                            startworkday: this.startworkday,
+                            endworkday: this.endworkday,
+                            usercode: this.currUser.usercode
+                        },
+                    }).then(res => {
+                        this.message("下载成功！",'success');
+                    }, error => {
+                        log(error);
+                    })
+                },
+                newdate() {
+                    var date = new Date();
+                    var YYYY = date.getFullYear();
+                    var MM = date.getMonth() + 1;
+                    var DD = date.getDate();
+                    var hh = date.getHours();
+                    var mm = date.getMinutes();
+                    var ss = date.getSeconds();
+
+                    MM = MM < 10 ? ('0' + MM) : MM;
+                    DD = DD < 10 ? ('0' + DD) : DD;
+                    hh = hh < 10 ? ('0' + hh) : hh;
+                    mm = mm < 10 ? ('0' + mm) : mm;
+                    ss = ss < 10 ? ('0' + ss) : ss;
+
+                    return YYYY + MM + DD + hh + mm + ss + "";
+                },
+                getAppInfo() {
+                    axios({
+                        method: 'get',
+                        url: '/efforts/applist',
+                    }).then(res => {
+                        log("applist=====");
+                        this.appList = res.data;
+                        log(res.data);
+                    }, error => {});
+                },
+                getUsers() {
+                    axios({
+                        method: 'get',
+                        url: '/efforts/users',
+                    }).then(res => {
+                        log(res.data);
+                        this.useroption = res.data;
+                        log(this.useroption);
+
+                    }, error => {});
+                },
+                getCurrUser() {
+                    axios({
+                        method: 'get',
+                        url: '/efforts/loginuser',
+                    }).then(res => {
+                        log(res.data);
+                        this.currUser.usercode = res.data;
+                        this.userclass = res.data;
+                        this.useroption.forEach((item, index) => {
+                            if (item.usercode == this.currUser.usercode) {
+                                this.currUser.username = item.account;
+                            }
+                        })
+                    }, error => {});
+                },
+                getType() {
+                    axios({
+                        method: 'get',
+                        url: '/json/tasktype.json',
+                    }).then(res => {
+                        this.tasktypeList = res.data;
+                        log(this.tasktypeList);
+
+                    }, error => {});
+                },
+             
+                query() {
+                    this.condition.usercode = this.currUser.usercode;
+                    this.condition.startworkday = this.startworkday;
+                    this.condition.endworkday = this.endworkday;
+                     
+                    this.queryEffort();
+                },
+
+
+                addConfig() {
+                 
+                    this.effortObj.userid = this.currUser.usercode;
+                    this.effortObj.username = this.currUser.username;
+
+                    if (this.currUser.usercode == 'SYSTEM') {
+                    	this.message('管理员无法填写Effort ! ','warning');
+                        return false;
+                    }
+                    if (
+                        (this.effortObj.workday == '' || this.effortObj.workday == null) ||
+                        (this.effortObj.eaicode == '' || this.effortObj.eaicode == null) ||
+                        (this.effortObj.tasktype == '' || this.effortObj.tasktype == null) ||
+                        (this.effortObj.ticketnumber == '' || this.effortObj.ticketnumber == null) ||
+                        (this.effortObj.efforthours == '' || this.effortObj.efforthours == null)) {
+                        this.message('好像还有什么没填~','warning');
+                        return false;
+                    }
+                    axios({
+                        method: 'put',
+                        url: '/efforts/save',
+                        data: this.effortObj,
+                    }).then(res => {
+                        if (res.data == 1) {
+                        	this.message("已保存！",'success');
+                            this.startworkday = this.effortObj.workday;
+                            this.endworkday = this.effortObj.workday;
+                            this.queryEffort();
+                        }
+                    }, error => {});
+                },
+   
+                upload(event) {
+
+                    let formData = new FormData();
+                    formData.append('file', this.file);
+                    formData.append("effortuser", this.currUser.usercode);
+                    formData.append("startworkday", this.startworkday);
+                    formData.append("endworkday", this.endworkday);
+                    let config = {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    }
+                    axios.post("/efforts/upload", formData, config).then(function(res) {
+                        alert(res.data);
+
+                    })
+
+                },
+                getFile(event) {
+                    this.file = event.target.files[0];
+                    this.fileName = this.file.name;
+
+                },
+            }
+        })
+    </script>
 
 </html>

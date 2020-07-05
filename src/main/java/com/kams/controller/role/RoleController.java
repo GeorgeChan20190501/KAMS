@@ -1,4 +1,4 @@
-package com.kams.role;
+package com.kams.controller.role;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONArray;
+import com.kams.bean.SysMenu;
 import com.kams.bean.SysRole;
 import com.kams.bean.SysRoleMenu;
 import com.kams.bean.common.JsonReqObject;
@@ -101,37 +102,20 @@ public class RoleController {
 	@PostMapping("/roleGrant")
 	public String roleGrant(@RequestBody String param) {
 		JsonReqObject jsonReqObject = JSONArray.parseObject(param, JsonReqObject.class);
-		String roleId [] = jsonReqObject.getMsg().replace("[", "").replace("]", "").split(",");
-		//根据角色ID查询角色编码
-		List<String>  listId =new ArrayList<String>(); 
-		for (String rId : roleId) {
-			listId.add(rId);
-		}
-		//查询
-		String [] roleCode=roleService.getRoleCode(listId);
-		System.out.println("角色ID参数===" + roleId);
-		System.out.println(jsonReqObject.getMsg1());
-		String msg1[] = jsonReqObject.getMsg1().replace("[\"", "").replace("\"]", "").replace("\",\"", ";").split(";");
-		System.out.println(msg1);
+		String jsonParam = jsonReqObject.getMsg();
+		System.out.println(jsonParam);
+		String Roles[] = jsonParam.replace("[", "").replace("]", "").replace("},{", "};{").split(";");
+		System.out.println(Roles[0]);
 		List<SysRoleMenu>  list =new ArrayList<SysRoleMenu>(); 
-		Set<String>  set =new HashSet<String>(); 
-		
 		SysRoleMenu sysRoleMenu;
-		 //组装role_menu
-		for (String nodecode : msg1) {    //遍历选中的菜单
-				System.out.println(nodecode);
-				
-				for (String rolecode : roleCode) {
-					sysRoleMenu = new SysRoleMenu();
-					sysRoleMenu.setNodeCode(nodecode);
-					sysRoleMenu.setRoleCode(rolecode);
-					list.add(sysRoleMenu);
-					set.add(rolecode);
-				}
-			}
+		for (String Role : Roles) {
+			sysRoleMenu = JSONArray.parseObject(Role, SysRoleMenu.class);
+			list.add(sysRoleMenu);
+		}
+
 		try {
-			List<String>  rolelist =new ArrayList<String>(set); 
-			roleService.deleteUserRole(rolelist);
+			String roleId=list.get(0).getRoleCode();
+			roleService.deleteUserRole(roleId);
 			roleService.roleGrant(list);
 		} catch (Exception e) {
 			return "操作异常";
@@ -139,6 +123,22 @@ public class RoleController {
 		return "角色授权成功";
 	}
 	
+	
+	@PostMapping("/queryRightByRole")
+	public Map<String, Object> queryRightByRole(@RequestBody String param) {  
+	 
+		System.out.println("queryRightByRole=====" + param);
+		JsonReqObject jsonReqObject = JSONArray.parseObject(param, JsonReqObject.class);
+		String roleId = jsonReqObject.getMsg();
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			List<SysMenu> menulist=roleService.queryRightByRole(roleId);
+			map.put("list", menulist);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
 	
 
 }

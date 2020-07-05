@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  debug="false" scan="true" scanPeriod="30 second">   
 
-	<property name="PROJECT" value="ServiceMonitor" />
+	<property name="PROJECT" value="KAMS" />
 	<property name="FILESIZE" value="50MB" />
 	<property name="MAXHISTORY" value="100" />           
 	<timestamp key="DATETIME" datePattern="yyyy-MM-dd HH:mm:ss" />

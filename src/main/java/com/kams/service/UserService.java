@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.kams.bean.SmUserjf;
 import com.kams.bean.SmUserjfmx;
+import com.kams.bean.SysMenu;
 import com.kams.bean.SysRole;
 import com.kams.bean.SysUser;
 import com.kams.bean.SysUserExample;
@@ -86,6 +87,11 @@ public class UserService {
 
 	public void deleteUser(String userId) {
 		sysUserMapper.deleteByPrimaryKey(Integer.parseInt(userId));
+	}
+
+	public List<SysMenu> queryRightByRole(String roleId) {
+		return sysUserMapper.queryRightByRole(roleId);
+		 
 	}
 
 }

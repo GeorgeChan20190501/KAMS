@@ -3,6 +3,7 @@ package com.kams.dao;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
+import com.kams.bean.SysMenu;
 import com.kams.bean.SysRole;
 import com.kams.bean.SysRoleExample;
 import com.kams.bean.SysRoleMenu;
@@ -43,6 +44,8 @@ public interface SysRoleMapper {
 
 	void roleGrant(List<SysRoleMenu> list);
 
-	void deleteUserRole(List<String> listId);
+	void deleteUserRole(String listId);
+
+ 
     
 }

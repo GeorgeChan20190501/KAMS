@@ -37,4 +37,6 @@ public interface SysMenuMapper {
 	void deleteMenu(List<String> list);
 
 	void updateMenu(List<SysMenu> list);
+
+	List<SysMenu> queryRightByRole(String roleId);
 }

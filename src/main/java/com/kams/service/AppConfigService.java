@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.kams.bean.SmApplist;
 import com.kams.bean.SmResult;
 import com.kams.dao.SmApplistMapper;
+import com.kams.dao.SmConfigMapper;
 import com.kams.dao.SmResultMapper;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,8 @@ public class AppConfigService {
 
 	@Autowired
 	private SmResultMapper smResultMapper;
+	@Autowired
+	private SmConfigMapper smConfigMapper;
 	/**
 	 * 根据用户查询菜单列表
 	 * 
@@ -104,8 +107,8 @@ public class AppConfigService {
 		
 	}
 
-	public void deleteConfig(List<String> list) {
-		smApplistMapper.deleteConfig(list);
+	public void deleteConfig(String id) {
+		smApplistMapper.deleteByPrimaryKey(Integer.parseInt(id));
 		
 	}
 

@@ -349,7 +349,7 @@
 			</where>
   </select>
   <insert id="addUser" parameterType="com.kams.bean.SysUser" >
-  		insert into sys_user values(#{account},#{username},#{password},#{branch},'','',#{certifyflag},#{roleName},#{describtion},(select CONVERT(varchar(100), GETDATE(), 120)) ,(select CONVERT(varchar(100), GETDATE(), 120))  );
+  		insert into sys_user values(null,#{account},#{username},#{password},#{branch},'','',#{certifyflag},#{roleName},#{describtion},(select NOW()) ,(select NOW())  );
   </insert>
   <delete id="deleteUserMenu" parameterType="com.kams.bean.SysUser" >
   	    update sys_user set role_name='' where account=#{account}
@@ -374,11 +374,10 @@
      <update id="updateUser" parameterType="list" >
   	   
 		<foreach collection="list" item="user"  open=""  close=""  separator=";" >		
-					 update  sys_user  set account=#{user.account} ,username=#{user.username}, branch=#{user.branch} ,mail=#{user.mail} ,role_name = #{user.roleName}, update_time=(select CONVERT(varchar(100), GETDATE(), 120)) where id = #{user.id}
+					 update  sys_user  set account=#{user.account} ,username=#{user.username}, branch=#{user.branch} ,mail=#{user.mail} ,role_name = #{user.roleName}, update_time=(select NOW()) where id = #{user.id}
 		</foreach>
   </update>
    
-
 
   
 </mapper>

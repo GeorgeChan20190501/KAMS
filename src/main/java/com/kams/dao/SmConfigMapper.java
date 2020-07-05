@@ -30,4 +30,6 @@ public interface SmConfigMapper {
 	List<SmConfig> getScheduleConfigInfo();
 
 	List<SmConfig>  getSLAStandard(SmConfig smConfig);
+
+	void deleteByPrimaryKey(int parseInt);
 }

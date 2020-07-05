@@ -14,7 +14,7 @@
 
 <style>
 </style>
-<body>
+<body onkeydown="keyEnter();">
 	<div id="app">
 
 		<el-row> 
@@ -27,43 +27,48 @@
 		<div class='bg-content'>
 					<el-row> 
 						<el-col :span="24"> 
-								<el-form :inline="true"  :model="formInline"  class="demo-form-inline"   size="mini"> 
-										<el-form-item label="节点编码：">
-												<el-input v-model="formInline.nodeCode" ></el-input> 
+								<el-form :inline="true"  :model="formInline"  class="demo-form-inline"   size="mini"   label-width="100px"> 
+										<el-form-item label="EAI Code：">
+												<el-input v-model="formInline.appId" ></el-input> 
 										</el-form-item> 
 										
-										<el-form-item  label="父节编码：">
-											 <el-input v-model="formInline.parentNodeCode" ></el-input>  
+										<el-form-item  label="应用名称：">
+											 <el-input v-model="formInline.appName" ></el-input>  
 										 </el-form-item> 
 										 
-										 <el-form-item  label="节点名称：">
-											 <el-input v-model="formInline.nodeName" ></el-input>  
+										 <el-form-item  label="应用描述：">
+											 <el-input v-model="formInline.appDescrib" ></el-input>  
 										 </el-form-item> 
 										 
-										 <el-form-item  label="子节点数：">
-											 <el-input v-model="formInline.childNum" ></el-input>  
+										 <el-form-item  label="应用Owner：">
+											 <el-input v-model="formInline.appOwner" ></el-input>  
 										 </el-form-item> 
-										 
+										 <el-form-item  label="Owner邮箱：">
+											 <el-input v-model="formInline.ownerEmail" ></el-input>  
+										 </el-form-item> 
 										 <p/>
-										  <el-form-item label="节点地址：">
-												<el-input v-model="formInline.pageUrl" ></el-input> 
+										  <el-form-item label="运维人员：">
+												<el-input v-model="formInline.appMaintenance" ></el-input> 
 										</el-form-item> 
-										<el-form-item label="节点描述：">
-												<el-input v-model="formInline.nodeDescription" ></el-input> 
+										<el-form-item label="运维邮箱：">
+												<el-input v-model="formInline.maintenanceEmail" ></el-input> 
 										</el-form-item> 
-										 <el-form-item  label="节点生效："  >
-											 <el-select v-model="formInline.isDeleted"   style="width:178px">
-													  <el-option label="有效"  value="0"></el-option> 	 
-													  <el-option label="无效"  value="1"></el-option> 	 
-											 </el-select> 
+										 <el-form-item  label="监控地址："  >
+											 <el-input v-model="formInline.appUrl1" ></el-input> 
+										 </el-form-item> 
+										 <el-form-item  label="监控地址二："  >
+											 <el-input v-model="formInline.appUrl2" ></el-input> 
+										 </el-form-item> 
+										 <el-form-item  label="监控地址三："  >
+											 <el-input v-model="formInline.appUrl3" ></el-input> 
 										 </el-form-item> 
 										  <p/>
 										 <el-form-item size="medium"> 
-										 		<el-button type="primary"@click="query">查询菜单</el-button> 
+										 		<el-button type="primary"@click="query" id="enter">查询配置</el-button> 
 										 </el-form-item> 
 										 
 										  <el-form-item size="medium"> 
-										 		<el-button type="primary"@click="addMenu()">新增菜单</el-button> 
+										 		<el-button type="primary"@click="addConfig()">新增配置</el-button> 
 										 </el-form-item> 
 							</el-form> 
 					</el-col>
@@ -73,37 +78,66 @@
 		<div class='bh5'></div>
 
 		<div class='bg-content'>
-			<div>菜单表结果：</div>
+			<div>配置表结果：</div>
 			<div class='bh2'></div>
 			<div>
 			<template>
-				  <el-table :data="tableData"  stripe  style="width: 100%"  border size="mini"  highlight-current-row >
+				  <el-table :data="tableData"  stripe  style="width: 100%"  border size="mini"  highlight-current-row :header-cell-style="{fontSize:'14px',color:'black'}">
 				      <el-table-column type="selection" width="55"></el-table-column>
-				    	 <el-table-column sortable prop="id" min-width="100px" label="菜单编号"></el-table-column>
-				    	<el-table-column   sortable prop="nodeCode" label="节点编码" width="180">
+				    	 <el-table-column sortable prop="id" min-width="120px" label="配置编号"></el-table-column>
+				    	<el-table-column   sortable prop="appId" label="EAI Code" min-width="120">
                 				<template scope="scope" >
                 						<span v-if="scope.row.flag">
-                    						<el-input size="small" v-model="scope.row.nodeCode" placeholder="请输入内容" ></el-input>
+                    						<el-input size="small" v-model="scope.row.appId" placeholder="请输入内容" ></el-input>
                     					</span> 
-                    					<span v-else>{{scope.row.nodeCode}}</span>
+                    					<span v-else>{{scope.row.appId}}</span>
                 				</template>
            				 </el-table-column>
            				 
-           				<el-table-column sortable prop="nodeName" min-width="100px" label="节点名称"  width="120px;" ></el-table-column>
-				    	<el-table-column sortable prop="parentNodeCode"   min-width="100px" label="父级编码"></el-table-column>
-				    	<el-table-column sortable prop="childNum"  min-width="100px;"  label="子节点数"></el-table-column>
+           				<el-table-column sortable prop="appName" min-width="100px" label="应用名称"  min-width="350px;" >
+           							<template scope="scope" >
+                						<span v-if="scope.row.flag">
+                    						<el-input size="small" v-model="scope.row.appName" placeholder="请输入内容" ></el-input>
+                    					</span> 
+                    					<span v-else>{{scope.row.appName}}</span>
+                				</template>
+           				
+           				</el-table-column>
+				    	<el-table-column sortable prop="appOwner"   width="120px" label="应用Owner">
+				    	<template scope="scope" >
+                						<span v-if="scope.row.flag">
+                    						<el-input size="small" v-model="scope.row.appOwner" placeholder="请输入内容" ></el-input>
+                    					</span> 
+                    					<span v-else>{{scope.row.appOwner}}</span>
+                				</template>
+				    	</el-table-column>
+				    	<el-table-column sortable prop="appMaintenance"  width="120px;"  label="运维人员">
+				    	<template scope="scope" >
+                						<span v-if="scope.row.flag">
+                    						<el-input size="small" v-model="scope.row.appMaintenance" placeholder="请输入内容" ></el-input>
+                    					</span> 
+                    					<span v-else>{{scope.row.appMaintenance}}</span>
+                				</template>
+				    	</el-table-column>
 				    				
-				    	<el-table-column  sortable prop="pageUrl"   label="URL" min-width="250px;" >
+				    	<el-table-column  sortable prop="appUrl1"   label="监控地址" min-width="350px;" >
 				    			
                 				<template  slot-scope="scope">
                 				<span v-if="scope.row.flag">
-                    					<el-input size="small" v-model="scope.row.pageUrl" placeholder="请输入内容" ></el-input> 
+                    					<el-input size="small" v-model="scope.row.appUrl1" placeholder="请输入内容" ></el-input> 
                     					</span> 
-                    					<span v-else>{{scope.row.pageUrl}}</span>
+                    					<span v-else>{{scope.row.appUrl1}}</span>
                 				</template>
            				 </el-table-column>
-				    	<el-table-column sortable  min-width="250px;" prop="nodeDescription"  label="描述"></el-table-column>
-				    	<el-table-column sortable  min-width="100px;" prop="isDeleted"  label="是否失效"></el-table-column>
+			
+				    	<el-table-column sortable  min-width="120px;" prop="isDeleted"  label="是否失效">
+				    	<template  slot-scope="scope">
+                				<span v-if="scope.row.flag">
+                    					<el-input size="small" v-model="scope.row.isDeleted" placeholder="请输入内容" ></el-input> 
+                    					</span> 
+                    					<span v-else>{{scope.row.isDeleted}}</span>
+                				</template>
+				    	</el-table-column>
 				    	
 				    	  <el-table-column label="操作" width="150px;">
       							<template slot-scope="scope">
@@ -136,7 +170,7 @@
 var vm=new Vue({
   el: '#app',
   data : {
-	  formInline: { id: null, nodeCode: '', parentNodeCode: '', nodeName: '', childNum: '', pageUrl: '', nodeDescription: '', isDeleted: '' },
+	  formInline: { id: null, appId: '', appName: '', appDescrib: '', appOwner: '', ownerEmail: '', appMaintenance: '', maintenanceEmail: '', appUrl1: '', appUrl2: '', appUrl3: '',isDeleted:'' },
       info: [],
       tableData:[], //数据
 	  paginations:{
@@ -146,19 +180,19 @@ var vm=new Vue({
 			page_sizes:[5,10,15,20], //每页显示多少条
 			layout:'prev, pager, next, jumper, sizes,total '
 		},
-      allTableData:[]  
+      allTableData:[]  ,
+      currentPage:1
   },
    mounted () {
  
 		  axios({
 			  method: 'post',           
-			  url: '/fenyeQueryMenu',  								//全量查询表格显示数据[后台有限制]
+			  url: '/fenyeQueryConfig',  								//全量查询表格显示数据[后台有限制]
 			  data: {		
 						msg:this.formInline
 			  },
 			}).then(res=>{ 
 				this.allTableData = res.data.list	;
-				console.log(this.allTableData)
 				this.setPaginations();
 			} ,error=>{				
 			}); 
@@ -185,6 +219,7 @@ var vm=new Vue({
 		handleCurrentChange(page){
 			// 跳转页数
 			//获取当前页
+			this.currentPage=page;
 			let index = this.paginations.page_size * (page -1);
 			//获取总数
 			let allData = this.paginations.page_size * page;
@@ -201,17 +236,21 @@ var vm=new Vue({
 			if(row.flag){
 				//说明当前是激活状态，用户可编辑中,此时做保存或取消操作。
 				if(type=='op'){  //保存操作
+					  
 					 axios({
-						  method: 'post',           
-						  url: '/updateMenu',  
-						  data: {		
-							  msg: row
-						  },
-						}).then(resrm=>{ 
-							this.message(resrm.data,"success");
-						} ,error=>{		
+							method: 'post',
+							url: '/updateConfig',
+							data: {
+								msg: row
+							},
+						}).then(res => {
+							this.message( res.data,"success")
+							 
+						}, error => {
 							this.message( "操作异常 !","error")
-						}); 
+						});
+				
+				
 				}
 				 row.flag=false
 			}
@@ -219,13 +258,13 @@ var vm=new Vue({
 				 row.flag=true
 			}
 			if((temp==true || temp == false)){
-				open('menu.html','_self'); //强制刷新。
+				this.handleCurrentChange(this.currentPage)
 			}
 		
 			
 	      },
 	      handleDelete(index, row) {
-	    	  this.model("此操作不可逆, 是否继续?",row.id)
+	    	  this.model("此操作不可逆, 是否继续?",row)
 	      },
 	      message(msg,type) {   //消息框
 	          this.$message({
@@ -237,7 +276,7 @@ var vm=new Vue({
 	 	 query() {	                 //查询按钮
 	    	    	  axios({
 	    				  method: 'post',           
-	    				  url: '/fenyeQueryMenu',  								 
+	    				  url: '/fenyeQueryConfig',  								 
 	    				  data: {		
 	    							msg:this.formInline
 	    				  },
@@ -249,12 +288,12 @@ var vm=new Vue({
 	    				}); 
 	      } ,
 	  
-		addMenu() {
-	    	  if ((this.formInline.nodeCode != '' && this.formInline.nodeCode != null) && (this.formInline.parentNodeCode != '' && this.formInline.parentNodeCode != null) && (this.formInline.nodeName != '' && this.formInline.nodeName != null)
-						&& (this.formInline.childNum != '' && this.formInline.childNum != null) && (this.formInline.pageUrl != '' && this.formInline.pageUrl != null) && (this.formInline.nodeDescription != '' && this.formInline.nodeDescription != null) && (this.formInline.isDeleted != '' && this.formInline.isDeleted != null)) {
-							axios({
+	      addConfig() {
+	  	    if ((this.formInline.appId != '' && this.formInline.appId != null) && (this.formInline.appName != '' && this.formInline.appName != null) && (this.formInline.appDescrib != '' && this.formInline.appDescrib != null)&& (this.formInline.appUrl1 != '' && this.formInline.appUrl1 != null)&& (this.formInline.appUrl2 != '' && this.formInline.appUrl2 != null)&& (this.formInline.appUrl3 != '' && this.formInline.appUrl3 != null)
+			        && (this.formInline.appOwner != '' && this.formInline.appOwner != null) && (this.formInline.ownerEmail != '' && this.formInline.ownerEmail != null) && (this.formInline.appMaintenance != '' && this.formInline.appMaintenance != null) && (this.formInline.maintenanceEmail != '' && this.formInline.maintenanceEmail != null)) {
+			      axios({
 							method: 'put',
-							url: '/addMenu',
+							url: '/addConfig',
 							data: {
 								msg: this.formInline
 							},
@@ -266,12 +305,11 @@ var vm=new Vue({
 						});
 				}
 				 else{
-		    	    	this.message("亲，添加菜单时，七要素必须同时填写！","error")
+					 this.message("亲，添加配置时，十要素必须同时填写！","error")
 		    	    }  
 			},
-	 	 
-	 	 
-	 	model(msg,id) {
+ 
+	 	model(msg,row) {
 	         this.$confirm(msg, '提示', {
 	           confirmButtonText: '确定',
 	           cancelButtonText: '取消',
@@ -279,13 +317,14 @@ var vm=new Vue({
 	         }).then((value ) => {
 	        	 axios({
 					  method: 'delete',           
-					  url: '/deleteMenu',  
+					  url: '/deleteConfig',  
 					  data: {		
-						  msg: id
+						  msg: row.id
 					  },
 					}).then(resrm=>{ 			 
-						this.message(resrm.data,"success");					
-						open('menu.html','_self');
+						var msg=resrm.data;if(msg.indexOf('成功')!=-1){this.message(msg,"success");}else{this.message(msg,"error");}	
+						this.allTableData= this.allTableData.filter(item => item !== row)
+						this.handleCurrentChange(this.currentPage)
 					} ,error=>{	
 						this.message( "操作异常 !","error")
 					}); 

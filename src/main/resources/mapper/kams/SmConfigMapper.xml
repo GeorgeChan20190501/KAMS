@@ -114,6 +114,10 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sm_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
   <insert id="insert" parameterType="com.kams.bean.SmConfig">
     insert into sm_config (id, type, ckey, 
       cval1, cval2, cval3, 

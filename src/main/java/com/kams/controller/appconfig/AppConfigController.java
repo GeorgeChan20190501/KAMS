@@ -66,16 +66,11 @@ public class AppConfigController {
 	public String deleteConfig(@RequestBody String param) {
 		System.out.println("删除配置参数===" + param);
 		JsonReqObject jsonReqObject = JSONArray.parseObject(param, JsonReqObject.class);
-		String jsonParam = jsonReqObject.getMsg();
-		System.out.println(jsonParam);
-		String ids[] = jsonParam.replace("[", "").replace("]", "").split(",");
-		List<String> list = new ArrayList<String>();
-		for (String id : ids) {
-			list.add(id);
-		}
-		System.out.println(list);
+		String id = jsonReqObject.getMsg(); // 字符数组
+		 
+		System.out.println(id);
 		try {
-			appConfigService.deleteConfig(list);
+			appConfigService.deleteConfig(id);
 		} catch (Exception e) {
 			return "操作异常";
 		}

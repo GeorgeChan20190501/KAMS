@@ -4,8 +4,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kams.bean.SysMenu;
 import com.kams.bean.SysRole;
 import com.kams.bean.SysRoleMenu;
+import com.kams.dao.SysMenuMapper;
 import com.kams.dao.SysRoleMapper;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,8 @@ public class RoleService {
 
 	@Autowired
 	private SysRoleMapper sysRoleMapper;
+	@Autowired
+	private SysMenuMapper sysMenuMapper;
 
 	/**
 	 * 根据用户查询菜单列表
@@ -113,8 +117,13 @@ public class RoleService {
 		
 	}
 
-	public void deleteUserRole(List<String> listId) {
+	public void deleteUserRole(String listId) {
 		sysRoleMapper.deleteUserRole(listId);
+	}
+
+	public List<SysMenu> queryRightByRole(String roleId) {
+		 
+		return sysMenuMapper.queryRightByRole(roleId);
 	}
 
 }

@@ -2,11 +2,20 @@ body, html {
 	margin: 0;
 	padding: 10px 25px;
 	min-width: 980px;
-	background: rgb(242, 242, 242)
+	background: rgb(242, 242, 242);
+	-webkit-user-select: none;
 }
 
 .bh2 {
 	height: 20px;
+	width: 100%;
+}
+.bh3 {
+	height: 30px;
+	width: 100%;
+}
+.bh4 {
+	height: 40px;
 	width: 100%;
 }
 
@@ -26,7 +35,75 @@ body, html {
 .page {
 	margin-left:50%;
 	transform:translateX(-50%);
-	margin-top: 40px;
+	margin-top: 30px;
 }
-
-	
+.redball{
+	display:inline-block;
+	width:26px;
+	height:26px;
+	border-radius:50%;
+	text-align:center;
+	background: rgb(236,87,80);
+	color:white;
+	line-height:25px;
+	font-size:14px;
+	cursor:pointer;
+}
+.blueball{
+	display:inline-block;
+	width:26px;
+	height:26px;
+	border-radius:50%;
+	text-align:center;
+	background: rgb(51,166,255);
+	color:white;
+	line-height:26px;
+	font-size:14px;
+	cursor:pointer;
+}
+.w2{
+	margin-left:30px;
+}
+.w3{
+	margin-left:36px;
+}
+.myleft-2 {
+	margin-left: 20px;
+}
+.myleft{
+	margin-left:5px;
+	margin-bottom:15px;
+}
+.overline{
+	width:100%;
+	height:5px;
+	border-top:2px solid rgb(222,226,230);
+}
+.disa{
+	display:inline-block;
+	width:26px;
+	height:26px;
+	border-radius:50%;
+	text-align:center;
+	background: rgb(236,87,80);
+	color:white;
+	line-height:25px;
+	font-size:14px;
+	filter:grayscale(100%);
+	user-select:none;
+	cursor: not-allowed;
+	pointer-events:none;
+}
+ [v-cloak] {
+            display: none;
+        }
+.myfont{
+	font-size:14px;
+	color: rgb(96,98,102);
+}	
+.touzhu{
+	border:2px solid rgb(222,226,230);
+	width:100%;
+	padding:10px;
+	margin-left:0px;
+}
