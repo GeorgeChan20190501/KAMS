@@ -3,13 +3,10 @@ package com.kams.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.kams.bean.SmApplist;
 import com.kams.bean.SmResult;
 import com.kams.dao.SmApplistMapper;
-import com.kams.dao.SmConfigMapper;
 import com.kams.dao.SmResultMapper;
-
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -21,8 +18,6 @@ public class AppConfigService {
 
 	@Autowired
 	private SmResultMapper smResultMapper;
-	@Autowired
-	private SmConfigMapper smConfigMapper;
 	/**
 	 * 根据用户查询菜单列表
 	 * 

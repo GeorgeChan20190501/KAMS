@@ -318,7 +318,7 @@
 	
 	
 	<select id="getQiHao" parameterType="string" resultType="string">
-		 select max(fkey) from sm_fun where fval8='sys' and type=#{type} and  len(fval1)>0
+		 select max(fkey) from sm_fun where fval8='sys' and type=#{type} and  lenth(fval1)>0
 	</select>
 	
 	
@@ -332,9 +332,15 @@
   </select>
   
   <insert id="kaiJiang"   parameterType="com.kams.bean.SmFun" >
-  			update sm_fun set fval1=#{fval1},fval2=#{fval2},fval3=#{fval3},fval4=#{fval4},	fval5=#{fval5},fval6=#{fval6},fval7=#{fval7},fval9=#{fval9},create_time=(select NOW()) where fkey=(select max(fkey) from sm_fun where fval8='sys' and type=#{type} ) and fval8='sys' and type=#{type};
-  			insert into sm_fun values( null,#{type},(select max(fkey)+1 from sm_fun where fval8='sys' and type=#{type}),'','','','','','','','sys','','','' ,'false' ); 
+  			update sm_fun set fval1=#{fval1},fval2=#{fval2},fval3=#{fval3},fval4=#{fval4},	fval5=#{fval5},fval6=#{fval6},fval7=#{fval7},fval9=#{fval9},create_time=(select NOW()) where fkey=#{fkey} and fval8='sys' and type=#{type};
+  			insert into sm_fun values( null,#{type},#{fkey}+1,'','','','','','','','sys','','','' ,'false' )
   </insert>
+
+  <select id='maxFkey'  resultType="String" parameterType="com.kams.bean.SmFun" >
+  		select max(fkey) from sm_fun where fval8='sys' and type=#{type} 
+  </select>
+
+  
   <update id="updatePaiJiang"   parameterType="com.kams.bean.SmFun" >
   				update sm_fun set fval10 = #{fval10} where fval8 = #{fval8} and fkey=#{fkey} and fval1=#{fval1} and fval2=#{fval2} and fval3=#{fval3} and type=#{type}
   </update>

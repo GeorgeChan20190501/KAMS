@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.alibaba.fastjson.JSONArray;
 import com.kams.bean.Organization;
-import com.kams.bean.SysMenu;
 import com.kams.bean.SysRole;
 import com.kams.bean.SysUser;
 import com.kams.bean.common.JsonReqObject;

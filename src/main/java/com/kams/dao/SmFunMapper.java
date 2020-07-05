@@ -32,4 +32,6 @@ public interface SmFunMapper {
 	void updatePaiJiang(SmFun smFun2);
 
 	List<SmFun> shengyaToSys(SmFun smFun);
+
+	String maxFkey(SmFun smFun);
 }

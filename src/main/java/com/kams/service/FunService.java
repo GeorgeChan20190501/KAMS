@@ -69,6 +69,8 @@ public class FunService {
 
 
 	public void kaiJiang(SmFun smFun) {
+		String maxFkey=smFunMapper.maxFkey(smFun);
+		smFun.setFkey(maxFkey);
 		smFunMapper.kaiJiang(smFun)	;
 	}
 

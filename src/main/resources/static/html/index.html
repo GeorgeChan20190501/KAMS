@@ -166,7 +166,12 @@ el-menu-item {
 					    msg:localStorage.username
 					}
 				}).then(res => {
-					this.userMenus=res.data.list;
+					if(res.data!=''){
+						this.userMenus=res.data.list;
+					}
+					else{
+						open('logon.html','_self');
+					}
 				 
 				}, error => {
 				});

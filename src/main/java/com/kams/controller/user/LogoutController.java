@@ -19,6 +19,7 @@ public class LogoutController {
 				System.out.println("session已经销毁，返回登陆页");
 			}
 		}
+		System.out.println("session user="+(String) session.getAttribute("username"));
 		return "true";
 	}
 }

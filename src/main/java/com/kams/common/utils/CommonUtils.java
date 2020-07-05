@@ -1,6 +1,5 @@
 package com.kams.common.utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CommonUtils {

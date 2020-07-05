@@ -1,108 +1,56 @@
 package com.kams.filter;
 
+ 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
-/**
- * 登录过滤器
- */
-@WebFilter(filterName = "authFilter", urlPatterns = "/*")
-public class LoginFilter implements Filter {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoginFilter.class);
+ 
+ 
+public class LoginFilter implements  HandlerInterceptor {
 
     /**
-     * 保存不拦截的url
-     */
-    private static List<String> passUrls = new ArrayList<>();
-
-    /**
-     * 上下文
-     */
-    private String ctxPath = null;
-
-    /**
-     * 重定向url
-     */
-    private static String redirectUrl = "";
-
-
-    /**
-     * 过滤器初始化方法
-     *
-     * @param filterConfig
-     * @throws ServletException
+     * 在请求处理之前进行调用（Controller方法调用之前）
      */
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
-        // 获取web.xml中的初始化参数
-        String ignoreURL = "*";
-        redirectUrl = "logon.html";
-        // 保存不拦截的url
-        String[] ignoreURLArray = ignoreURL.split(",");
-        for (String url : ignoreURLArray) {
-            passUrls.add(url.trim());
-        }
-        ctxPath = filterConfig.getServletContext().getContextPath();
-        System.out.println("ctx = " + ctxPath);
-        LOGGER.info("不拦截的URL包括:");
-        for (String url : passUrls) {
-            LOGGER.info(url);
-        }
-    }
-
-
-    /**
-     * 过滤器方法
-     *
-     * @param servletRequest
-     * @param servletResponse
-     * @param filterChain
-     * @throws IOException
-     * @throws ServletException
-     */
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
-
-        // 请求的url
-        String url = request.getRequestURI();
-        // 相对路径
-        String subUrl = url.substring(ctxPath.length() + 1);
-
-        for (String urlStr : passUrls) {
-            // 如果匹配, 则放行
-            if (subUrl.indexOf(urlStr) > -1) {
-                filterChain.doFilter(request, response);
-                return;
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+         System.out.println("拦截器方法");
+        try {
+            //统一拦截（查询当前session是否存在user）(这里user会在每次登陆成功后，写入session)
+             
+            Object user = request.getSession().getAttribute("username");
+            System.out.println("user==="+user);
+            if (user == null || user.equals(""))  {
+            	System.out.println("Session不存在，拦截去首页");
+                response.sendRedirect("/html/logon.html");
+                return false;  
             }
+            
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        // 获得session
-        HttpSession session = request.getSession();
-        // 从session中获取SessionKey对应值,若值不存在,则重定向到redirectUrl
-        Object user = session.getAttribute("username");
-        if (user != null) {
-            filterChain.doFilter(request, response);
-        } else {
-            response.sendRedirect(ctxPath + "/" + redirectUrl);
-        }
+        return true; 
+                      
     }
-
-
+ 
+    /**
+     * 请求处理之后进行调用，但是在视图被渲染之前（Controller方法调用之后）
+     */
     @Override
-    public void destroy() {
-
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
+//         System.out.println("执行了TestInterceptor的postHandle方法");
     }
+ 
+    /**
+     * 在整个请求结束之后被调用，也就是在DispatcherServlet 渲染了对应的视图之后执行（主要是用于进行资源清理工作）
+     */
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+//        System.out.println("执行了TestInterceptor的afterCompletion方法");
+    }
+    
 }

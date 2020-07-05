@@ -2,8 +2,6 @@ package com.kams.dao;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
-
-import com.kams.bean.SysMenu;
 import com.kams.bean.SysRole;
 import com.kams.bean.SysRoleExample;
 import com.kams.bean.SysRoleMenu;
