@@ -318,7 +318,7 @@
 	
 	
 	<select id="getQiHao" parameterType="string" resultType="string">
-		 select max(fkey) from sm_fun where fval8='sys' and type=#{type} and  lenth(fval1)>0
+		 select max(fkey) from sm_fun where fval8='sys' and type=#{type} and  LENGTH(fval1)>0
 	</select>
 	
 	
