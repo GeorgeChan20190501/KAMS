@@ -8,4 +8,5 @@ spring:
   devtools:
     restart:
       enabled: true  
-
+server:
+  port: 80

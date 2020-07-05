@@ -7,5 +7,7 @@ spring:
     password: f10011116
   devtools:
     restart:
-      enabled: true  
+      enabled: true
+server:
+  port: 80
 
