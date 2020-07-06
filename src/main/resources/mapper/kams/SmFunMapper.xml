@@ -341,10 +341,14 @@
 		
   </insert>
   
-  <insert id="kaiJiang"   parameterType="com.kams.bean.SmFun" >
-  			update sm_fun set fval1=#{fval1},fval2=#{fval2},fval3=#{fval3},fval4=#{fval4},	fval5=#{fval5},fval6=#{fval6},fval7=#{fval7},fval9=#{fval9},create_time=(select NOW()) where fkey=#{fkey} and fval8='sys' and type=#{type};
-  			insert into sm_fun values( null,#{type},#{fkey}+1,'','','','','','','','sys','','','' ,'false' )
-  </insert>
+  <update id="kaiJiang"   parameterType="com.kams.bean.SmFun" >
+  			update sm_fun set fval1=#{fval1},fval2=#{fval2},fval3=#{fval3},fval4=#{fval4},	fval5=#{fval5},fval6=#{fval6},fval7=#{fval7},fval9=#{fval9},create_time=(select NOW()) where fkey=#{fkey} and fval8='sys' and type=#{type};	
+  		
+  </update>
+   
+   <insert id="nextFkey"  parameterType="com.kams.bean.SmFun" >
+   			insert into sm_fun values( null,#{type},#{fkey}+1,'','','','','','','','sys','','','' ,'false' )
+   </insert>
 
   <select id='maxFkey'  resultType="String" parameterType="com.kams.bean.SmFun" >
   		select max(fkey) from sm_fun where fval8='sys' and type=#{type} 

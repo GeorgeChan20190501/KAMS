@@ -1,7 +1,7 @@
 spring:
   datasource:
     type:  com.mchange.v2.c3p0.ComboPooledDataSource
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://123.206.214.253:3306/TestEnv
     username: root
     password: EyJfjoa<i2xw

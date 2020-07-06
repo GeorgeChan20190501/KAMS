@@ -16,7 +16,9 @@
 	<springProfile name="prod">
 		<property name="ROOT" value="./logs/${PROJECT}/prod/" />    
 	</springProfile>
-
+	<springProfile name="kprod">
+		<property name="ROOT" value="./logs/${PROJECT}/kprod/" />    
+	</springProfile>
 	<!--输出到文件，按日期和文件大小 -->
 	<appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<encoder charset="utf-8">
