@@ -456,6 +456,7 @@ var vm=new Vue({
 				var curdate=new Date();
 				var min =curdate.getMinutes();
 				var hour =curdate.getHours();
+				
 				if(min<30){
 					curdate.setMinutes(30);
 				}
@@ -463,7 +464,7 @@ var vm=new Vue({
 					curdate.setMinutes(0);
 					curdate.setHours(hour+1);
 				}
-				if(hour<9){
+				if(hour<9 || hour>=23){
 					curdate.setHours(9);
 					curdate.setMinutes(0);
 				}

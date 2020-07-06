@@ -21,3 +21,8 @@ select * from	 sm_config where type='scheduler'    ===== com.kams.scheduler.KaiJ
 
 select * from		sm_userjfmx  where account='SYSTEM' ORDER BY create_time desc
 select * from		sys_user	
+
+
+alter user 'root'@'localhost' identified by 'Sjk4804#';  
+rep 'temporary password' /var/log/mysqld.log
+GRANT ALL ON *.* TO root@'%' IDENTIFIED BY 'Sjk4804#' WITH GRANT OPTION;    

@@ -322,14 +322,24 @@
 	</select>
 	
 	
-  <select id='touzhu'  parameterType='list' >
+  <insert id='touzhu'  parameterType='list' >
   		
-  		<foreach collection="list" item="smFun"    separator=";" >		
-				  insert into sm_fun values  (null,#{smFun.type},#{smFun.fkey},#{smFun.fval1},#{smFun.fval2},#{smFun.fval3},#{smFun.fval4},#{smFun.fval5},#{smFun.fval6},#{smFun.fval7},#{smFun.fval8},#{smFun.fval9},'',(select NOW()) ,'false' )
-		</foreach>
+           <selectKey resultType ="java.lang.Integer" keyProperty= "id"   order= "AFTER">
+                 SELECT LAST_INSERT_ID()
+             </selectKey>
+             
+             insert into sm_fun (type, fkey, fval1, fval2,fval3,fval4, fval5, fval6,fval7,fval8,fval9,fval10,create_time,chk)
+            values
+             <foreach collection ="list" item="smFun" index= "index" separator =",">
+               (
+                #{smFun.type}, #{smFun.fkey},
+                #{smFun.fval1},#{smFun.fval2},#{smFun.fval3},#{smFun.fval4},#{smFun.fval5},#{smFun.fval6},#{smFun.fval7},#{smFun.fval8},#{smFun.fval9},#{smFun.fval10},
+                #{smFun.createTime},'false'
+                
+                )
+            </foreach >
 		
-		
-  </select>
+  </insert>
   
   <insert id="kaiJiang"   parameterType="com.kams.bean.SmFun" >
   			update sm_fun set fval1=#{fval1},fval2=#{fval2},fval3=#{fval3},fval4=#{fval4},	fval5=#{fval5},fval6=#{fval6},fval7=#{fval7},fval9=#{fval9},create_time=(select NOW()) where fkey=#{fkey} and fval8='sys' and type=#{type};

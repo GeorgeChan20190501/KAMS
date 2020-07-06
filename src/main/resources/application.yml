@@ -8,7 +8,7 @@ spring:
     serialization:
       indent-output: true
   profiles:
-    active: local
+    active: kprod
 mybatis:
   mapper-locations: mapper/kams/*.xml    
   

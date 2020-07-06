@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    type:  com.mchange.v2.c3p0.ComboPooledDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://106.14.5.129:3306/TestEnv
+    username: root
+    password: Sjk4804#
+  devtools:
+    restart:
+      enabled: true  
+server:
+  port: 80

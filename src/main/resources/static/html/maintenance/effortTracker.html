@@ -32,6 +32,7 @@
                             <el-form :inline="true" class="demo-form-inline" size="mini" :label-position="labelPosition">
                                 <el-form-item label="Effort Ower：" label-width="110px">
                                     <el-select v-model="currUser.usercode" placeholder="Effort Ower" :disabled="userclass!='SYSTEM'? 'disabled': false">
+                                    	<el-option label="" value="" ></el-option>
                                         <el-option :label="item.account" :value="item.account" v-for="(item,index) in useroption"></el-option>
                                     </el-select>
                                 </el-form-item>
