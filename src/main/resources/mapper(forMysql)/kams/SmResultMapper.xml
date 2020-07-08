@@ -220,13 +220,13 @@
   </update>
   
   <insert id="saveResult">
-  		insert into sm_result values(#{appId},#{appName},#{appOwner},#{appDescrib},#{status},#{result},#{createTime},#{chk})
+  		insert into sm_result values(null,#{appId},#{appName},#{appOwner},#{appDescrib},#{status},#{result},#{createTime},#{chk})
   </insert>
   
   
   
 	<select id="queryAppHealth" parameterType="com.kams.bean.SmResult" resultMap="BaseResultMap">
-		select TOP 495 * from sm_result
+		select  * from sm_result
 		<where>
 			<if test="id != null  and id !='' ">
 				and id = #{id}
@@ -238,6 +238,6 @@
 				and app_name like  concat(concat('%',#{appName}),'%')  
 			</if>
 		</where>
-		order by create_time desc
+		 order by create_time desc LIMIT 0,1000
 	</select>
 </mapper>

@@ -231,7 +231,7 @@
 </select>
 
   <insert id="addRole" parameterType="com.kams.bean.SysRole">
-   				insert into sys_role values(#{roleCode},#{roleName},(select CONVERT(varchar(100), GETDATE(), 120)) ,(select CONVERT(varchar(100), GETDATE(), 120)) ,'false' );
+   				insert into sys_role values(null,#{roleCode},#{roleName},(select NOW()) ,(select NOW()) ,'false' );
   </insert>
   
   
@@ -260,7 +260,7 @@
   
      <update id="updateRole" parameterType='list'>
   		<foreach collection="list" item="role"  open=""  close=""  separator=";" >		
-					 update  sys_role  set role_code=#{role.roleCode} ,role_name=#{role.roleName},update_time=(select CONVERT(varchar(100), GETDATE(), 120)) where id = #{role.id}
+					 update  sys_role  set role_code=#{role.roleCode} ,role_name=#{role.roleName},update_time=(select NOW()) where id = #{role.id}
 		</foreach>
   </update>
   <select id="getRoleCode"  parameterType='list'  resultType="string">
@@ -274,14 +274,13 @@
   
     <select id="roleGrant"  parameterType='list' >
   		<foreach collection="list" item="roleMenu"  open=""  close=""  separator=";" >		
-					insert into sys_role_menu values(#{roleMenu.roleCode},#{roleMenu.nodeCode},(select CONVERT(varchar(100), GETDATE(), 120)) ,(select CONVERT(varchar(100), GETDATE(), 120)) );
+					insert into sys_role_menu values(null,#{roleMenu.roleCode},#{roleMenu.nodeCode},'' ,'')
 		</foreach>
-  			
+ 
   </select>
   
-     <delete id='deleteUserRole'  parameterType='String'>
-  				delete from sys_role_menu  where role_code =#{roleCode}
-  				 
+     <delete id='deleteUserRole'  parameterType='string'>
+  				delete from sys_role_menu  where role_code = #{roleCode}
   </delete>
   
   

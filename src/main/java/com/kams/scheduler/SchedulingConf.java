@@ -25,8 +25,7 @@ public class SchedulingConf implements SchedulingConfigurer {
 	public static String cron2;
 	@Autowired
 	private ServiceMonitorService serviceMonitorService;
-	
-	
+
 	@Override
 	public void configureTasks(ScheduledTaskRegistrar scheduledTaskRegistrar) {
 		// 项目部署时，会在这里执行一次，从数据库拿到cron表达式
@@ -45,7 +44,7 @@ public class SchedulingConf implements SchedulingConfigurer {
 				try {
 					clazz = Class.forName(smConfig.getCval4());
 					Object bean = (Object) SpringUtil.getBean(clazz);
-					Method method = clazz.getMethod("run",new Class[] {});
+					Method method = clazz.getMethod("run", new Class[] {});
 					method.invoke(bean);
 				} catch (Exception e) {
 					e.printStackTrace();

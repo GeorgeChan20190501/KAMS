@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kams.dao.SmResultMapper">
-  <resultMap id="BaseResultMap" type="com.kams.bean.SmResult">
+<mapper namespace="com.kams.dao.SmUserjfmxMapper">
+  <resultMap id="BaseResultMap" type="com.kams.bean.SmUserjfmx">
     <result column="id" jdbcType="INTEGER" property="id" />
-    <result column="app_id" jdbcType="VARCHAR" property="appId" />
-    <result column="app_name" jdbcType="VARCHAR" property="appName" />
-    <result column="app_owner" jdbcType="VARCHAR" property="appOwner" />
-    <result column="app_describ" jdbcType="VARCHAR" property="appDescrib" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="result" jdbcType="VARCHAR" property="result" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="total_val" jdbcType="VARCHAR" property="totalVal" />
+    <result column="op_type" jdbcType="VARCHAR" property="opType" />
+    <result column="op_val" jdbcType="VARCHAR" property="opVal" />
+    <result column="bak1" jdbcType="VARCHAR" property="bak1" />
+    <result column="bak2" jdbcType="VARCHAR" property="bak2" />
+    <result column="update_time" jdbcType="CHAR" property="updateTime" />
     <result column="create_time" jdbcType="CHAR" property="createTime" />
     <result column="chk" jdbcType="CHAR" property="chk" />
   </resultMap>
@@ -71,15 +72,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, app_id, app_name, app_owner, app_describ, status, result, create_time, chk
+    id, account, total_val, op_type, op_val, bak1, bak2, update_time, create_time, chk
   </sql>
-  <select id="selectByExample" parameterType="com.kams.bean.SmResultExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.kams.bean.SmUserjfmxExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from sm_result
+    from sm_userjfmx
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -87,43 +88,48 @@
       order by ${orderByClause}
     </if>
   </select>
-  <delete id="deleteByExample" parameterType="com.kams.bean.SmResultExample">
-    delete from sm_result
+  <delete id="deleteByExample" parameterType="com.kams.bean.SmUserjfmxExample">
+    delete from sm_userjfmx
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.kams.bean.SmResult">
-    insert into sm_result (id, app_id, app_name, 
-      app_owner, app_describ, status, 
-      result, create_time, chk)
-    values (#{id,jdbcType=INTEGER}, #{appId,jdbcType=VARCHAR}, #{appName,jdbcType=VARCHAR}, 
-      #{appOwner,jdbcType=VARCHAR}, #{appDescrib,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
-      #{result,jdbcType=VARCHAR}, #{createTime,jdbcType=CHAR}, #{chk,jdbcType=CHAR})
+  <insert id="insert" parameterType="com.kams.bean.SmUserjfmx">
+    insert into sm_userjfmx (id, account, total_val, 
+      op_type, op_val, bak1, 
+      bak2, update_time, create_time, 
+      chk)
+    values (#{id,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, #{totalVal,jdbcType=VARCHAR}, 
+      #{opType,jdbcType=VARCHAR}, #{opVal,jdbcType=VARCHAR}, #{bak1,jdbcType=VARCHAR}, 
+      #{bak2,jdbcType=VARCHAR}, #{updateTime,jdbcType=CHAR}, #{createTime,jdbcType=CHAR}, 
+      #{chk,jdbcType=CHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.kams.bean.SmResult">
-    insert into sm_result
+  <insert id="insertSelective" parameterType="com.kams.bean.SmUserjfmx">
+    insert into sm_userjfmx
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="appId != null">
-        app_id,
+      <if test="account != null">
+        account,
       </if>
-      <if test="appName != null">
-        app_name,
+      <if test="totalVal != null">
+        total_val,
       </if>
-      <if test="appOwner != null">
-        app_owner,
+      <if test="opType != null">
+        op_type,
       </if>
-      <if test="appDescrib != null">
-        app_describ,
+      <if test="opVal != null">
+        op_val,
       </if>
-      <if test="status != null">
-        status,
+      <if test="bak1 != null">
+        bak1,
       </if>
-      <if test="result != null">
-        result,
+      <if test="bak2 != null">
+        bak2,
+      </if>
+      <if test="updateTime != null">
+        update_time,
       </if>
       <if test="createTime != null">
         create_time,
@@ -136,23 +142,26 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="appId != null">
-        #{appId,jdbcType=VARCHAR},
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
       </if>
-      <if test="appName != null">
-        #{appName,jdbcType=VARCHAR},
+      <if test="totalVal != null">
+        #{totalVal,jdbcType=VARCHAR},
       </if>
-      <if test="appOwner != null">
-        #{appOwner,jdbcType=VARCHAR},
+      <if test="opType != null">
+        #{opType,jdbcType=VARCHAR},
       </if>
-      <if test="appDescrib != null">
-        #{appDescrib,jdbcType=VARCHAR},
+      <if test="opVal != null">
+        #{opVal,jdbcType=VARCHAR},
       </if>
-      <if test="status != null">
-        #{status,jdbcType=VARCHAR},
+      <if test="bak1 != null">
+        #{bak1,jdbcType=VARCHAR},
       </if>
-      <if test="result != null">
-        #{result,jdbcType=VARCHAR},
+      <if test="bak2 != null">
+        #{bak2,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=CHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=CHAR},
@@ -162,35 +171,38 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.kams.bean.SmResultExample" resultType="java.lang.Long">
-    select count(*) from sm_result
+  <select id="countByExample" parameterType="com.kams.bean.SmUserjfmxExample" resultType="java.lang.Long">
+    select count(*) from sm_userjfmx
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update sm_result
+    update sm_userjfmx
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.appId != null">
-        app_id = #{record.appId,jdbcType=VARCHAR},
+      <if test="record.account != null">
+        account = #{record.account,jdbcType=VARCHAR},
       </if>
-      <if test="record.appName != null">
-        app_name = #{record.appName,jdbcType=VARCHAR},
+      <if test="record.totalVal != null">
+        total_val = #{record.totalVal,jdbcType=VARCHAR},
       </if>
-      <if test="record.appOwner != null">
-        app_owner = #{record.appOwner,jdbcType=VARCHAR},
+      <if test="record.opType != null">
+        op_type = #{record.opType,jdbcType=VARCHAR},
       </if>
-      <if test="record.appDescrib != null">
-        app_describ = #{record.appDescrib,jdbcType=VARCHAR},
+      <if test="record.opVal != null">
+        op_val = #{record.opVal,jdbcType=VARCHAR},
       </if>
-      <if test="record.status != null">
-        status = #{record.status,jdbcType=VARCHAR},
+      <if test="record.bak1 != null">
+        bak1 = #{record.bak1,jdbcType=VARCHAR},
       </if>
-      <if test="record.result != null">
-        result = #{record.result,jdbcType=VARCHAR},
+      <if test="record.bak2 != null">
+        bak2 = #{record.bak2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=CHAR},
       </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=CHAR},
@@ -204,40 +216,44 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update sm_result
+    update sm_userjfmx
     set id = #{record.id,jdbcType=INTEGER},
-      app_id = #{record.appId,jdbcType=VARCHAR},
-      app_name = #{record.appName,jdbcType=VARCHAR},
-      app_owner = #{record.appOwner,jdbcType=VARCHAR},
-      app_describ = #{record.appDescrib,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=VARCHAR},
-      result = #{record.result,jdbcType=VARCHAR},
+      account = #{record.account,jdbcType=VARCHAR},
+      total_val = #{record.totalVal,jdbcType=VARCHAR},
+      op_type = #{record.opType,jdbcType=VARCHAR},
+      op_val = #{record.opVal,jdbcType=VARCHAR},
+      bak1 = #{record.bak1,jdbcType=VARCHAR},
+      bak2 = #{record.bak2,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=CHAR},
       create_time = #{record.createTime,jdbcType=CHAR},
       chk = #{record.chk,jdbcType=CHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  
-  <insert id="saveResult">
-  		insert into sm_result values(#{appId},#{appName},#{appOwner},#{appDescrib},#{status},#{result},#{createTime},#{chk})
+  <insert id="addJiFenRecord"  parameterType="com.kams.bean.SmUserjfmx">
+  			insert into sm_userjfmx values(null,#{account},#{totalVal},#{opType},#{opVal},'','',(select NOW()) ,(select NOW()),'false');
   </insert>
   
   
-  
-	<select id="queryAppHealth" parameterType="com.kams.bean.SmResult" resultMap="BaseResultMap">
-		select TOP 495 * from sm_result
+  	<select id="jiFenMXQuery"  parameterType="com.kams.bean.SmUserjfmx"   resultMap="BaseResultMap">
+		select * from sm_userjfmx
 		<where>
-			<if test="id != null  and id !='' ">
-				and id = #{id}
+			<if test="account != null  and account !='' ">
+				and account = #{account}
 			</if>
-			<if test="appId != null  and appId !='' ">
-				and app_id like  concat(concat('%',#{appId}),'%')  
+			<if test="totalVal != null  and totalVal !='' ">
+				and total_val = #{totalVal}
 			</if>
-			 <if test="appName != null  and appName !='' ">
-				and app_name like  concat(concat('%',#{appName}),'%')  
+			<if test="opType != null  and opType !='' ">
+				and op_type = #{opType}
+			</if>
+			<if test="opVal != null  and opVal !='' ">
+				and op_val = #{opVal}
+			</if>
+			<if test="createTime != null  and createTime !='' ">
+				and create_time like  concat(concat('%',#{createTime}),'%')  
 			</if>
 		</where>
-		order by create_time desc
 	</select>
 </mapper>

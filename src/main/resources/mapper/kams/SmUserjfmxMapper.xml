@@ -232,7 +232,7 @@
     </if>
   </update>
   <insert id="addJiFenRecord"  parameterType="com.kams.bean.SmUserjfmx">
-  			insert into sm_userjfmx values(null,#{account},#{totalVal},#{opType},#{opVal},'','',(select NOW()) ,(select NOW()),'false');
+  			insert into sm_userjfmx values(#{account},#{totalVal},#{opType},#{opVal},'','',(select CONVERT(varchar(100), GETDATE(), 120)) ,(select CONVERT(varchar(100), GETDATE(), 120)),'false');
   </insert>
   
   
@@ -252,7 +252,7 @@
 				and op_val = #{opVal}
 			</if>
 			<if test="createTime != null  and createTime !='' ">
-				and create_time like  concat(concat('%',#{createTime}),'%')  
+				and create_time like '%'+#{createTime}+'%'
 			</if>
 		</where>
 	</select>

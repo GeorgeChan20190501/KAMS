@@ -128,8 +128,8 @@
 					<el-row   >
 						<el-col :span="24">
 							<span>当前注：</span> 
-							<span :class="['redball' ,'myleft',index==0 ? 'w3' : '']" v-for ='(item,index) in pre'  @click="dec5(index,item)">{{item}}</span>
-							 <span :class="['blueball' ,'myleft',index==0 ? 'w2' : '']" v-for ='(item,index) in post'  @click="dec2(index,item)">{{item}}</span>
+							<span :class="['redball' ,'myleft',index==0 ? 'w3' : '']" v-for ='(item,index) in pre'  @click="dec5(index,item)" v-cloak>{{item}}</span>
+							 <span :class="['blueball' ,'myleft',index==0 ? 'w2' : '']" v-for ='(item,index) in post'  @click="dec2(index,item)" v-cloak>{{item}}</span>
 							 <el-button type="success"  size="mini"style="position: relative; left: 50px" v-show="flag" @click="addAll()">我看着挺像</el-button>
 						</el-col>
 					</el-row>
@@ -139,8 +139,8 @@
 					
 					<el-row v-for ='(item,index) in hasAll'   >
 						<el-col :span="18">
-							<span>已投注{{index+1}}：</span> 
-							<span  :class="[index1<5 ? 'redball' : 'blueball' ,'myleft',index1==0 | index1==5 ? 'w2' : '']"   v-for ='(item1,index1) in item' >{{item1}}</span>
+							<span v-cloak>已投注{{index+1}}：</span> 
+							<span  :class="[index1<5 ? 'redball' : 'blueball' ,'myleft',index1==0 | index1==5 ? 'w2' : '']"   v-for ='(item1,index1) in item'  v-cloak>{{item1}}</span>
 						</el-col>
 						<el-col  :span="6">
 							<el-button  type="warning "   @click="del(item)"  size="mini" >删除</el-button> 
@@ -167,7 +167,7 @@
 							<span style="margin-left:10xp;">前区号：</span>
 						</el-col>
 						<el-col :span="20" >
-							<span :class="['myleft',  pre.indexOf(index+1)!=-1 ? 'disa' : 'redball' ]"  v-for="(n,index) in 35"  @click="aaa(n,index)" > {{n}} </span>
+							<span :class="['myleft',  pre.indexOf(index+1)!=-1 ? 'disa' : 'redball' ]"  v-for="(n,index) in 35"  @click="aaa(n,index)"  v-cloak> {{n}} </span>
 						</el-col>
 					</el-row>
 					<div class="bh1"></div>
@@ -176,7 +176,7 @@
 							<span  >后区号：</span>
 						</el-col>
 						<el-col :span="20" >
-							<span :class="['myleft',  post.indexOf(index+1)!=-1 ? 'disa' : 'blueball' ]"  v-for="(n,index) in 12"  @click="bbb(n,index)" > {{n}} </span>
+							<span :class="['myleft',  post.indexOf(index+1)!=-1 ? 'disa' : 'blueball' ]"  v-for="(n,index) in 12"  @click="bbb(n,index)"  v-cloak> {{n}} </span>
 						</el-col>
 					</el-row>
 					<div class="bh5"></div>

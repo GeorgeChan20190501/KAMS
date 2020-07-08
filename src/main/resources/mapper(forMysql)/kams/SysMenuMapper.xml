@@ -343,7 +343,7 @@
   </select>
   
   <insert id="addMenu" parameterType="com.kams.bean.SysMenu">
-   				insert into sys_menu values(#{nodeCode},#{parentNodeCode},#{nodeName},#{childNum},#{pageUrl},#{nodeDescription},#{isDeleted},(select CONVERT(varchar(100), GETDATE(), 120)) ,(select CONVERT(varchar(100), GETDATE(), 120))  );
+   				insert into sys_menu values(null,#{nodeCode},#{parentNodeCode},#{nodeName},#{childNum},#{pageUrl},#{nodeDescription},#{isDeleted},(select NOW()) ,(select NOW())  );
   </insert>
   
   <delete id='deleteMenu' parameterType='list'>
@@ -355,9 +355,10 @@
   
    <update id='updateMenu' parameterType='list'>
   		<foreach collection="list" item="menu"  open=""  close=""  separator=";" >		
-					 update  sys_menu  set node_code=#{menu.nodeCode} ,parent_node_code=#{menu.parentNodeCode}, node_name=#{menu.nodeName} ,child_num=#{menu.childNum} ,page_url = #{menu.pageUrl},node_description=#{menu.nodeDescription},is_deleted=#{menu.isDeleted},update_time=(select CONVERT(varchar(100), GETDATE(), 120)) where id = #{menu.id}
+					 update  sys_menu  set node_code=#{menu.nodeCode} ,parent_node_code=#{menu.parentNodeCode}, node_name=#{menu.nodeName} ,child_num=#{menu.childNum} ,page_url = #{menu.pageUrl},node_description=#{menu.nodeDescription},is_deleted=#{menu.isDeleted},update_time=(select NOW()) where id = #{menu.id}
 		</foreach>
   </update>
+  
     <select id="queryRightByRole"   parameterType="String"   resultMap="BaseResultMap">
    			select * from sys_menu	where 	node_code in(select node_code from sys_role_menu where role_code=#{roleCode})
    </select>

@@ -10,6 +10,11 @@
 <script src="/js/component/elementUI/index.js"></script>
 <link rel="stylesheet" type="text/css"  href="/js/component/elementUI/theme-chalk/index.css" />
 <link rel="icon" href='/images/icon1.png' />
+<script type="text/javascript">
+if(window !=top){  
+    top.location.href=location.href;  
+}
+</script>
 <style type="text/css">
 body, html {
 	margin: 0;
@@ -161,7 +166,7 @@ input {
 		 if (event.keyCode==13)  //回车键的键值为13
 		   document.getElementById("btn").click(); //调用登录按钮的登录事件
    }
-    if (window != top) 
-        top.location.href = location.href; 
+ 
+ 
 </script>
 </html>

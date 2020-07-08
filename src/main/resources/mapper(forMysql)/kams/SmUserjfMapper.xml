@@ -223,13 +223,12 @@
 	<update id="updateJiFen"
 		parameterType="com.kams.bean.SmUserjf">
 		update sm_userjf set total_val = #{totalVal} , update_time=(select
-		CONVERT(varchar(100), GETDATE(), 120)) where account = #{account}
+		NOW()) where account = #{account}
 	</update>
 
 	<insert id="addJiFen"
 		parameterType="com.kams.bean.SmUserjf">
 		insert into sm_userjf
-		values(#{account},#{totalVal},(select CONVERT(varchar(100), GETDATE(),
-		120)) ,(select CONVERT(varchar(100), GETDATE(), 120)),'false');
+		values(null,#{account},#{totalVal},(select NOW()) ,(select NOW()),'false');
 	</insert>
 </mapper>

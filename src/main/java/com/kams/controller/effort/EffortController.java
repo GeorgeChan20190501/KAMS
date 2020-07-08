@@ -7,8 +7,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -45,9 +48,9 @@ public class EffortController {
 	private static String message = "";
 
 	@PutMapping("/save")
-	public int saveEfforts(@RequestBody String effortJson, HttpServletRequest request) {
+	public String saveEfforts(@RequestBody String effortJson, HttpServletRequest request) {
 		HttpSession session = request.getSession(true);
-		String	loginUsercode = (String) session.getAttribute("username");
+		String loginUsercode = (String) session.getAttribute("username");
 		System.out.println("开始保存effort===" + effortJson);
 
 		JSONObject json = JSON.parseObject(effortJson);
@@ -68,27 +71,29 @@ public class EffortController {
 
 		// TODO 获取当前登陆用户
 		effort.setUserid(json.getString("userid"));
-		
-		//更新ID的用户名为最新username
-		SysUser sysUser=new SysUser();
+
+		// 更新ID的用户名为最新username
+		SysUser sysUser = new SysUser();
 		sysUser.setAccount(json.getString("userid"));
 		List<SysUser> users = userService.queryUser(sysUser);
 		if (users != null && users.size() > 0) {
 			String username = users.get(0).getUsername();
 			if (Strings.isNotBlank(username)) {
 				effort.setUsername(username);
-			}else {
+			} else {
 				effort.setUsername(loginUsercode);
 			}
-			
+
 		}
-		
-		
+
 //		effort.setUserid("likev");
 //		effort.setUsername("Kevin");
 
 		int result = effortService.save(effort);
-		return result;
+		if (result > 0) {
+			return "更新成功!";
+		}
+		return "未更新任何数据!";
 	}
 
 	/**
@@ -102,9 +107,9 @@ public class EffortController {
 	}
 
 	@PostMapping("/query")
-	public Map<String, Object> queryEffortByUser(@RequestBody String param,HttpServletRequest request) {
+	public Map<String, Object> queryEffortByUser(@RequestBody String param, HttpServletRequest request) {
 		HttpSession session = request.getSession(true);
-		String	loginUsercode = (String) session.getAttribute("username");
+		String loginUsercode = (String) session.getAttribute("username");
 		System.out.println("@@@传入JSON" + param);
 		String usercode = "";
 		String startworkdy = "";
@@ -183,7 +188,7 @@ public class EffortController {
 		} catch (Exception e) {
 			return "操作异常";
 		}
-		return "Effort更新成功" + result + "条";
+		return "更新成功！";
 	}
 
 	@DeleteMapping("delete")
@@ -204,13 +209,11 @@ public class EffortController {
 	@GetMapping("/loginuser")
 	public String getSessionUser(HttpServletRequest request) {
 		HttpSession session = request.getSession(true);
-		String	loginUsercode = (String) session.getAttribute("username");
+		String loginUsercode = (String) session.getAttribute("username");
 		System.out.println("获取Session用户：" + loginUsercode);
 
 		return loginUsercode;
 	}
-	
-
 
 	@GetMapping("/users")
 	public List<SysUser> queryUserAll() {
@@ -234,7 +237,7 @@ public class EffortController {
 			return "请上传excle格式文件!";
 		}
 		try {
-			boolean flag = analysisFile(mreq,request);
+			boolean flag = analysisFile(mreq, request);
 			if (!flag) {
 				if (Strings.isNotBlank(message)) {
 					return message;
@@ -248,10 +251,10 @@ public class EffortController {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public boolean analysisFile(MultipartHttpServletRequest mreq,HttpServletRequest request) {
-		String effortuser="";
+	public boolean analysisFile(MultipartHttpServletRequest mreq, HttpServletRequest request) {
+		String effortuser = "";
 		HttpSession session = request.getSession(true);
-		String	loginUsercode = (String) session.getAttribute("username");
+		String loginUsercode = (String) session.getAttribute("username");
 		List<Map> maps = null;
 		List<SmEfforts> effortList = new ArrayList<SmEfforts>();
 
@@ -318,8 +321,9 @@ public class EffortController {
 
 				}
 				if (null != effort) {
-					if (Strings.isNotBlank(effort.getTicketNumber())) {//有effort内容时
-						if ((!"Management".equals(effort.getTasktype()))&&(!"Vacation".equals(effort.getTasktype())) ) {//非Management类  需要填内容，应用code，工时
+					if (Strings.isNotBlank(effort.getTicketNumber())) {// 有effort内容时
+						if ((!"Management".equals(effort.getTasktype()))
+								&& (!"Vacation".equals(effort.getTasktype()))) {// 非Management类 需要填内容，应用code，工时
 							if (Strings.isNotBlank(effort.getEffortsHours())
 									&& Strings.isNotBlank(effort.getEaiCode())) {
 								System.out.println("------gg" + effort.getEffortsHours());
@@ -328,10 +332,10 @@ public class EffortController {
 
 							} else {
 								System.out.println("Hours,Eaicode不能为空");
-								message = effort.getWorkday()+"Hours,Eaicode不能为空";
+								message = effort.getWorkday() + "Hours,Eaicode不能为空";
 								return false;
 							}
-						} else {//Management类  需要填内容，其他可不填
+						} else {// Management类 需要填内容，其他可不填
 							if (Strings.isNotBlank(effort.getEffortsHours())) {
 								System.out.println("------gg" + effort.getEffortsHours());
 								monthhours += Double.parseDouble(effort.getEffortsHours());
@@ -339,12 +343,12 @@ public class EffortController {
 
 							} else {
 								System.out.println("Hours不能为空");
-								message =effort.getWorkday()+ "Hours不能为空";
+								message = effort.getWorkday() + "Hours不能为空";
 								return false;
 							}
 						}
 					} else {// 请假 管理 可不填effort内容
-						if ("Vacation".equals(effort.getTasktype()) ) {//请假 eai，内容均可不填
+						if ("Vacation".equals(effort.getTasktype())) {// 请假 eai，内容均可不填
 							if (Strings.isNotBlank(effort.getEffortsHours())) {
 								System.out.println("------gg" + effort.getEffortsHours());
 								monthhours += Double.parseDouble(effort.getEffortsHours());
@@ -352,7 +356,7 @@ public class EffortController {
 
 							} else {
 								System.out.println("Hours不能为空");
-								message = effort.getWorkday()+"Hours不能为空";
+								message = effort.getWorkday() + "Hours不能为空";
 								return false;
 							}
 						}
@@ -402,12 +406,11 @@ public class EffortController {
 						String username = users.get(0).getUsername();
 						if (Strings.isNotBlank(username)) {
 							effort.setUsername(username);
-						}else {
+						} else {
 							effort.setUsername(effortuser);
 						}
-						
-					}
-					else {// 未登陆用户选择账号作为effortower
+
+					} else {// 未登陆用户选择账号作为effortower
 						effort.setUsername(effortuser);
 					}
 
@@ -448,7 +451,7 @@ public class EffortController {
 				}
 
 				if (isworkday && (temphours < 8.0 || temphours > 24.0)) {
-					message = message +smEfforts.getWorkday() +smEfforts.getTicketNumber() + "的时长不符合要求；";
+					message = message + smEfforts.getWorkday() + smEfforts.getTicketNumber() + "的时长不符合要求；";
 
 				}
 
@@ -497,7 +500,7 @@ public class EffortController {
 		String date = "2020-02-03";
 		String celldatem = date.substring(0, 4).concat(date.substring(5, 7));
 		System.out.println(celldatem);
-		System.out.println( Strings.isNotBlank(null));
+		System.out.println(Strings.isNotBlank(null));
 	}
 
 }

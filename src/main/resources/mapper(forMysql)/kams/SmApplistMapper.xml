@@ -119,7 +119,7 @@
 			<include refid="Example_Where_Clause" />
 		</if>
 	</delete>
-		 <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+	 <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from sm_applist
     where id = #{id,jdbcType=INTEGER}
   </delete>
@@ -364,14 +364,13 @@
 	<insert id="addConfig"
 		parameterType="com.kams.bean.SmApplist">
 		insert into sm_applist
-		values(#{appId},#{appName},#{appDescrib},#{appOwner},#{ownerEmail},#{appMaintenance},#{maintenanceEmail},#{appUrl1},#{appUrl2},#{appUrl3},'0',(select
-		CONVERT(varchar(100), GETDATE(), 120)) ,(select CONVERT(varchar(100),
-		GETDATE(), 120)),'false' );
+		values(null,#{appId},#{appName},#{appDescrib},#{appOwner},#{ownerEmail},#{appMaintenance},#{maintenanceEmail},#{appUrl1},#{appUrl2},#{appUrl3},'0',
+		(select NOW()) ,(select NOW()),'false' );
 	</insert>
 
 	<update id="updateConfig" parameterType='list'>
 		<foreach collection="list" item="app" open="" close="" separator=";">
-			 update  sm_applist  set app_id=#{app.appId} ,app_name=#{app.appName},app_owner=#{app.appOwner},owner_email=#{app.ownerEmail},app_maintenance=#{app.appMaintenance},maintenance_email=#{app.maintenanceEmail},app_url1=#{app.appUrl1},app_url2=#{app.appUrl2},app_url3=#{app.appUrl3},is_deleted=#{app.isDeleted},update_time=(select CONVERT(varchar(100), GETDATE(), 120)) where id = #{app.id}
+			 update  sm_applist  set app_id=#{app.appId} ,app_name=#{app.appName},app_owner=#{app.appOwner},owner_email=#{app.ownerEmail},app_maintenance=#{app.appMaintenance},maintenance_email=#{app.maintenanceEmail},app_url1=#{app.appUrl1},app_url2=#{app.appUrl2},app_url3=#{app.appUrl3},is_deleted=#{app.isDeleted},update_time=(select NOW()) where id = #{app.id}
 		</foreach>
 	</update>
 	

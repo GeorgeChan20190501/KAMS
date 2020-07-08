@@ -293,8 +293,9 @@
 		</foreach>
   </update>
     <insert id='saveOrUpdateEffort' parameterType='list'  >
-  		<foreach collection="list" item="effort"  open=""  close=""  separator=";" >		
-					insert into sm_efforts values(#{effort.userid},#{effort.username},#{effort.workday},#{effort.tasktype},#{effort.eaiCode},#{effort.appname},#{effort.appower},#{effort.ticketNumber},#{effort.effortsHours},#{effort.createTime},'false','');
+    
+  		<foreach collection="list" item="effort"    separator=";" >		
+					insert into sm_efforts values(null,#{effort.userid},#{effort.username},#{effort.workday},#{effort.tasktype},#{effort.eaiCode},#{effort.appname},#{effort.appower},#{effort.ticketNumber},#{effort.effortsHours},#{effort.createTime},'false','')
 		</foreach>
   </insert>
 

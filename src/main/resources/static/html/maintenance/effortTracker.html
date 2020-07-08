@@ -587,38 +587,16 @@
                         url: '/efforts/save',
                         data: this.effortObj,
                     }).then(res => {
-                        if (res.data == 1) {
-                        	this.message("已保存！",'success');
+                      		 var msg= res.data;
+                        	if(msg.indexOf('成功')!=-1){this.message(msg,"success");}else{this.message(msg,"error");}
                             this.startworkday = this.effortObj.workday;
                             this.endworkday = this.effortObj.workday;
                             this.queryEffort();
-                        }
+                        
                     }, error => {});
-                },
+                }
    
-                upload(event) {
-
-                    let formData = new FormData();
-                    formData.append('file', this.file);
-                    formData.append("effortuser", this.currUser.usercode);
-                    formData.append("startworkday", this.startworkday);
-                    formData.append("endworkday", this.endworkday);
-                    let config = {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    }
-                    axios.post("/efforts/upload", formData, config).then(function(res) {
-                        alert(res.data);
-
-                    })
-
-                },
-                getFile(event) {
-                    this.file = event.target.files[0];
-                    this.fileName = this.file.name;
-
-                },
+       
             }
         })
     </script>

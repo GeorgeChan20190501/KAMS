@@ -85,9 +85,9 @@
 				    	<el-table-column   sortable prop="fval1" label="开奖结果"  min-width="350px">
                 				<template scope="scope" >
                     						  <span v-if="scope.row.fval1!=''">
-                    						  <span class="redball">{{scope.row.fval1}}</span> <span
-												class="redball">{{scope.row.fval2}}</span> <span class="redball">{{scope.row.fval3}}</span>
-												<span class="blueball w2">{{scope.row.fval9}}</span></span>
+                    						  <span class="redball" v-cloak>{{scope.row.fval1}}</span> <span
+												class="redball" v-cloak>{{scope.row.fval2}}</span> <span class="redball" v-cloak>{{scope.row.fval3}}</span>
+												<span class="blueball w2" v-cloak>{{scope.row.fval9}}</span></span>
                 				</template>
            				 </el-table-column>
            				 
@@ -123,8 +123,8 @@
 					<el-row   >
 						<el-col :span="24">
 							<span>当前注：</span> 
-							<span :class="['redball' ,'myleft',index==0 ? 'w3' : '']" v-for ='(item,index) in pre'  @click="dec5(index,item)">{{item}}</span>
-							 <span :class="['blueball' ,'myleft',index==0 ? 'w2' : '']" v-for ='(item,index) in post'  @click="dec2(index,item)">{{item}}</span>
+							<span :class="['redball' ,'myleft',index==0 ? 'w3' : '']" v-for ='(item,index) in pre'  @click="dec5(index,item)" v-cloak>{{item}}</span>
+							 <span :class="['blueball' ,'myleft',index==0 ? 'w2' : '']" v-for ='(item,index) in post'  @click="dec2(index,item)" v-cloak>{{item}}</span>
 							 <el-button type="success"  size="mini"style="position: relative; left: 50px" v-show="flag" @click="addAll()">我看着挺像</el-button>
 						</el-col>
 					</el-row>
@@ -134,8 +134,8 @@
 					
 					<el-row v-for ='(item,index) in hasAll'   >
 						<el-col :span="18">
-							<span>已投注{{index+1}}：</span> 
-							<span  :class="[index1<5 ? 'redball' : 'blueball' ,'myleft',index1==0 | index1==5 ? 'w2' : '']"   v-for ='(item1,index1) in item' >{{item1}}</span>
+							<span v-cloak>已投注{{index+1}}：</span> 
+							<span  :class="[index1<3? 'redball' : 'blueball' ,'myleft',index1==0 | index1==3? 'w2' : '']"   v-for ='(item1,index1) in item'  v-cloak>{{item1}}</span>
 						</el-col>
 						<el-col  :span="6">
 							<el-button  type="warning "   @click="del(item)"  size="mini" >删除</el-button> 
@@ -162,7 +162,7 @@
 							<span style="margin-left:10xp;">选号：</span>
 						</el-col>
 						<el-col :span="20" >
-							<span :class="['myleft',  pre.indexOf(index+1)!=-1 ? 'disa' : 'redball' ]"  v-for="(n,index) in 10"   @click="aaa(n-1,index)" > {{n-1}}  </span>
+							<span :class="['myleft', 'redball' ]"  v-for="(n,index) in 10"   @click="aaa(n-1,index)" v-cloak> {{n-1}}  </span>
 						</el-col>
 					</el-row>
 					<div class="bh1"></div>
@@ -171,7 +171,7 @@
 							<span  >大小：</span>
 						</el-col>
 						<el-col :span="20" >
-							<span :class="['myleft',  post.indexOf(index+1)!=-1 ? 'disa' : 'blueball' ]"  v-for="(n,index) in 2"  @click="bbb(n,index)" > {{n | format()}}</span>
+							<span :class="['myleft',  post1.indexOf(index)!=-1 ? 'disa' : 'blueball' ]"  v-for="(n,index) in 2"  @click="bbb(n,index)" v-cloak> {{n | format()}}</span>
 						</el-col>
 					</el-row>
 					<div class="bh5"></div>
@@ -193,10 +193,10 @@
 	      <el-table-column property="fkey" label="历史期号" width="90"></el-table-column>
 	      <el-table-column property="fval1" label="开奖结果" width="280">
 	     			 <template scope="scope" >
-	      			<span v-if="scope.row.fval1!=''"><span class="redball">{{scope.row.fval1}}</span> <span
-							class="redball">{{scope.row.fval2}}</span> <span class="redball">{{scope.row.fval3}}</span>
+	      			<span v-if="scope.row.fval1!=''"><span class="redball" v-cloak>{{scope.row.fval1}}</span> <span
+							class="redball" v-cloak>{{scope.row.fval2}}</span> <span class="redball" v-cloak>{{scope.row.fval3}}</span>
 							
-							        <span class="blueball w2">{{scope.row.fval9}}</span>
+							        <span class="blueball w2" v-cloak>{{scope.row.fval9}}</span>
 						</template>								
 	      </el-table-column>
 	      <el-table-column property="fval1" label="我的当期">
@@ -231,6 +231,7 @@ var vm=new Vue({
 		hasAll:[],
 		pre:[],
 	    post:[],
+	    post1:[],
 	  time:'',
 	  jifen:0,
 	  selectResults:[],
@@ -547,6 +548,7 @@ var vm=new Vue({
 			ranone(){
 				this.pre=[];
 				this.post=[];
+			
 				while(this.pre.length<3){
 					 var temp=random(10);
 					 if(this.pre.indexOf(temp)==-1){
@@ -555,6 +557,7 @@ var vm=new Vue({
 				 }
 				while(this.post.length<1){
 					 var temp=random(2);
+					 
 					 if(this.post.indexOf(temp)==-1){
 						 if(temp=='1'){
 							 temp='小'
@@ -594,12 +597,12 @@ var vm=new Vue({
 				this.post=[];
 				this.flag=false;
 			},
-aaa(n,index){
+				aaa(n,index){
 				
 				if(this.pre.length<3)
 					this.pre.push(n)
 				else{
-					ams_alert('只能选3个！')
+					this.message('前区只能选3个！','warning')
 					return;
 				}
 				this.activeClass=index;
@@ -610,7 +613,7 @@ aaa(n,index){
 				 
 			},
 			bbb(n){
-				
+	
 				if(n==1){
 					n='小';
 				}
@@ -621,14 +624,13 @@ aaa(n,index){
 				if(this.post.length<1)
 				this.post.push(n)
 				else{
-					ams_alert('只能选1个！')
+					this.message('大小只能选1个！','warning')
 					return;
 				}
 				if(this.pre.length==3&&this.post.length==1){
 					this.flag=true;
 				}
-				//this.activeClass1=index;
-				//mpsort(this.post);
+			 
 			},
 			dec5(index,item){
 				this.pre.splice(this.pre.indexOf(item),1);
