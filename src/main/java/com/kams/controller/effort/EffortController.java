@@ -91,9 +91,9 @@ public class EffortController {
 
 		int result = effortService.save(effort);
 		if (result > 0) {
-			return "更新成功!";
+			return "新增成功!";
 		}
-		return "未更新任何数据!";
+		return "未新增任何数据!";
 	}
 
 	/**
@@ -169,6 +169,7 @@ public class EffortController {
 		return effortService.queryAllEfforts();
 	}
 
+	@SuppressWarnings("unused")
 	@PostMapping("/update")
 	public String updateEffort(@RequestBody String param) {
 		int result = 0;

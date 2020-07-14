@@ -5,7 +5,10 @@ body, html {
 	background: rgb(242, 242, 242);
 	-webkit-user-select: none;
 }
-
+.bh1 {
+	height: 10px;
+	width: 100%;
+}
 .bh2 {
 	height: 20px;
 	width: 100%;

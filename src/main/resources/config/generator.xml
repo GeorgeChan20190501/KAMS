@@ -49,7 +49,10 @@
        <!-- <table schema=""  tableName="sm_config"/> -->
        <!--  <table schema=""  tableName="sm_sn"/> -->
        <!-- <table schema=""  tableName="sm_fun"/> -->
-       <table schema=""  tableName="sm_userjfmx"/>
-       <table schema=""  tableName="sm_userjf"/>
+     <!--   <table schema=""  tableName="sm_userjfmx"/>
+       <table schema=""  tableName="sm_userjf"/> -->
+       <!-- <table schema=""  tableName="sm_dakaRecord"/> -->
+       <table schema=""  tableName="sm_gonggao"/>
+       
 	</context>
 </generatorConfiguration>

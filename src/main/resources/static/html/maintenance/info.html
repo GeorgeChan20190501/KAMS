@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>信息汇总</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="/js/vue.js"></script>
+<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+<script src="/js/component/elementUI/index.js"></script>
+<link rel="stylesheet" type="text/css"  href="/js/component/elementUI/theme-chalk/index.css" />
+<link rel="icon" href='/images/icon1.png' />
+<!-- 系统CSS或JS -->
+<link rel="stylesheet" href="/css/systab.css">
+
+<style>
+	.el-card__body{
+		padding:0;
+	}
+</style>
+<body onkeydown="keyEnter();">
+	<div id="app">
+
+		<el-row> 
+			<el-col :span="24">
+				<h2>信息汇总</h2>
+			</el-col> 
+		</el-row>
+
+		<div class='bh2'></div>
+		<div class='bg-content'>
+					<el-row> 
+							<span class="myfont">INC监控值日表</span>
+							
+					</el-row>
+					<div class='bh2'  ></div>
+					<el-row> 
+						<el-col :span="24"> 
+								<el-steps  :active="active"  finish-status="success">
+									  <el-step :title="'今日值日：'+ currentUser" ></el-step>
+									  <el-step title="通知下一位" ></el-step>
+									  <el-step :title="'明日响应：'+nextUser" ></el-step>
+								</el-steps>
+								<el-row type="flex" justify="space-between"> 
+									
+										<el-button style="margin-top: 12px;" @click="next(1)"  :disabled="currentUser!=loginUser ||active==3? 'disabled': false" v-cloak>{{dak}}</el-button>
+										<el-button style="margin-top: 12px;" @click="next(2)" :disabled="currentUser!=loginUser||active==3 ? 'disabled': false" v-cloak>{{ok}}</el-button>
+										<el-button style="margin-top: 12px;margin-right:40px;" @click="next(3)" v-cloak  :disabled="nextUser!=loginUser ? 'disabled': active<2||active==3? 'disabled':false">{{res}}</el-button>
+									</el-col>
+								</el-row> 
+					</el-col>
+				</el-row>
+		</div>
+		
+		<div class='bh5'></div>
+
+		<div class='bg-content myfont'>
+			<div><i class="el-icon-bell"></i> 最新公告： 
+		  			<el-button  size="mini"  type="success"  v-show=" loginUser =='SYSTEM' ? true : false"   @click="dialogFormVisible = true">发布公告</el-button>
+		   </div>
+	
+			<div>
+			<div class="block">
+			<el-row type="flex" justify="end">
+			<el-col :span="18"></el-col>
+			<el-col :span="4">
+		  <div class="radio" >
+		    <el-radio-group v-model="reverse">
+		      <el-radio :label="true">倒序</el-radio>
+		      <el-radio :label="false">正序</el-radio>
+		    </el-radio-group>
+		  </div></el-col>
+		 
+		  </el-row>
+	<div class="bh1"></div>
+  <el-timeline   :reverse="reverse">
+    <el-timeline-item    v-for="(activity, index) in tableData" :timestamp="activity.timestamp"   :key="index" placement="top"       :icon="activity.icon"
+      :type="activity.type">
+      <el-card  style="height:50px; padding:10px;">
+      		<el-row>
+      				<el-col :span="21">
+        				<p>{{activity.content}}</p>
+        			</el-col>
+        			<el-col :span="3">	
+        					<el-button type="danger" size="mini" style="margin-top:10px;" @click="delGongGao(activity.id)"  v-show=" loginUser =='SYSTEM' ? true : false"  >删除</el-button>
+        			</el-col>
+        	</el-row>		
+      </el-card>
+    </el-timeline-item>
+  </el-timeline>
+</div>
+			  <div class="page">
+					<el-pagination  @size-change="handleSizeChange"  @current-change="handleCurrentChange"
+					 		  :current-page="paginations.page_index"
+							  :page-sizes="paginations.page_sizes"
+							  :page-size="paginations.page_size"
+							  :layout="paginations.layout"
+							  :total="paginations.total">
+					</el-pagination>
+			</div>
+		</div>
+
+	</div>
+	 <el-dialog title="发布公告" :visible.sync="dialogFormVisible"   :before-close="handleClose" >
+  <el-form :model="form"  label-position="top"   :rules="rules" ref="form"  class="demo-ruleForm">
+  	<el-form-item label="公告标题" prop="title">
+    <el-input v-model="form.title"></el-input>
+  </el-form-item>
+  <el-form-item label="公告简述" prop="content">
+    <el-input v-model="form.content"></el-input>
+  </el-form-item>
+    <el-form-item label="公告内容：" prop="artical">
+      <el-input v-model="form.artical" autocomplete="off"  type="textarea"  :rows="5"></el-input>
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisible = false">取 消</el-button>
+    <el-button type="primary" @click="deployed">发 布</el-button>
+  </div>
+</el-dialog>
+ </div>
+</body>
+<script>
+var vm=new Vue({
+  el: '#app',
+  data : {
+	  reverse: false,
+      gonggao: [],
+	  dak:'打卡',
+	  ok:'确定',
+	  res:'知道了',
+	  loginUser:'',
+	  currentUser:'likev',
+	  nextUser:'caoche',
+	  active: 0,
+	  info: [],
+      tableData:[], //数据
+	  paginations:{
+			page_index:1, //当前页
+			total:0, //总数
+			page_size:3, //一页显示多少
+			page_sizes:[3,6,15,20], //每页显示多少条
+			layout:'prev, pager, next, jumper, sizes,total '
+		},
+      allTableData:[]  ,
+      currentPage:1,
+      dialogFormVisible: false,
+      form: {
+    	title:'',
+    	content: '',
+    	artical:''
+      },
+     
+        rules: {
+        	title: [
+            { required: true, message: '请输入公告主题', trigger: 'blur' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          content: [
+            { required: true, message: '请输入公告简述', trigger: 'blur' }
+          ],
+          artical: [
+        	 { required: true, message: '请输入公告正文',trigger: 'blur' }
+          ]
+        
+        }
+  },
+   mounted () {
+	     this.getGongGao();
+ 		 this.setLogin();
+ 	     this.setZhiRi();
+ 		 this.getCurrentStep();
+  }, 
+
+  methods:{
+
+	  deployed(){
+		  this.dialogFormVisible = false;
+		  axios({
+			  method: 'post',           
+			  url: '/addGongGao',  								
+			  data: {		
+						msg:this.form
+			  },
+			}).then(res=>{ 
+				var msg=res.data;
+				this.getGongGao();
+				if(msg.indexOf('成功')!=-1){this.message(msg,"success");}else{this.message(msg,"error");}
+				 
+			} ,error=>{			
+			}); 
+		  
+
+		  
+	  },
+	  getGongGao(){
+		  axios({
+			  method: 'post',           
+			  url: '/fenyeQueryGongGao',  								
+			  data: {		
+						msg:null
+			  },
+			}).then(res=>{ 
+				var a=res.data.list	;
+				this.allTableData=a;
+				this.setPaginations();
+				 
+			} ,error=>{				
+			}); 
+	  },
+	  getCurrentStep(){
+		  axios({
+			  method: 'post',           
+			  url: '/getCurrentStep',  								
+			  data: {		
+						msg:null
+			  },
+			}).then(res=>{ 
+				var val=res.data;
+				this.active=val;
+				if(val==1){
+		  			this.dak='已打卡';
+		  			this.ok='确定'
+		  			this.res='知道了'
+		  		}
+		  		if(val==2){
+		  			this.dak='已打卡'
+		  			this.ok='已确定'
+		  			this.res='知道了'
+		  		}
+		  		if(val==3){
+		  			this.dak='已打卡'
+		  			this.ok='已确定'
+		  			this.res='已响应'
+		  		}
+			} ,error=>{				
+			}); 
+	  },
+	  setZhiRi(){
+		  axios({
+			  method: 'post',           
+			  url: '/getZhiRi',  								
+			  data: {		
+						msg:null
+			  },
+			}).then(res=>{ 
+				var a=res.data.list	;
+				for(var i=0;i<a.length;i++){
+					if(a[i].chk==1){
+						this.currentUser=a[i].ckey;
+					}
+					if(a[i].chk==0){
+						this.nextUser=a[i].ckey;
+					}
+				}
+				 
+			} ,error=>{				
+			}); 
+	  },
+	  setLogin(){
+		  this.loginUser=localStorage.username;
+	  },
+	  next(val) {
+		  if(val==1){
+	  			this.dak='已打卡';
+	  			this.ok='确定'
+	  			this.res='知道了'
+	  		}
+	  		if(val==2){
+	  			this.dak='已打卡'
+	  			this.ok='已确定'
+	  			this.res='知道了'
+	  		}
+	  		if(val==3){
+	  			this.dak='已打卡'
+	  			this.ok='已确定'
+	  			this.res='已响应'
+	  		}
+		  
+		  
+	        	this.active = val;
+	        	if(val==2){
+	        		
+	        		//邮件通知：
+	        		axios({
+	  	  			  method: 'post',           
+	  	  			  url: '/emailNotify',  								
+	  	  			  data: {		
+	  	  						msg:this.nextUser
+	  	  			  },
+	  	  			}).then(res=>{ 
+	  	  				var msg=res.data;
+	  	  				if(msg==1){
+	  	  					this.tongzhi('今天任务已完成！','已邮件通知'+this.nextUser+"明日监控！","success");
+	  	  				}
+		  	  			if(msg==2){
+		  	  				this.tongzhi('提示：',"你已经提示过了"+this.nextUser+"监控，请不要频繁操作，至少间隔2小时！","warning");
+		  				}
+			  	  		if(msg==3){
+			  	  			this.tongzhi('提示：',"邮件通知异常，请联系管理员！","error");
+						}
+	  	  				
+	  	  			} ,error=>{				
+	  	  			}); 
+	        	}
+	        	
+	        	axios({
+	  			  method: 'post',           
+	  			  url: '/setStep',  								
+	  			  data: {		
+	  						msg: val,
+	  						msg1:this.currentUser
+	  			  },
+	  			}).then(res=>{ 
+	  				var a=res.data.list	;
+	  			} ,error=>{				
+	  			}); 
+	      },
+	  setPaginations(){
+				this.paginations.total = this.allTableData.length; //数据的数量
+				this.paginations.page_index = 1; //默认显示第一页
+				this.paginations.page_size = 3; //每页显示多少数据
+				//显示数据
+				this.tableData = this.allTableData.filter((item,index) => {
+				return index < this.paginations.page_size;
+			})
+		},
+		handleSizeChange(page_size) {
+				this.paginations.page_index = 1; //第一页
+				this.paginations.page_size = page_size; //每页先显示多少数据
+				this.tableData = this.allTableData.filter((item,index) => {
+				return index < page_size
+			})
+		},
+		handleCurrentChange(page){
+			// 跳转页数
+			//获取当前页
+			this.currentPage=page;
+			let index = this.paginations.page_size * (page -1);
+			//获取总数
+			let allData = this.paginations.page_size * page;
+			let tablist=[];
+			for(let i = index;i<allData;i++) {
+				if (this.allTableData[i]) {
+					tablist.push(this.allTableData[i])
+				}
+				this.tableData = tablist
+			}
+		},
+	  	  
+	   
+	      message(msg,type) {   //消息框
+	          this.$message({
+	            message: msg,
+	            type: type
+	          });
+	        },
+	  
+	 	 
+	   
+			 tongzhi(title,msg,type) {
+		        this.$notify({
+		          title: title,  //'今天任务已完成！'
+		          message: msg, // '已邮件通知'+this.nextUser+"明日监控！",
+		          position: 'bottom-right',
+		          type: type
+		        });
+		      }
+		      ,handleClose(done) {
+			        this.$confirm('确认关闭？')
+			          .then(_ => {
+			            done();
+			          })
+			          .catch(_ => {});
+			      },
+			      
+			      delGongGao(id) {
+				         this.$confirm('确认删除？', '提示', {
+					           confirmButtonText: '确定',
+					           cancelButtonText: '取消',
+					           type: 'warning'
+					         }).then((value ) => {
+					        	 axios({
+					        		 method: 'post',           
+						 			  url: '/delGongGao',  	
+									  data: {		
+										  msg: id
+									  },
+									}).then(res=>{ 			 
+										var msg=res.data;
+						 				this.getGongGao();
+						 				if(msg.indexOf('成功')!=-1){this.message(msg,"success");}else{this.message(msg,"error");}
+									} ,error=>{	
+										this.message( "操作异常 !","error")
+									}); 
+					         }).catch((e) => {
+					           this.$message({
+					             type: 'error',
+					             message: '操作取消'
+					           });   
+					           return false;
+					         });
+					       },
+					 	 
+ 	 }
+})
+</script>
+</html>

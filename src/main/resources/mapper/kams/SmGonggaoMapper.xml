@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kams.dao.SmConfigMapper">
-  <resultMap id="BaseResultMap" type="com.kams.bean.SmConfig">
+<mapper namespace="com.kams.dao.SmGonggaoMapper">
+  <resultMap id="BaseResultMap" type="com.kams.bean.SmGonggao">
     <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="timestamp" jdbcType="CHAR" property="timestamp" />
     <result column="type" jdbcType="VARCHAR" property="type" />
-    <result column="ckey" jdbcType="VARCHAR" property="ckey" />
-    <result column="cval1" jdbcType="VARCHAR" property="cval1" />
-    <result column="cval2" jdbcType="VARCHAR" property="cval2" />
-    <result column="cval3" jdbcType="VARCHAR" property="cval3" />
-    <result column="create_time" jdbcType="CHAR" property="createTime" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="href" jdbcType="VARCHAR" property="href" />
+    <result column="update_time" jdbcType="CHAR" property="updateTime" />
     <result column="chk" jdbcType="CHAR" property="chk" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.kams.bean.SmConfig">
-    <result column="cval4" jdbcType="LONGVARCHAR" property="cval4" />
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.kams.bean.SmGonggao">
+    <result column="artical" jdbcType="LONGVARCHAR" property="artical" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -73,12 +74,12 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, type, ckey, cval1, cval2, cval3, create_time, chk
+    id, title, content, timestamp, type, icon, href, update_time, chk
   </sql>
   <sql id="Blob_Column_List">
-    cval4
+    artical
   </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="com.kams.bean.SmConfigExample" resultMap="ResultMapWithBLOBs">
+  <select id="selectByExampleWithBLOBs" parameterType="com.kams.bean.SmGonggaoExample" resultMap="ResultMapWithBLOBs">
     select
     <if test="distinct">
       distinct
@@ -86,7 +87,7 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from sm_config
+    from sm_gonggao
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -94,13 +95,13 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" parameterType="com.kams.bean.SmConfigExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.kams.bean.SmGonggaoExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from sm_config
+    from sm_gonggao
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -108,122 +109,131 @@
       order by ${orderByClause}
     </if>
   </select>
-  <delete id="deleteByExample" parameterType="com.kams.bean.SmConfigExample">
-    delete from sm_config
+  <delete id="deleteByExample" parameterType="com.kams.bean.SmGonggaoExample">
+    delete from sm_gonggao
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from sm_config
+    delete from sm_gonggao
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.kams.bean.SmConfig">
-    insert into sm_config (id, type, ckey, 
-      cval1, cval2, cval3, 
-      create_time, chk, cval4
+  <insert id="insert" parameterType="com.kams.bean.SmGonggao">
+    insert into sm_gonggao (id, title, content, 
+      timestamp, type, icon, 
+      href, update_time, chk, artical
       )
-    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{ckey,jdbcType=VARCHAR}, 
-      #{cval1,jdbcType=VARCHAR}, #{cval2,jdbcType=VARCHAR}, #{cval3,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=CHAR}, #{chk,jdbcType=CHAR}, #{cval4,jdbcType=LONGVARCHAR}
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{timestamp,jdbcType=CHAR}, #{type,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
+      #{href,jdbcType=VARCHAR}, #{updateTime,jdbcType=CHAR}, #{chk,jdbcType=CHAR}, #{artical,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.kams.bean.SmConfig">
-    insert into sm_config
+  <insert id="insertSelective" parameterType="com.kams.bean.SmGonggao">
+    insert into sm_gonggao
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="timestamp != null">
+        timestamp,
+      </if>
       <if test="type != null">
         type,
       </if>
-      <if test="ckey != null">
-        ckey,
+      <if test="icon != null">
+        icon,
       </if>
-      <if test="cval1 != null">
-        cval1,
+      <if test="href != null">
+        href,
       </if>
-      <if test="cval2 != null">
-        cval2,
-      </if>
-      <if test="cval3 != null">
-        cval3,
-      </if>
-      <if test="createTime != null">
-        create_time,
+      <if test="updateTime != null">
+        update_time,
       </if>
       <if test="chk != null">
         chk,
       </if>
-      <if test="cval4 != null">
-        cval4,
+      <if test="artical != null">
+        artical,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="timestamp != null">
+        #{timestamp,jdbcType=CHAR},
+      </if>
       <if test="type != null">
         #{type,jdbcType=VARCHAR},
       </if>
-      <if test="ckey != null">
-        #{ckey,jdbcType=VARCHAR},
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
       </if>
-      <if test="cval1 != null">
-        #{cval1,jdbcType=VARCHAR},
+      <if test="href != null">
+        #{href,jdbcType=VARCHAR},
       </if>
-      <if test="cval2 != null">
-        #{cval2,jdbcType=VARCHAR},
-      </if>
-      <if test="cval3 != null">
-        #{cval3,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=CHAR},
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=CHAR},
       </if>
       <if test="chk != null">
         #{chk,jdbcType=CHAR},
       </if>
-      <if test="cval4 != null">
-        #{cval4,jdbcType=LONGVARCHAR},
+      <if test="artical != null">
+        #{artical,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.kams.bean.SmConfigExample" resultType="java.lang.Long">
-    select count(*) from sm_config
+  <select id="countByExample" parameterType="com.kams.bean.SmGonggaoExample" resultType="java.lang.Long">
+    select count(*) from sm_gonggao
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update sm_config
+    update sm_gonggao
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.timestamp != null">
+        timestamp = #{record.timestamp,jdbcType=CHAR},
+      </if>
       <if test="record.type != null">
         type = #{record.type,jdbcType=VARCHAR},
       </if>
-      <if test="record.ckey != null">
-        ckey = #{record.ckey,jdbcType=VARCHAR},
+      <if test="record.icon != null">
+        icon = #{record.icon,jdbcType=VARCHAR},
       </if>
-      <if test="record.cval1 != null">
-        cval1 = #{record.cval1,jdbcType=VARCHAR},
+      <if test="record.href != null">
+        href = #{record.href,jdbcType=VARCHAR},
       </if>
-      <if test="record.cval2 != null">
-        cval2 = #{record.cval2,jdbcType=VARCHAR},
-      </if>
-      <if test="record.cval3 != null">
-        cval3 = #{record.cval3,jdbcType=VARCHAR},
-      </if>
-      <if test="record.createTime != null">
-        create_time = #{record.createTime,jdbcType=CHAR},
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=CHAR},
       </if>
       <if test="record.chk != null">
         chk = #{record.chk,jdbcType=CHAR},
       </if>
-      <if test="record.cval4 != null">
-        cval4 = #{record.cval4,jdbcType=LONGVARCHAR},
+      <if test="record.artical != null">
+        artical = #{record.artical,jdbcType=LONGVARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -231,82 +241,42 @@
     </if>
   </update>
   <update id="updateByExampleWithBLOBs" parameterType="map">
-    update sm_config
+    update sm_gonggao
     set id = #{record.id,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
+      timestamp = #{record.timestamp,jdbcType=CHAR},
       type = #{record.type,jdbcType=VARCHAR},
-      ckey = #{record.ckey,jdbcType=VARCHAR},
-      cval1 = #{record.cval1,jdbcType=VARCHAR},
-      cval2 = #{record.cval2,jdbcType=VARCHAR},
-      cval3 = #{record.cval3,jdbcType=VARCHAR},
-      create_time = #{record.createTime,jdbcType=CHAR},
+      icon = #{record.icon,jdbcType=VARCHAR},
+      href = #{record.href,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=CHAR},
       chk = #{record.chk,jdbcType=CHAR},
-      cval4 = #{record.cval4,jdbcType=LONGVARCHAR}
+      artical = #{record.artical,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update sm_config
+    update sm_gonggao
     set id = #{record.id,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      content = #{record.content,jdbcType=VARCHAR},
+      timestamp = #{record.timestamp,jdbcType=CHAR},
       type = #{record.type,jdbcType=VARCHAR},
-      ckey = #{record.ckey,jdbcType=VARCHAR},
-      cval1 = #{record.cval1,jdbcType=VARCHAR},
-      cval2 = #{record.cval2,jdbcType=VARCHAR},
-      cval3 = #{record.cval3,jdbcType=VARCHAR},
-      create_time = #{record.createTime,jdbcType=CHAR},
+      icon = #{record.icon,jdbcType=VARCHAR},
+      href = #{record.href,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=CHAR},
       chk = #{record.chk,jdbcType=CHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   
-  <select id="getEmailConfigInfo" resultType="com.kams.bean.SmConfig">
-  		
-		select * from sm_config where type='email'
-  		
+  <select id="fenyeQueryGongGao" resultMap="BaseResultMap">
+  			select * from sm_gonggao ORDER BY timestamp desc
   </select>
   
-  <select id="getScheduleConfigInfo" resultType="com.kams.bean.SmConfig">
-			select * from sm_config where type='scheduler'
-  </select>
-  
-  <select id="getSLAStandard"  parameterType="com.kams.bean.SmConfig"  resultMap="BaseResultMap">
-  		
-		select * from sm_config
-		<where>
-					<if test="type != null  and type !='' ">
-       					  and type = #{type}
-     			    </if>
-     			    <if test="ckey != null  and ckey !='' ">
-       					  and ckey = #{ckey}
-     			    </if>
-     			    <if test="cval1 != null  and cval1 !='' ">
-       					  and cval1 = #{cval1}
-     			    </if>
-     			    <if test="cval2 != null  and cval2 !='' ">
-       					  and cval2 = #{cval2}
-     			    </if>
-     			    <if test="cval3 != null  and cval3 !='' ">
-       					  and cval3 = #{cval3}
-     			    </if>
-		</where>
-  </select>
-  
-  <select id="getZhiRi" resultMap="BaseResultMap">
-  			SELECT id,type,ckey,chk FROM  sm_config where type='daka' and chk='1'
-			UNION 
-			SELECT id,type,ckey,chk FROM  sm_config where type='daka'  and id= (SELECT id+1 FROM  sm_config where type='daka' and chk='1')
-  </select>
-
-
-    <select id="getCount"  resultMap="BaseResultMap">
-  		SELECT * FROM  sm_config where type='email' and ckey='count'
-    </select>
-    
-    <insert id="setCount"  parameterType="com.kams.bean.SmConfig">
-    		update sm_config set cval1=#{cval1},create_time=#{createTime} where type='email' and ckey='count' 
-    </insert>
-  
-  
-  
+  <insert id="addGongGao"  parameterType="com.kams.bean.SmGonggao" >
+  			insert into sm_gonggao values(#{title},#{content},(select CONVERT(varchar(100), GETDATE(), 120)),'primary','el-icon-more',(CONCAT('link',(select replace(replace(replace(CONVERT(varchar, getdate(), 120 ),'-',''),' ',''),':','')))),#{artical},(select CONVERT(varchar(100), GETDATE(), 120)),'0');
+  </insert>
 </mapper>
