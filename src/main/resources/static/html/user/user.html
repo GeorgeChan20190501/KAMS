@@ -85,7 +85,10 @@
 				    			
                 				<template  slot-scope="scope">
                 				<span v-if="scope.row.flag">
-                    					<el-input size="small" v-model="scope.row.roleName" placeholder="请输入内容" ></el-input> 
+               
+                    					 <el-select v-model="scope.row.roleName"  placeholder="用户角色" size="mini">
+													  <el-option :label="item.roleName"  :value="item.roleName"v-for="(item,index) in role"></el-option>  
+										</el-select> 
                     					</span> 
                     					<span v-else>{{scope.row.roleName}}</span>
                 				</template>

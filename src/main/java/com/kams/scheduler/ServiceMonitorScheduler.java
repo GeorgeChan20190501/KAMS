@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,11 @@ import com.kams.bean.SmConfig;
 import com.kams.bean.SmResult;
 import com.kams.service.ServiceMonitorService;
 
-import okhttp3.*;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 @Component
 public class ServiceMonitorScheduler {
@@ -27,26 +32,27 @@ public class ServiceMonitorScheduler {
 	private final OkHttpClient client = new OkHttpClient.Builder().readTimeout(20, TimeUnit.SECONDS).
 	// authenticator(authenticator).
 			build();
-	String subjectFail="";
-	String tail="";
-	String subjectSuccess="";
-	public  void run() {
-		//获取邮箱配置信息
-		List<SmConfig>smConfiglist=serviceMonitorService.getEmailConfigInfo();
+	String subjectFail = "";
+	String tail = "";
+	String subjectSuccess = "";
+
+	public void run() {
+		// 获取邮箱配置信息
+		List<SmConfig> smConfiglist = serviceMonitorService.getEmailConfigInfo();
 		for (SmConfig smConfig : smConfiglist) {
-			if(smConfig.getCkey().equals("subjectFail")) {
-				subjectFail=smConfig.getCval1();
+			if (smConfig.getCkey().equals("subjectFail")) {
+				subjectFail = smConfig.getCval1();
 			}
-			if(smConfig.getCkey().equals("tail")) {
-				tail=smConfig.getCval1();
+			if (smConfig.getCkey().equals("tail")) {
+				tail = smConfig.getCval1();
 			}
-			if(smConfig.getCkey().equals("subjectSuccess")) {
-				subjectSuccess=smConfig.getCval1();
+			if (smConfig.getCkey().equals("subjectSuccess")) {
+				subjectSuccess = smConfig.getCval1();
 			}
 		}
 		List<SmApplist> list = serviceMonitorService.getAppList();
 		String date = simpleDateFormat.format(new Date());
-		SmResult [] smResult = new SmResult[1];
+		SmResult[] smResult = new SmResult[1];
 		String[] message = new String[3];
 		for (SmApplist smApplist : list) {
 			String url1 = smApplist.getAppUrl1();
@@ -63,14 +69,14 @@ public class ServiceMonitorScheduler {
 			String ownerEmail = smApplist.getOwnerEmail();
 			String maintenanceEmail = smApplist.getMaintenanceEmail();
 			String appMaintenance = smApplist.getAppMaintenance();
-			
+
 			for (String url : urls) {
 				if (url != null && !url.equals("")) {
-					
+
 					logger.info("应用系统：" + app_name + ",URL=" + url);
 					Request request = new Request.Builder().url(url).build();
 					client.newCall(request).enqueue(new Callback() {
-						
+
 						@Override
 						public void onFailure(Call call, IOException e) {
 							smResult[0] = new SmResult();
@@ -87,9 +93,13 @@ public class ServiceMonitorScheduler {
 							smResult[0].setCreateTime(date);
 							smResult[0].setChk("false");
 							serviceMonitorService.saveResult(smResult[0]);
-							//一旦服务器无响应调用邮件报警
-							serviceMonitorService.sendEmail(maintenanceEmail,subjectFail, "Hi "+appMaintenance+",<p/>&nbsp;&nbsp;"+"卧槽！！！您所运维的系统：《"+app_name+"》,EAI编号为：《"+app_id+"》<span style='color:red'>宕机了！！！</span>,请尽快排查，并通知您的Owner："+app_owner+"，邮箱是：《"+ownerEmail+"》。祝您好运！"+tail);
-							
+							// 一旦服务器无响应调用邮件报警
+							serviceMonitorService.sendEmail(maintenanceEmail, "george.chan@metlife.com", subjectFail,
+									"Hi " + appMaintenance + ",<p/>&nbsp;&nbsp;" + "卧槽！！！您所运维的系统：《" + app_name
+											+ "》,EAI编号为：《" + app_id
+											+ "》<span style='color:red'>宕机了！！！</span>,请尽快排查，并通知您的Owner：" + app_owner
+											+ "，邮箱是：《" + ownerEmail + "》。祝您好运！" + tail);
+
 						}
 
 						@Override
@@ -101,7 +111,7 @@ public class ServiceMonitorScheduler {
 							smResult[0].setAppDescrib(app_describ);
 							message[0] = response.networkResponse() + "";
 							message[1] = response.isSuccessful() + "";
-							System.out.println("message[0]=="+message[0]+"message[1]=="+message[1]);
+							System.out.println("message[0]==" + message[0] + "message[1]==" + message[1]);
 							if (!response.isSuccessful()) {
 								throw new IOException("Unexpected code " + response);
 							}
@@ -113,7 +123,7 @@ public class ServiceMonitorScheduler {
 
 							serviceMonitorService.saveResult(smResult[0]);
 						}
-						
+
 					});
 				}
 

@@ -1,7 +1,10 @@
 package com.kams.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +29,7 @@ import com.kams.dao.SysUserMapper;
 @Transactional
 public class AppConfigService {
 
+	private static Logger logger = LoggerFactory.getLogger(AppConfigService.class);
 	@Autowired
 	private SmApplistMapper smApplistMapper;
 
@@ -152,7 +156,8 @@ public class AppConfigService {
 
 	}
 
-	public String emailNotify(String nextUser) {
+	@Transactional(rollbackFor = Exception.class)
+	public String emailNotify(String nextUser, String currentUser) {
 		// 先判断该人员今天发邮件的次数【距离上次邮件发送超过2小时，允许再次发送】
 		try {
 
@@ -162,20 +167,38 @@ public class AppConfigService {
 			String now = DateFormatUtils.getSTDCNDate();
 			int count = Integer.parseInt(list1.get(0).getCval1());
 			String diffString = DateFormatUtils.dateDiff(lastTime, now);
-			System.out.println("距离上次邮件时间是：" + diffString);
+			logger.info("距离上次邮件时间是：" + diffString + "分钟");
 			int diff = Integer.parseInt(diffString);
 			if (diff <= 120 && count > 0) {
-				System.out.println("距离上次邮件时间不足2小时，不发送邮件！");
+				logger.info("距离上次邮件时间不足2小时，不发送邮件！");
 				return "2";
 			}
 			SysUserExample sysUserExample = new SysUserExample();
 			Criteria criteria = sysUserExample.createCriteria();
-			criteria.andAccountEqualTo(nextUser);
-			List<SysUser> list = sysUserMapper.selectByExample(sysUserExample);
-			String emailNextUser = list.get(0).getMail();
-			System.out.println("即将通知：" + emailNextUser);
-			serviceMonitorService.sendEmail(emailNextUser, "INC监控轮值", "Hi " + nextUser
-					+ ",<p/>&nbsp;&nbsp;INC监控轮值到你啦！请先到AMS运维管理系统中进行打卡，申明你已知晓。地址：http://10.164.25.148:9082/ &nbsp;&nbsp;<p/><p/>AMS运维团队");
+			List<String> userlist = new ArrayList<String>();
+			userlist.add(nextUser);
+			userlist.add(currentUser);
+			criteria.andAccountIn(userlist);
+			List<SysUser> nextList = sysUserMapper.selectByExample(sysUserExample);
+			String toUser = nextList.get(0).getMail() + "," + nextList.get(1).getMail();
+			logger.info("即将通知：" + toUser);
+			List<SmConfig> cclist = serviceMonitorService.getEmailConfigInfo();
+			String ccUser = "";
+			for (SmConfig smConfig : cclist) {
+				if (smConfig.getCkey().equals("ccUser")) {
+					ccUser = smConfig.getCval4();
+				}
+			}
+
+			if (toUser.contains("george") && toUser.contains("kevin")) {
+				ccUser = "327052186@qq.com";
+			} else if (toUser.contains("kevin")) {
+				ccUser = "george.chan@metlife.com,327052186@qq.com";
+			} else if (toUser.contains("george")) {
+				ccUser = "kevin.li@metlife.com,327052186@qq.com";
+			}
+			serviceMonitorService.sendEmail(toUser, ccUser, "INC监控轮值", "Hi " + nextUser
+					+ ",<p/>&nbsp;&nbsp;下一个工作日INC监控轮值到你啦！请今天务必到AMS运维管理系统中进行打卡响应，申明你已知晓。地址：http://10.164.25.148:9082/ &nbsp;&nbsp;<p/><p/>AMS运维团队");
 
 			// 说明已经发送邮件了；
 			SmConfig smConfig = new SmConfig();
@@ -189,12 +212,14 @@ public class AppConfigService {
 		}
 	}
 
+	@Transactional(rollbackFor = Exception.class)
 	public void resetDaka() {
 		// 重置前先要判断下一个人是否已经响应
-		List<SmConfig> list1 = smConfigMapper.getCount();
-		int count = Integer.parseInt(list1.get(0).getCval1());
+		String step = smDakarecordMapper.getCurrentStep();
+		int count = Integer.parseInt(step); // 发邮件的次数。
 		if (count != 3) {
-			System.out.println("下一人未响应，不重置打卡人");
+			logger.info("下一人未响应，不重置打卡人");
+			// System.out.println("下一人未响应，不重置打卡人");
 			return;
 		}
 		smDakarecordMapper.resetDaka();

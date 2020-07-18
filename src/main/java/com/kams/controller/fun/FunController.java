@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.alibaba.fastjson.JSONArray;
 import com.kams.bean.SmFun;
 import com.kams.bean.SmUserjf;
@@ -89,8 +93,7 @@ public class FunController {
 	 * roleService.roleGrant(list); } catch (Exception e) { return "操作异常"; } return
 	 * "角色授权成功"; }
 	 */
-	
-	
+
 	@PostMapping("/shengyaplc")
 	public Map<String, Object> shengyaplc(@RequestBody String param) {
 		System.out.println("预查询shengya参数===" + param);
@@ -104,7 +107,7 @@ public class FunController {
 		map.put("list", list);
 		return map;
 	}
-	
+
 	@PostMapping("/shengyaToSys")
 	public Map<String, Object> shengyaToSys(@RequestBody String param) {
 		System.out.println("预查询生涯对应的系统开奖参数===" + param);
@@ -114,15 +117,15 @@ public class FunController {
 		SmFun smFun = new SmFun();
 		smFun.setType(type);
 		smFun.setFval8(username);
-		
-		//得到 DLT或 PLC的 某人购买后的期号。
-		
-		List<SmFun> listSYToSys = funService.shengyaToSys(smFun);  
+
+		// 得到 DLT或 PLC的 某人购买后的期号。
+
+		List<SmFun> listSYToSys = funService.shengyaToSys(smFun);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", listSYToSys);
 		return map;
-	}	
-	
+	}
+
 	@PostMapping("/shengya")
 	public Map<String, Object> shengya(@RequestBody String param) {
 		System.out.println("预查询shengya参数===" + param);
@@ -135,8 +138,8 @@ public class FunController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
 		return map;
-	}	
-		
+	}
+
 	@PostMapping("/getPrePeriod")
 	public Map<String, Object> getPrePeriod(@RequestBody String param) {
 		System.out.println("预查询参数===" + param);
@@ -151,6 +154,7 @@ public class FunController {
 		map.put("list", list);
 		return map;
 	}
+
 	@PostMapping("/getPLCPrePeriod")
 	public Map<String, Object> getPLCPrePeriod(@RequestBody String param) {
 		System.out.println("预查询参数===" + param);
@@ -165,89 +169,88 @@ public class FunController {
 		map.put("list", list);
 		return map;
 	}
-	
+
 	@PostMapping("/costUserJF")
-	@Transactional(rollbackFor =  Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public String costUserJF(@RequestBody String param) {
 		System.out.println("消费积分参数===" + param);
 		JsonReqObject jsonReqObject = JSONArray.parseObject(param, JsonReqObject.class);
 		String username = jsonReqObject.getMsg();
 		String cost = jsonReqObject.getMsg1();
-		SmUserjf smUserjf =new SmUserjf();
-		
-		//查询剩余积分
+		SmUserjf smUserjf = new SmUserjf();
+
+		// 查询剩余积分
 		smUserjf.setAccount(username);
 		List<SmUserjf> list = funService.getUserJF(smUserjf);
-		String sy=list.get(0).getTotalVal();
-		String syNew = Integer.parseInt(sy)-Integer.parseInt(cost)+"";
+		String sy = list.get(0).getTotalVal();
+		String syNew = Integer.parseInt(sy) - Integer.parseInt(cost) + "";
 		smUserjf.setTotalVal(syNew);
-		SmUserjfmx smUserjfmx =new SmUserjfmx();
+		SmUserjfmx smUserjfmx = new SmUserjfmx();
 		smUserjfmx.setAccount(username);
-		//('SYSTEM','1000','注册','+1000'
+		// ('SYSTEM','1000','注册','+1000'
 		smUserjfmx.setTotalVal(syNew);
 		smUserjfmx.setOpType("消费");
-		smUserjfmx.setOpVal("-"+cost);
-		//update smUserjf
+		smUserjfmx.setOpVal("-" + cost);
+		// update smUserjf
 		funService.updateJiFen(smUserjf);
-		//add smUserjfmx
+		// add smUserjfmx
 		funService.addJiFenRecord(smUserjfmx);
-		
+
 		return syNew;
 	}
+
 	@PostMapping("/getUserJF")
 	public String getUserJF(@RequestBody String param) {
 		System.out.println("预查询积分参数===" + param);
 		JsonReqObject jsonReqObject = JSONArray.parseObject(param, JsonReqObject.class);
 		String username = jsonReqObject.getMsg();
-		SmUserjf smUserjf =new SmUserjf();
+		SmUserjf smUserjf = new SmUserjf();
 		smUserjf.setAccount(username);
 		List<SmUserjf> list = funService.getUserJF(smUserjf);
-		if (list.size()>0) {
+		if (list.size() > 0) {
 			return list.get(0).getTotalVal();
 		}
 		return "0";
 	}
-	
-	
-	
+
 	@PostMapping("/touzhu")
-	public String touzhu(@RequestBody String param,HttpServletRequest request) {
+	public String touzhu(@RequestBody String param, HttpServletRequest request) {
 		System.out.println("投注参数===" + param);
 		JsonReqObject jsonReqObject = JSONArray.parseObject(param, JsonReqObject.class);
 		String jsonParam = jsonReqObject.getMsg();
 		int currentPeriod = Integer.parseInt(jsonReqObject.getMsg1());
 		String username = jsonReqObject.getMsg2();
-		String touzhu [] =jsonParam.replace("[[", "[").replace("]]", "]").replace("],[", "];[").split(";"); 
-		SmFun smFun =null;
-		List<SmFun> list =new ArrayList<SmFun>();
+		String touzhu[] = jsonParam.replace("[[", "[").replace("]]", "]").replace("],[", "];[").split(";");
+		SmFun smFun = null;
+		List<SmFun> list = new ArrayList<SmFun>();
 		for (String tz : touzhu) {
-			smFun=new SmFun();
-			String haoma [] =tz.replace("[", "").replace("]", "").split(",");
-			for (int i=0;i<haoma.length;i++) {
-				if (i==0) {
+			smFun = new SmFun();
+			String haoma[] = tz.replace("[", "").replace("]", "").split(",");
+			for (int i = 0; i < haoma.length; i++) {
+				if (i == 0) {
 					smFun.setFval1(haoma[0]);
 				}
-				if (i==1) {
+				if (i == 1) {
 					smFun.setFval2(haoma[1]);
 				}
-				if (i==2) {
+				if (i == 2) {
 					smFun.setFval3(haoma[2]);
 				}
-				if (i==3) {
+				if (i == 3) {
 					smFun.setFval4(haoma[3]);
 				}
-				if (i==4) {
+				if (i == 4) {
 					smFun.setFval5(haoma[4]);
 				}
-				if (i==5) {
+				if (i == 5) {
 					smFun.setFval6(haoma[5]);
 				}
-				if (i==6) {
+				if (i == 6) {
 					smFun.setFval7(haoma[6]);
 				}
 			}
 			smFun.setType("DLT");
-			smFun.setFkey(currentPeriod+"");
+			smFun.setFkey(currentPeriod + "");
 			smFun.setFval8(username);
 			list.add(smFun);
 		}
@@ -258,37 +261,36 @@ public class FunController {
 			return "投注异常！";
 		}
 	}
-	
 
 	@PostMapping("/touzhuPLC")
-	public String touzhuPLC(@RequestBody String param,HttpServletRequest request) {
+	public String touzhuPLC(@RequestBody String param, HttpServletRequest request) {
 		System.out.println("投注参数===" + param);
 		JsonReqObject jsonReqObject = JSONArray.parseObject(param, JsonReqObject.class);
 		String jsonParam = jsonReqObject.getMsg();
 		int currentPeriod = Integer.parseInt(jsonReqObject.getMsg1());
 		String username = jsonReqObject.getMsg2();
-		String touzhu [] =jsonParam.replace("[[", "[").replace("]]", "]").replace("],[", "];[").split(";"); 
-		SmFun smFun =null;
-		List<SmFun> list =new ArrayList<SmFun>();
+		String touzhu[] = jsonParam.replace("[[", "[").replace("]]", "]").replace("],[", "];[").split(";");
+		SmFun smFun = null;
+		List<SmFun> list = new ArrayList<SmFun>();
 		for (String tz : touzhu) {
-			smFun=new SmFun();
-			String haoma [] =tz.replace("[", "").replace("]", "").split(",");
-			for (int i=0;i<haoma.length;i++) {
-				if (i==0) {
+			smFun = new SmFun();
+			String haoma[] = tz.replace("[", "").replace("]", "").split(",");
+			for (int i = 0; i < haoma.length; i++) {
+				if (i == 0) {
 					smFun.setFval1(haoma[0]);
 				}
-				if (i==1) {
+				if (i == 1) {
 					smFun.setFval2(haoma[1]);
 				}
-				if (i==2) {
+				if (i == 2) {
 					smFun.setFval3(haoma[2]);
 				}
-				if (i==3) {
+				if (i == 3) {
 					smFun.setFval9(haoma[3].replace("\"", ""));
-				}	 
+				}
 			}
 			smFun.setType("PLC");
-			smFun.setFkey(currentPeriod+"");
+			smFun.setFkey(currentPeriod + "");
 			smFun.setFval8(username);
 			list.add(smFun);
 		}
@@ -299,4 +301,74 @@ public class FunController {
 			return "投注异常！";
 		}
 	}
+
+	@PutMapping("/updateJifen")
+	@Transactional(rollbackFor = Exception.class)
+	public String updateJifen(@RequestBody String param) {
+		System.out.println("消费积分参数===" + param);
+		JsonReqObject jsonReqObject = JSONArray.parseObject(param, JsonReqObject.class);
+		String zf = jsonReqObject.getMsg();
+		String type = jsonReqObject.getMsg1();
+		String val = jsonReqObject.getMsg2();
+		String loginUser = jsonReqObject.getMsg3();
+		SmUserjf smUserjf = new SmUserjf();
+
+		// 查询剩余积分
+		smUserjf.setAccount(loginUser);
+
+		smUserjf.setTotalVal(zf);
+		SmUserjfmx smUserjfmx = new SmUserjfmx();
+		smUserjfmx.setAccount(loginUser);
+		// ('SYSTEM','1000','注册','+1000'
+		smUserjfmx.setTotalVal(zf);
+
+		smUserjfmx.setOpType("谁是锦鲤-" + type);
+		String aaString = "-";
+		if (type.equals("win")) {
+			aaString = "+";
+		}
+		smUserjfmx.setOpVal(aaString + "" + val);
+		// update smUserjf
+		funService.updateJiFen(smUserjf);
+		// add smUserjfmx
+		funService.addJiFenRecord(smUserjfmx);
+
+		return zf;
+	}
+
+	@PostMapping("/czJifen")
+	@Transactional(rollbackFor = Exception.class)
+	public String czJifen(@RequestBody String param) {
+		System.out.println("消费积分参数===" + param);
+		JsonReqObject jsonReqObject = JSONArray.parseObject(param, JsonReqObject.class);
+		String accouont = jsonReqObject.getMsg1();
+		String val = jsonReqObject.getMsg2();
+		SmUserjf smUserjf = new SmUserjf();
+
+		// 查询剩余积分
+		smUserjf.setAccount(accouont);
+		List<SmUserjf> list = funService.getUserJF(smUserjf);
+		if (list.size() <= 0) {
+			return "0";
+		}
+		String sy = list.get(0).getTotalVal();
+		String syNew = Integer.parseInt(sy) + Integer.parseInt(val) + "";
+		smUserjf.setTotalVal(syNew);
+
+		SmUserjfmx smUserjfmx = new SmUserjfmx();
+		smUserjfmx.setAccount(accouont);
+		// ('SYSTEM','1000','注册','+1000'
+		smUserjfmx.setTotalVal(syNew);
+
+		smUserjfmx.setOpType("谁是锦鲤-充值");
+
+		smUserjfmx.setOpVal("+" + val);
+		// update smUserjf
+		funService.updateJiFen(smUserjf);
+		// add smUserjfmx
+		funService.addJiFenRecord(smUserjfmx);
+
+		return syNew;
+	}
+
 }

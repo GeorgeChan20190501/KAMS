@@ -207,7 +207,7 @@
   </insert>
   
 <update id="resetDaka">
-		update sm_config set chk='2' where id=(SELECT id+1 FROM  sm_config where type='daka' and chk='1');
+		update sm_config set chk='2' where id=(SELECT top 1 id+1 FROM  sm_config where type='daka' and chk='1');
 		update sm_config set chk='0' where type='daka' and chk='1';
 		update sm_config set chk='1' where type='daka' and chk='2';
 		update sm_dakaRecord set active='0',update_time=(select CONVERT(varchar(100), GETDATE(), 120)) where id='1';

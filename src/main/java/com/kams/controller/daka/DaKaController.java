@@ -64,7 +64,8 @@ public class DaKaController {
 		System.out.println("通知邮件参数===" + param);
 		JsonReqObject jsonReqObject = JSONArray.parseObject(param, JsonReqObject.class);
 		String nextUser = jsonReqObject.getMsg();
-		String msgString = appConfigService.emailNotify(nextUser);
+		String currentUser = jsonReqObject.getMsg1();
+		String msgString = appConfigService.emailNotify(nextUser, currentUser);
 		return msgString;
 	}
 

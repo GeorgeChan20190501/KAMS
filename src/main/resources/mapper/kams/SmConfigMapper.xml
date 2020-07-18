@@ -295,7 +295,7 @@
   <select id="getZhiRi" resultMap="BaseResultMap">
   			SELECT id,type,ckey,chk FROM  sm_config where type='daka' and chk='1'
 			UNION 
-			SELECT id,type,ckey,chk FROM  sm_config where type='daka'  and id= (SELECT id+1 FROM  sm_config where type='daka' and chk='1')
+			SELECT id,type,ckey,chk FROM  sm_config where type='daka'  and id= (SELECT top 1 id+1 FROM  sm_config where type='daka' and chk='1')
   </select>
 
 

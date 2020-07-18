@@ -30,22 +30,13 @@ public class ServiceMonitorService {
 	private SmResultMapper smResultMapper;
 	@Value("${spring.mail.username}")
 	private String from;
-	@Autowired
-	private ServiceMonitorService serviceMonitorService;
 
 	@SuppressWarnings("static-access")
-	public void sendEmail(String toUser, String subject, String content) {
+	public void sendEmail(String toUser, String ccUser, String subject, String content) {
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		try {
-			String ccUser = "";
+
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-			List<SmConfig> list = serviceMonitorService.getEmailConfigInfo();
-			for (SmConfig smConfig : list) {
-				if (smConfig.getCkey().equals("ccUser")) {
-					ccUser = smConfig.getCval4();
-				}
-			}
-			ccUser = getCcUser(toUser, ccUser);
 			InternetAddress[] internetAddressTo = new InternetAddress().parse(toUser);
 			InternetAddress[] internetAddressCC = new InternetAddress().parse(ccUser);
 			helper.setFrom(from);

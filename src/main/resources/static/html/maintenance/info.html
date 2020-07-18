@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>信息汇总</title>
+<title>信息公告</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="/js/vue.js"></script>
@@ -22,7 +22,7 @@
 
 		<el-row> 
 			<el-col :span="24">
-				<h2>信息汇总</h2>
+				<h2>信息公告</h2>
 			</el-col> 
 		</el-row>
 
@@ -125,9 +125,9 @@ var vm=new Vue({
   data : {
 	  reverse: false,
       gonggao: [],
-	  dak:'打卡',
-	  ok:'确定',
-	  res:'知道了',
+	  dak:'未打卡',
+	  ok:'未通知',
+	  res:'未响应',
 	  loginUser:'',
 	  currentUser:'likev',
 	  nextUser:'caoche',
@@ -219,17 +219,17 @@ var vm=new Vue({
 				this.active=val;
 				if(val==1){
 		  			this.dak='已打卡';
-		  			this.ok='确定'
-		  			this.res='知道了'
+		  			this.ok='未通知'
+		  			this.res='未响应'
 		  		}
 		  		if(val==2){
 		  			this.dak='已打卡'
-		  			this.ok='已确定'
-		  			this.res='知道了'
+		  			this.ok='已通知'
+		  			this.res='未响应'
 		  		}
 		  		if(val==3){
 		  			this.dak='已打卡'
-		  			this.ok='已确定'
+		  			this.ok='已通知'
 		  			this.res='已响应'
 		  		}
 			} ,error=>{				
@@ -257,22 +257,23 @@ var vm=new Vue({
 			}); 
 	  },
 	  setLogin(){
-		  this.loginUser=localStorage.username;
+		  this.loginUser=localStorage.username.toLowerCase();
+		  console.log("=======小写账号"+ this.loginUser);
 	  },
 	  next(val) {
 		  if(val==1){
 	  			this.dak='已打卡';
-	  			this.ok='确定'
-	  			this.res='知道了'
+	  			this.ok='未通知'
+	  			this.res='未响应'
 	  		}
 	  		if(val==2){
 	  			this.dak='已打卡'
-	  			this.ok='已确定'
-	  			this.res='知道了'
+	  			this.ok='已通知'
+	  			this.res='未响应'
 	  		}
 	  		if(val==3){
 	  			this.dak='已打卡'
-	  			this.ok='已确定'
+	  			this.ok='已通知'
 	  			this.res='已响应'
 	  		}
 		  
@@ -285,7 +286,8 @@ var vm=new Vue({
 	  	  			  method: 'post',           
 	  	  			  url: '/emailNotify',  								
 	  	  			  data: {		
-	  	  						msg:this.nextUser
+	  	  						msg:this.nextUser,
+	  	  					    msg1:this.currentUser
 	  	  			  },
 	  	  			}).then(res=>{ 
 	  	  				var msg=res.data;

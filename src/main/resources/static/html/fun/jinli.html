@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AMS 排列彩</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="/js/vue.js"></script>
+<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+<script src="/js/component/elementUI/index.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="/js/component/elementUI/theme-chalk/index.css" />
+<link rel="icon" href='/images/icon1.png' />
+<!-- 系统CSS或JS -->
+<link rel="stylesheet" href="/css/systab.css">
+ 
+<style>
+html{
+	 width:1500px;
+}
+#app{
+	margin-left:10%;
+	 
+}
+
+.basicGreen {
+	width: 60px;
+	height: 60px;
+}
+
+.basicGreen:hover {
+	background-color: rgb(25, 157, 78);
+	filter: contrast(150%)
+}
+
+.basicRed {
+	width: 60px;
+	height: 60px;
+}
+
+.basicRed:hover, .dmg:hover {
+	background-color: rgb(203, 33, 52);
+	filter: contrast(150%);
+}
+
+.redAc {
+	background-color: rgb(203, 33, 52);
+	filter: contrast(150%)
+}
+
+.greenAc {
+	background-color: rgb(25, 157, 78);
+	filter: contrast(150%)
+}
+
+.dmg {
+	width: 130px;
+	height: 60px;
+}
+
+.bsy {
+	width: 35px;
+	height: 35px;
+	border-radius: 50%;
+	color: white;
+	background: rgb(134, 34, 22);
+	line-height: 32px;
+}
+
+.bh3 {
+	width: 100%;
+	height: 10px
+}
+
+.bh5 {
+	width: 100%;
+	height: 50px
+}
+
+.tb {
+	background-color: rgb(25, 157, 78);
+	border-radius: 5px;
+	width: 35px;
+	height: 35px;
+	line-height: 32px;
+	color: white;
+}
+
+.btn {
+	width: 35px;
+	height: 35px;
+	line-height: 32px;
+	padding: 0
+}
+
+.row1 {
+	border: 1px solid rgb(220, 223, 230);
+	border-right: none;
+}
+
+.left1 {
+	border: 1px solid rgb(220, 223, 230);
+	border-top: none;
+}
+</style>
+</head>
+
+<body>
+	<div id="app"  >
+		<el-row  >
+		<el-col :span="12">
+		<el-row style="width:620px;text-align: center;"> <el-col
+			:span='12'
+			style="border:1px solid  rgb(220, 223, 230);border-right:none;border-bottom:none;padding:20px;">win:
+		<span style="color: red">{{win}}</span></el-col> <el-col :span='12'
+			style="border:1px solid  rgb(220, 223, 230);border-bottom:none;padding:20px;">Total：<span
+			style="color: red">{{zf}}</el-col> </el-row>
+
+		<el-row type="flex" >
+		<div :class="['row1','basicRed',ac[0].ac?'redAc':'']" id="aa1">
+			<img src="/images/jinli/juzi.png" width="100%" v-cloak>
+		</div>
+		<div :class="['row1','basicGreen',ac[1].ac?'greenAc':'']" id="aa2">
+			<img src="/images/jinli/lingdang.png" width="100%">
+		</div>
+		<div :class="['row1','basicRed',ac[2].ac?'redAc':'']" id="aa3">
+			<img src="/images/jinli/lingdang.png" width="70%"
+				style="margin-top: 10px; margin-left: 10px;">
+		</div>
+		<div :class="['row1','basicGreen',ac[3].ac?'greenAc':'']">
+			<img src="/images/jinli/bar100.png" width="90%"
+				style="margin-top: 2px; margin-left: 3px;">
+		</div>
+		<div :class="['row1','dmg','basicRed',ac[4].ac?'redAc':'']">
+			<img src="/images/jinli/dmg.png" width="100%"
+				style="margin-top: 0px; margin-left: 0px;">
+		</div>
+		<div :class="['row1','basicGreen',ac[5].ac?'greenAc':'']">
+			<img src="/images/jinli/bar50.png" width="80%"
+				style="margin-top: 5px; margin-left: 5px;">
+		</div>
+		<div :class="['row1','basicRed',ac[6].ac?'redAc':'']">
+			<img src="/images/jinli/apple.png" width="70%"
+				style="margin-top: 2px; margin-left: 10px;">
+		</div>
+
+		<div :class="['row1','basicGreen',ac[7].ac?'greenAc':'']">
+			<img src="/images/jinli/apple.png" width="55%"
+				style="margin-top: 10px; margin-left: 15px;">
+		</div>
+		<div :class="['row1','basicRed',ac[8].ac?'redAc':'']"
+			style="border-right: 1px solid rgb(220, 223, 230);">
+			<img src="/images/jinli/mangguo.png" width="100%">
+		</div>
+		</el-container> </el-row>
+		<el-row style="width:609px"> <el-col :span="4">
+		<div :class="['left1','basicGreen',ac[27].ac?'greenAc':'']">
+			<img src="/images/jinli/apple.png" width="55%"
+				style="margin-top: 10px; margin-left: 15px;">
+		</div>
+		<div :class="['left1','basicRed',ac[26].ac?'redAc':'']">
+			<img src="/images/jinli/apple.png" width="70%"
+				style="margin-top: 2px; margin-left: 10px;">
+		</div>
+		<div :class="['left1','basicGreen',ac[25].ac?'greenAc':'']">
+			<img src="/images/jinli/lucky.png" width="100%"
+				style="margin-top: 15px; margin-left: 0px;">
+		</div>
+		<div :class="['left1','basicRed',ac[24].ac?'redAc':'']">
+			<img src="/images/jinli/shuangxin.png" width="70%"
+				style="margin-top: 10px; margin-left: 10px;">
+		</div>
+
+
+		<div :class="['left1','basicGreen',ac[23].ac?'greenAc':'']">
+			<img src="/images/jinli/shuangxin.png" width="100%">
+		</div>
+		</el-col> <el-col :span="18"> <img src="/images/jinli/jinli.png"
+			width="100%" style="margin-top: 10px; margin-left: -20px;"> <el-row
+			type="flex" justify="center" style="margin-left: -40px;"> <el-button-group>
+		<el-button type="primary">{{caip}}</el-button> <el-button
+			type="danger" style="width:70px"> {{dx}}</el-button> </el-button-group> </el-row> </el-col> <el-col
+			:span="2">
+		<div :class="['left1','basicGreen',ac[9].ac?'greenAc':'']">
+			<img src="/images/jinli/xigua.png" width="90%"
+				style="margin-top: 2px; margin-left: 1px;">
+		</div>
+		<div :class="['left1','basicRed',ac[10].ac?'redAc':'']">
+			<img src="/images/jinli/xigua.png" width="65%"
+				style="margin-top: 10px; margin-left: 10px;">
+		</div>
+		<div :class="['left1','basicGreen',ac[11].ac?'greenAc':'']">
+
+			<img src="/images/jinli/lucky.png" width="100%"
+				style="margin-top: 15px; margin-left: 0px;">
+		</div>
+		<div :class="['left1','basicRed',ac[12].ac?'redAc':'']">
+			<img src="/images/jinli/apple.png" width="70%"
+				style="margin-top: 2px; margin-left: 10px;">
+		</div>
+
+		<div :class="['left1','basicGreen',ac[13].ac?'greenAc':'']">
+			<img src="/images/jinli/apple.png" width="55%"
+				style="margin-top: 10px; margin-left: 15px;">
+		</div>
+
+
+		</el-col> </el-row>
+		<el-row type="flex">
+		<div :class="['row1','basicRed',ac[22].ac?'redAc':'']"
+			style="border-top: 1px solid white;">
+			<img src="/images/jinli/mangguo.png" width="100%">
+		</div>
+		<div :class="['row1','basicGreen',ac[21].ac?'greenAc':'']">
+			<img src="/images/jinli/mangguo.png" width="70%"
+				style="margin-top: 10px; margin-left: 10px;">
+		</div>
+		<div :class="['row1','basicRed',ac[20].ac?'redAc':'']">
+			<img src="/images/jinli/apple.png" width="70%"
+				style="margin-top: 2px; margin-left: 10px;">
+		</div>
+		<div :class="['row1','basicGreen',ac[19].ac?'greenAc':'']">
+			<img src="/images/jinli/77.png" width="90%"
+				style="margin-top: 5px; margin-left: 2px;">
+		</div>
+		<div :class="['row1','dmg','basicRed',ac[18].ac?'redAc':'']">
+
+			<img src="/images/jinli/ttyj.png" width="100%"
+				style="margin-top: 5px; margin-left: 0px;">
+
+		</div>
+		<div :class="['row1','basicGreen',ac[17].ac?'greenAc':'']">
+			<img src="/images/jinli/77.png" width="120%"
+				style="margin-top: -5px; margin-left: -5px;">
+		</div>
+		<div :class="['row1','basicRed',ac[16].ac?'redAc':'']" id="aa3">
+			<img src="/images/jinli/juzi.png" width="70%"
+				style="margin-top: 10px; margin-left: 10px;">
+		</div>
+		<div :class="['row1','basicGreen',ac[15].ac?'greenAc':'']" id="aa2">
+			<img src="/images/jinli/lingdang.png" width="100%">
+		</div>
+		<div :class="['row1','basicRed',ac[14].ac?'redAc':'']" id="aa1"
+			style="border-top: 1px solid white;; border-right: 1px solid rgb(220, 223, 230);">
+			<img src="/images/jinli/juzi.png" width="100%">
+		</div>
+
+
+
+
+
+
+
+
+
+		</el-container> </el-row>
+		<p />
+		<div
+			style="width: 616px; text-align: center; border: 2px solid rgb(220, 223, 230); padding-top: 10px;">
+			<el-row
+				style="border-bottom: 3px dotted rgb(220, 223, 230); padding-bottom: 5px;">
+			<el-col :span="3" style="margin-left: 20px;">
+			<div style="margin-top: 5px;">倍数</div>
+			</el-col> <el-col :span="2">
+			<div class="bsy">100</div>
+			</el-col> <el-col :span="2">
+			<div class="bsy">40</div>
+			</el-col> <el-col :span="2">
+			<div class="bsy">30</div>
+			</el-col> <el-col :span="3">
+			<div class="bsy">20</div>
+			</el-col> <el-col :span="2">
+			<div class="bsy">20</div>
+			</el-col> <el-col :span="2">
+			<div class="bsy">15</div>
+			</el-col> <el-col :span="2">
+			<div class="bsy">10</div>
+			</el-col> <el-col :span="2">
+			<div class="bsy">5</div>
+			</el-col> </el-row>
+			<div class="bh3"></div>
+			<el-row> <el-col :span="3" style="margin-left: 20px;">
+			<div style="margin-top: 5px;">押注</div>
+			</el-col> <el-col :span="2">
+			<div class="tb">{{bar}}</div>
+			</el-col> <el-col :span="2">
+			<div class="tb">{{s7}}</div>
+			</el-col> <el-col :span="2">
+			<div class="tb">{{sx}}</div>
+			</el-col> <el-col :span="3">
+			<div class="tb">{{xg}}</div>
+			</el-col> <el-col :span="2">
+			<div class="tb">{{ld}}</div>
+			</el-col> <el-col :span="2">
+			<div class="tb">{{mg}}</div>
+			</el-col> <el-col :span="2">
+			<div class="tb">{{jz}}</div>
+			</el-col> <el-col :span="2">
+			<div class="tb">{{pg}}</div>
+			</el-col> </el-row>
+			<div class="bh3"></div>
+			<el-row
+				style="text-align: left;border-bottom: 3px dotted rgb(220, 223, 230); padding-bottom: 5px;">
+			<el-col :span="3" style="text-align: center;margin-left: 20px;">
+			<div style="margin-top: 5px;">投注</div>
+			</el-col> <el-col :span="2"> <el-button class="btn"
+				:disabled="flag?'disabled': false" @click="yabar()"
+				@dblclick.native="startbar()" @mouseleave.native="endbar()">
+			<img src="/images/jinli/bar100.png" width="90%"></el-button> </el-col> <el-col
+				:span="2"> <el-button class="btn"
+				:disabled="flag?'disabled': false" @click="yas7()"
+				@dblclick.native="starts7()" @mouseleave.native="ends7()">
+			<img src="/images/jinli/77.png" width="100%"></el-button> </el-col> <el-col
+				:span="2"> <el-button class="btn"
+				:disabled="flag?'disabled': false" @click="yasx()"
+				@dblclick.native="startsx()" @mouseleave.native="endsx()">
+			<img src="/images/jinli/shuangxin.png" width="100%"></el-button> </el-col> <el-col
+				:span="3"> <el-button class="btn"
+				:disabled="flag?'disabled': false" @click="yaxg()"
+				@dblclick.native="startxg()" @mouseleave.native="endxg()">
+			<img src="/images/jinli/xigua.png" width="80%"
+				style="margin-top: 3px"></el-button> </el-col> <el-col :span="2"> <el-button
+				class="btn" :disabled="flag?'disabled': false" @click="yald()"
+				@dblclick.native="startld()" @mouseleave.native="endld()">
+			<img src="/images/jinli/lingdang.png" width="90%"
+				style="margin-top: 3px"></el-button> </el-col> <el-col :span="2"> <el-button
+				class="btn" :disabled="flag?'disabled': false" @click="yamg()"
+				@dblclick.native="startmg()" @mouseleave.native="endmg()">
+			<img src="/images/jinli/mangguo.png" width="90%"></el-button> </el-col> <el-col
+				:span="2"> <el-button class="btn"
+				:disabled="flag?'disabled': false" @click="yajz()"
+				@dblclick.native="startjz()" @mouseleave.native="endjz()">
+			<img src="/images/jinli/juzi.png" width="100%"></el-button> </el-col> <el-col
+				:span="2"> <el-button class="btn"
+				:disabled="flag?'disabled': false" @click="yapg()"
+				@dblclick.native="startpg()" @mouseleave.native="endpg()">
+			<img src="/images/jinli/apple.png" width="70%"></el-button> </el-col> </el-row>
+			<div class="bh5"></div>
+			<el-row style="width:616px"> <el-col :span="12"> <el-button
+				@click="toleft()" type="primary" :disabled="flag?'disabled': false">向左</el-button>
+			<el-button @click="DaXiaoRandom(1)" type="danger"
+				:disabled="flag?'disabled': false">大</el-button> <el-button
+				@click="DaXiaoRandom(0)" type="danger"
+				:disabled="flag?'disabled': false">小</el-button> <el-button
+				@click="toright()" type="primary" :disabled="flag?'disabled': false">向右</el-button>
+			</el-col> <el-col :span="5">&nbsp;</el-col> <el-col :span="7"> <el-button
+				@click="reset()" type="warning" :disabled="flag?'disabled': false">重置</el-button>
+			<el-button @click="start()" type="success"
+				:disabled="flag?'disabled': false">启动</el-button> </el-col> </el-row>
+			<div class="bh3"></div>
+
+		</div>
+		</el-col> 
+		
+			<el-col :span="12" style="text-align:left">
+						<div style="border:2px solid  rgb(220, 223, 230) ;width:550px; padding:10px;">
+								<span style="color:red;">游戏说明：</span>
+								<div class="bh2"></div>
+								<el-row >
+											<el-col :span="3"><el-button type="text" >大满贯：</el-button> </el-col>
+											 <el-col :span="21"><span class="myfont" style="line-height:36px;">28灯全中，最高奖励： 299999 积分</span> </el-col>
+								</el-row>
+									<div class="bh2"></div>
+								<el-row >			
+															<el-col :span="3"><el-button type="text" >大三元：</el-button> </el-col>
+															<el-col :span="21"><el-button class="btn"><img src="/images/jinli/77.png" width="100%"></el-button> 
+															<el-button class="btn"><img src="/images/jinli/shuangxin.png" width="100%"></el-button> 
+															<el-button class="btn"><img src="/images/jinli/xigua.png" width="100%"></el-button> </el-col>
+								</el-row>
+								<el-row >
+								<el-col :span="3"><el-button type="text" >小三元：</el-button> </el-col>
+											<el-col :span="21"><el-button class="btn"><img src="/images/jinli/lingdang.png" width="100%"></el-button> 
+															<el-button class="btn"><img src="/images/jinli/mangguo.png" width="100%"></el-button> 
+															<el-button class="btn"><img src="/images/jinli/juzi.png" width="100%"></el-button> </el-col>
+								</el-row>
+								<el-row >
+											<el-col :span="3"><el-button type="text" >大四喜：</el-button> </el-col>
+														  <el-col :span="21"><el-button class="btn" ><img src="/images/jinli/apple.png" width="70%"></el-button> 
+														  <el-button class="btn"><img src="/images/jinli/apple.png" width="70%"></el-button> 
+														  <el-button class="btn"><img src="/images/jinli/apple.png" width="70%"></el-button> 
+														  <el-button class="btn"><img src="/images/jinli/apple.png" width="70%"></el-button> </el-col>
+								</el-row>
+								<div class="bh1"></div>
+								<el-row >
+											<el-col :span="3"><el-button type="text" >通通有奖：</el-button> </el-col>
+														  <el-col :span="21">  <span class="myfont" style="line-height:36px;">所押注数获得：2，4，6，8，10 的随机翻倍</span> </el-col>
+								</el-row>
+								
+								<el-row >
+											<el-col :span="3"><el-button type="text" >Lucky ：</el-button> </el-col>
+														  <el-col :span="21">
+														  <span class="myfont" style="line-height:36px;"> 1. 开火车  &nbsp; &nbsp;2. 随机发射一弹 &nbsp; &nbsp;3.被吃掉</span>
+														   </el-col>
+								</el-row>
+								<div class="bh1"></div>
+								<el-row >
+											<el-col :span="3"><el-button type="text" >押大小：</el-button> </el-col>
+														  <el-col :span="21">
+														  <span class="myfont" style="line-height:36px;">需先押底分，猜随机大小。中奖倍数为底分2倍。</span>
+														   </el-col>
+								</el-row>
+								<div class="bh4"></div>
+								<el-row >
+											<el-col :span="3"><el-button type="text" >系统公告：</el-button> </el-col>
+														  <el-col :span="21">
+														  <span class="myfont" style="line-height:36px;">抵制不良游戏，拒绝盗版游戏。 注意自我保护，谨防受骗上当。 适度游戏益脑，沉迷游戏伤身。 合理安排时间，享受健康生活。</span>
+														   </el-col>
+								</el-row>
+								
+								
+								
+								
+						</div>
+						
+						<div   v-show=" loginUser =='system' ? true : false" >
+							<div class="bh1" ></div>
+								<el-row type="flex" justify="end" style="width:550px;">
+							 		 <el-button type="text" :style="jffenclass" @click="czjf">{{jfbz}}</el-button>
+							  </el-row>
+							  <el-collapse-transition>
+							 	 <div style="border:2px solid  rgb(220, 223, 230)  ;width:550px; padding:10px;  "  v-show="czflag">
+							  		<div class="transition-box">
+							  		<el-form ref="czform" :model="czform" label-width="100px">
+ 										 		<el-form-item label="账号"  >
+ 										 		<el-tooltip class="item" effect="dark" content="充值账户必须核对正确，否则损失自负" placement="right">
+      															<el-input v-model="czform.account"  style="width:150px;" size="mini"></el-input>
+   												 </el-tooltip>
+   										 					
+  												</el-form-item>
+  												<el-form-item label="积分"  >
+  												
+  															<el-select v-model="czform.cz" placeholder="请选择充值积分"  size="mini"style="width:150px;">
+															      <el-option label="1000" value="1000"></el-option>
+															      <el-option label="2000" value="2000"></el-option>
+															      <el-option label="5000" value="5000"></el-option>
+															      <el-option label="10000" value="10000"></el-option>
+															      <el-option label="50000" value="50000"></el-option>
+															   </el-select>
+   										 					 
+  												</el-form-item>
+  												<el-form-item>
+  															<el-button type="success" size="mini"  style="margin-left:70px" @click="czl" >积分充值</el-button>
+  												</el-form-item>
+  									</el-form>			
+							  				</div>
+							  </div>
+							  </el-collapse-transition>
+						</div>
+						
+			</el-col> 
+			
+		</el-row>
+		</div>
+</body>
+
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+        	czform:{account:'',cz:''},
+            msg: 'Hello Vue!',
+            show: true,
+            yazhu: 0,
+            czflag: false,
+            jfbz:'积分不足?',
+            jffenclass: {'color':'red'},		
+            ac: [{
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }, {
+                ac: false
+            }],
+            nextTarget: 0,
+            time: 20,
+            zhou: 1,
+            lastPos: 0,
+            count: 0,
+            jd: 0,
+            bar: 0,
+            s7: 0,
+            sx: 0,
+            xg: 0,
+            ld: 0,
+            mg: 0,
+            jz: 0,
+            pg: 0,
+            zf: 1000,
+            win: 0,
+            shishik:0,
+            speed:2,
+            retur:0,
+            flag:false,
+            timerbar:function(){},
+            timers7:function(){},
+            timersx:function(){},
+            timerxg:function(){},
+            timerld:function(){},
+            timermg:function(){},
+            timerjz:function(){},
+            timerpg:function(){},
+            daxiao:0,
+            randomCount:0,
+            dx:'- -',
+            currentYaDX:0,
+            caip:'彩票',
+            teshu:9,
+            yus:0,
+            sdCount:0,
+            tail:0,
+            huocheqs:0,
+            hcqs:0,
+            cdanCount:0,
+            danqs:0,
+            winbak:0,
+            loginUser:'',
+        },
+        created(){
+        	this.queryJF();
+        	this.setLogin();
+        },
+        methods: {
+        	tongzhi(title,msg,type) {
+		        this.$notify({
+		          title: title,  //'今天任务已完成！'
+		          message: msg, // '已邮件通知'+this.nextUser+"明日监控！",
+		          position: 'bottom-right',
+		          type: type
+		        });
+		      },
+        czl(){
+        	var acc = this.czform.account;
+        	var jifen=this.czform.cz;
+        	if(acc=='' || jifen ==''){
+        		this.tongzhi('提示：','充值账号或充值积分不能为空','warning');
+        		return;
+        	}
+        	axios({
+   				method: 'post',
+   				url: '/czJifen',
+   				data: {
+   					msg1: acc,
+   					msg2: jifen
+   				},
+   			}).then(res => {
+   				   var oldzf=this.zf;
+   				   var total =res.data;	
+   				   if(total!=0){
+   					 this.zf=total;
+   					 if((this.zf -jifen)==oldzf ){
+    				    	this.$message({
+    	                        message: '充值成功！',
+    	                        type: 'success'
+    	                    });
+    				    }
+    				    else{
+    				    	this.$message({
+    	                        message: '充值异常！',
+    	                        type: 'error'
+    	                    });
+    				    }
+   				   }
+   				   else{
+   					this.$message({
+	                        message: '用户名不存在！',
+	                        type: 'error'
+	                    });
+   				   }
+   				   
+   			}, error => {
+   				
+   			})
+        },
+      	  setLogin(){
+    		  this.loginUser=localStorage.username.toLowerCase();
+    	  },
+        	 queryJF(){
+       			axios({
+       				method: 'post',
+       				url: '/getUserJF',
+       				data: {
+       					msg:localStorage.username
+       				},
+       			}).then(res => {
+       				    this.zf= res.data;
+       				 
+       			}, error => {
+       				
+       			})
+       		},
+        	czjf(){
+        		this.czflag=!this.czflag;
+        		if(this.czflag==true){
+        			this.jffenclass={'color':'green'};
+        			this.jfbz="收起"
+        		}
+        		
+        		else{
+        			this.jffenclass={'color':'red'};
+        			this.jfbz="积分不足?"
+        		}
+        			
+        	},
+        	
+            randomGL(){
+                var aa = Math.random() * 100;
+                var bb = Math.ceil(aa);
+                //5%概率出现
+                return bb; 
+            },
+            randomQS(){
+                var aa = Math.random() * 28;
+                var bb = Math.ceil(aa);
+                //5%概率出现
+                return bb; 
+            },
+            toleft(){
+                if(this.zf>=5){
+                    this.win+=5;
+                    this.zf-=5;
+                }    
+            },
+            toright(){
+                if(this.win>=5){
+                    this.win-=5;
+                    this.zf+=5;
+                }    
+            },
+            DaXiaoRandom(val){
+
+                if(this.win>0){
+                this.flag=true;
+                if(val==1){
+                    this.caip="押大"
+                }
+                if(val==0){
+                    this.caip="押小"
+                }
+                var aa = Math.random() * 10;
+                var bb = Math.ceil(aa);
+                this.randomCount++;
+                var ranNum=setTimeout(()=>{
+                    if(this.randomCount>30){
+                        console.log('压了==='+this.caip+"，开了"+bb+'val==='+val)
+                        if(bb<=5){ 
+                            if(this.caip=='押小'){
+                                
+                                this.win=this.win*2;
+                            }
+                            else{
+                                this.win=0;
+                            }
+                            this.dx=bb+"（"+"小）";
+                        }
+                        else{
+                            if(this.caip=='押大'){
+                         
+                                this.win=this.win*2;
+                            }
+                            else{
+                                this.win=0;
+                             }
+                            this.dx=bb+"（"+"大）";
+                        }
+                        
+                        this.randomCount=0;
+                        this.flag=false;
+                        return;
+                    }
+                    if(bb<=5){
+                        this.dx=bb;
+                    }
+                    else{
+                        this.dx=bb;
+                    }
+                    
+                    this.DaXiaoRandom();
+                    
+                },60)
+                }
+                else{
+                    this.$message({
+                        message: '请先下本！',
+                        type: 'error'
+                    });
+                    return;
+                }
+                
+
+            },
+            
+            reset(){
+                var yafen = this.bar + this.s7 + this.sx + this.xg + this.ld + this.mg + this.jz + this.pg;
+                console.log('押注分'+yafen)
+                //判断是否加注，若加注返还加注分 
+                this.zf=this.zf+this.shishik
+                //清空
+                this.bar=0;this.s7=0;this.sx=0;this.xg=0;this.ld=0;this.mg=0;this.jz=0;this.pg=0;
+            },
+            endbar(){
+                clearTimeout(this.timerbar)
+
+            },
+            startbar() {
+               
+                 this.timerbar=setTimeout(()=>{
+                    if (this.bar < 99 && this.zf > 0){
+                     this.bar++;
+                     this.zf--;
+                     this.shishik++;
+                    }
+                    this. startbar();
+                 },100)
+      
+             },
+             ends7(){
+                clearTimeout(this.timers7)
+
+            },
+            starts7() {
+               
+                 this.timers7=setTimeout(()=>{
+                    if (this.s7 < 99 && this.zf > 0){
+                     this.s7++;
+                     this.zf--;
+                     this.shishik++;
+                    }
+                    this. starts7();
+                 },100)
+      
+             },
+             endsx(){
+                clearTimeout(this.timersx)
+
+            },
+            startsx() {
+               
+                 this.timersx=setTimeout(()=>{
+                    if (this.sx < 99 && this.zf > 0){
+                     this.sx++;
+                     this.zf--;
+                     this.shishik++;
+                    }
+                    this. startsx();
+                 },100)
+      
+             },
+             endxg(){
+                clearTimeout(this.timerxg)
+
+            },
+            startxg() {
+               
+                 this.timerxg=setTimeout(()=>{
+                    if (this.xg < 99 && this.zf > 0){
+                     this.xg++;
+                     this.zf--;
+                     this.shishik++;
+                    }
+                    this. startxg();
+                 },100)
+      
+             },
+             endld(){
+                clearTimeout(this.timerld)
+
+            },
+            startld() {
+               
+                 this.timerld=setTimeout(()=>{
+                    if (this.ld < 99 && this.zf > 0){
+                     this.ld++;
+                     this.zf--;
+                     this.shishik++;
+                    }
+                    this. startld();
+                 },100)
+      
+             },
+             endmg(){
+                clearTimeout(this.timermg)
+
+            },
+            startmg() {
+               
+                 this.timermg=setTimeout(()=>{
+                    if (this.mg < 99 && this.zf > 0){
+                     this.mg++;
+                     this.zf--;
+                     this.shishik++;
+                    }
+                    this. startmg();
+                 },100)
+      
+             },
+             endjz(){
+                clearTimeout(this.timerjz)
+
+            },
+            startjz() {
+               
+                 this.timerjz=setTimeout(()=>{
+                    if (this.jz < 99 && this.zf > 0){
+                     this.jz++;
+                     this.zf--;
+                     this.shishik++;
+                    }
+                    this. startjz();
+                 },100)
+      
+             },
+             endpg(){
+                clearTimeout(this.timerpg)
+
+            },
+            startpg() {
+               
+                 this.timerpg=setTimeout(()=>{
+                    if (this.pg < 99 && this.zf > 0){
+                     this.pg++;
+                     this.zf--;
+                     this.shishik++;
+                    }
+                    this. startpg();
+                 },100)
+      
+             },
+            yabar() {
+                 
+                if (this.bar < 99 && this.zf > 0){
+                    this.bar++;
+                    this.zf--;
+                    this.shishik++;
+                }
+            },
+            yas7() {
+                 
+                if (this.s7 < 99 && this.zf > 0){
+                    this.s7++;
+                    this.zf--; 
+                    this.shishik++;}
+            },
+            yasx() {
+                
+                if (this.sx < 99 && this.zf > 0){
+                    this.sx++;this.zf--;
+                    this.shishik++;}
+            },
+            yaxg() {
+                
+                if (this.xg < 99 && this.zf > 0){
+                    this.xg++;this.zf--;
+                    this.shishik++;}
+            },
+            yamg() {
+                
+                if (this.mg < 99 && this.zf > 0){
+                    this.mg++;this.zf--;
+                    this.shishik++;}
+            },
+            yajz() {
+                
+                if (this.jz < 99 && this.zf > 0){
+                    this.jz++;this.zf--;
+                    this.shishik++;}
+            },
+
+            yald() {
+                 
+                if (this.ld < 99 && this.zf > 0){
+                    this.ld++;this.zf--;
+                    this.shishik++;}
+            },
+            yapg() {
+                 
+                if (this.pg < 99 && this.zf > 0){
+                    this.pg++;this.zf--;
+                    this.shishik++;}
+            },
+            ddd() {
+
+                for (var j = 0; j < this.ac.length; j++) {
+                    this.ac[j].ac = false;
+                }
+                this.ac[this.lastPos].ac = true;
+
+                this.lastPos++;
+                var aa = this.count++;
+                if (this.lastPos > 27) {
+                    this.lastPos = 0;
+                    
+                }
+                
+                if ((aa / this.jd) <= 2) {
+                    this.time = 20;
+                    this.zhou++;
+                    //console.log('第多少阶段了：' + this.zhou)
+                }
+                if ((aa / this.jd) <= 3) {
+                    this.time = 40;
+                    this.zhou++;
+                    //console.log('第多少阶段了：' + this.zhou)
+                } else if ((aa / this.jd) <= 4) {
+                    this.time = 60;
+                    this.zhou++;
+                     
+                } else if ((aa / this.jd) <= 5) {
+                    this.time = 10 + this.time;
+                    this.zhou++;
+                   
+                } else if ((aa / this.jd) <= 6) {
+                    this.time = this.time + 30;
+                    this.zhou++;
+                     
+                } else if ((aa / this.jd) >= 6) {
+                    this.time = this.time + 50;
+                    this.zhou++;
+                    
+                }
+
+
+
+
+
+                var time = setTimeout(() => {
+                    if (this.count == this.zc) {
+                        //console.log('开出奖项，总次数满足：清除掉循环' + this.count + "停止在：" + (this.lastPos))
+                        this.time = 20;
+                        this.count = 0;
+                        this.zhou = 0;
+                        this.shishik=0;
+                        this.flag=false;
+                        //执行开奖操作。
+                        //读取用户押注，先获取本次停止的位置对应的押注项目。并算分
+                        //console.log('停在了：'+this.lastPos)
+                        this.win=this.suanfen(this.lastPos);                      
+                        return;
+
+                    }
+                    this.ddd();
+
+                }, this.time)
+
+
+
+            },
+            tuifen(){
+                if(this.win>0){ 
+                    this.win--;
+                    this.zf++;
+                    
+                }
+                if(this.win>0){ 
+                    this.start();
+                }
+                else{
+                    this.flag=false;
+                    //退分结束，保存入库。
+                    this.updateJiFen('win',this.winbak);
+                }
+            },
+            updateJiFen(type,val){
+            	  axios({
+      				  method: 'put',           
+      				  url: '/updateJifen',  
+      				  data: {		
+      							msg:this.zf,
+      							msg1:type,
+      							msg2:val,
+      							msg3:this.loginUser
+      				  },
+      				}).then(res=>{ 			    					
+      					//console.log('积分入库')
+      				} ,error=>{
+      					 
+      				}); 
+            },
+            kaihuoche(val,start){
+                //console.log(val+"节火车来了！")
+                //清空样式
+                for (var j = 0; j < this.ac.length; j++) {
+                    this.ac[j].ac = false;
+                }
+
+                if((start+val)<27){
+                    for(var i=0;i<val;i++){
+                    this.ac[start+i].ac=true;
+                    }
+                }
+                else{
+                    //要过0点。分两段。
+                    for(var i=0;i<this.tail;i++){       //头段
+                        this.ac[i].ac=true;
+                    }
+                    for(var i=0;i<(val-this.tail);i++){       //尾巴
+                        this.ac[27-i].ac=true;
+                    }
+                     
+                }
+                
+                var huocheTimer=setTimeout(()=>{
+                    //设置开火车的时间：84+随机
+                    if(this.huocheqs==this.hcqs){  
+                        this.huocheqs=0;
+                        this.hcqs=0;
+                        //算奖励。
+                        for (var j = 0; j < this.ac.length; j++) {
+                            if(this.ac[j].ac == true){    
+                                if(j+1!=5 && j+1!=12 && j+1!=26){
+                                    this.win=this.win+this.suanfen(j+1)
+                                    this.lastPos=0;
+                                }                               
+                            } 
+                         }
+                        
+                        return;
+                    }                   
+
+                    if((start+val)<27){
+                        start++;
+                    }
+                    else{
+                        if(val>this.tail)
+                          this.tail++;
+                        else{
+                            start=0;
+                            this.tail=0;
+                        }
+                    }
+                    this.huocheqs++;
+                    this.kaihuoche(val,start);
+                },200)
+
+
+            },
+            cdan(val,start){
+                //console.log('弹道'+val);
+                if(start<27)
+                start++;
+                else{
+                    start=0;
+                }                             
+                this.ac[start].ac=true;
+                if(start!=0){
+                    this.ac[start-1].ac=false;
+                    this.ac[val-1].ac=true;
+                }
+                else{
+                    this.ac[27].ac=false;
+                }
+                var cdantime=setTimeout(()=>{
+                    //设置出口。
+                     if(this.cdanCount==this.danqs) {
+                        //console.log('完成了一弹');
+                        this.cdanCount=0;
+                        this.danqs=28+this.randomQS();
+                        
+                       // console.log("开枪到了"+start);
+                        if(start==25||start==11||start==4){
+                            //console.log('特殊项目无分');
+                            this.win=0;
+                        }
+                        else{
+                            this.win=this.suanfen(start+1);
+                        }
+                        
+                        return;
+                     }
+                    this.cdanCount++;
+                    //if(start==3){this.cdanCount=this.danqs=33}
+                    this.cdan(val,start);
+                },100)
+              
+
+            },
+            damg(){
+                
+                    for(i=0;i<28;i++){
+                    if(i%2==this.yus){
+                        this.ac[i].ac = true;
+                    }
+                    else{
+                        this.ac[i].ac = false;
+                    }
+                    }
+                    if(this.yus==1){
+                        this.yus=0;
+                        this.sdCount++;
+                    }
+                    else{
+                        this.yus=1;
+                        this.sdCount++;
+                    }
+                    setTimeout(()=>{
+                        if(this.sdCount>30){
+                            this.sdCount=0;
+                            this.yus=0;
+                            for(i=0;i<28;i++){
+                                this.ac[i].ac = true;
+                            }
+                            this.dx="大满贯"
+                            return;
+                        }
+                        this.damg();
+                    },200)
+                    //闪灯次数15次退出
+                    
+            },
+            suanfen(val){
+                var win=0;
+                switch (val) {
+                case 0:
+                    win=this.pg*2;   //小苹果
+                    break;
+                case 1:
+                    win=this.jz*10;  //大橘子
+                    break;
+                case 2:
+                    var rld=this.randomGL();
+                    var bs=10;
+                    if(rld<=15){
+                        bs=20;
+                    }
+                    win=this.ld*bs;  //大铃铛，随机倍数。最大20倍
+                    break;
+                case 3:
+                    win=this.ld*2;   //小铃铛
+                    break;    
+                case 4:
+                    win=this.bar*100; //大福
+                    break; 
+                case 5:
+                    win=this.bar*150+this.s7*22+this.sx*22+this.xg*22+this.ld*22+this.mg*22+this.jz*22+this.pg*26;
+                    //特效全亮；
+                    this.damg()
+                    break; 
+                case 6:
+                    win=this.bar*50;
+                    break;
+                case 7:
+                    win=this.pg*5;
+                    break;
+                case 8:
+                    win=this.pg*2;
+                    break;
+                case 9:
+                    var rmg=this.randomGL();
+                    var mgbs=10;
+                    if(rmg<=20){
+                        mgbs=15;
+                    }
+                    win=this.mg*mgbs;
+                    break;
+                case 10:
+                    win=this.xg*20;
+                    break;
+                case 11:
+                    win=this.xg*2;
+                    break;    
+                case 12:
+                    //机会来了，3中情况，1吞掉。2.开火车，3在弹出1个，4.弹出3个。
+                    var rchange=this.randomGL();
+                    if(rchange<=20){   //20
+                        this.dx='开火车';
+                        //多少节数 20%
+                        var huocheJS=this.randomGL();
+                        if(huocheJS<=2){
+                            //10
+                            this.hcqs=84+this.randomQS();
+                            this.kaihuoche(10,12);
+                        }
+                        else if(huocheJS<=10){
+                            this.hcqs=84+this.randomQS();
+                            this.kaihuoche(9,12);
+                        }
+                        else if(huocheJS<=22){
+                            this.hcqs=84+this.randomQS();
+                            this.kaihuoche(8,12);
+                        }
+                        else if(huocheJS<=37){
+                            this.hcqs=84+this.randomQS();
+                            this.kaihuoche(7,12);
+                        }
+                        else if(huocheJS<=57){
+                            this.hcqs=84+this.randomQS();
+                            this.kaihuoche(6,12);
+                        }
+                        else if(huocheJS<=80){
+                            this.hcqs=84+this.randomQS();
+                            this.kaihuoche(5,12);
+                        }
+                        else if(huocheJS<=100){
+                            this.hcqs=84+this.randomQS();
+                            this.kaihuoche(4,12);
+                        }
+                    }
+                    else if(rchange<=70){
+                        //在弹 20%
+                        this.danqs=28+this.randomQS()
+                        this.cdan(12,12);
+                        this.dx='命中';
+                        this.lastPos=0;
+                    }
+                    else if(rchange<=100){
+                        this.dx='吞';  //30%
+                        win=0;
+                        this.lastPos=0;
+                    }
+
+                    break;
+                case 13:
+                    win=this.pg*5;
+                    break;    
+                case 14:
+                    win=this.pg*2;
+                    break; 
+                case 15:
+                    win=this.jz*10 
+                    break; 
+                case 16:
+                    var rld2=this.randomGL();
+                    var bs2=10;
+                    if(rld2<=10){
+                        bs2=20;
+                    }
+                    win=this.ld*bs2; 
+                    break;
+                case 17:
+                    win=this.jz*2;
+                    break;
+                case 18:
+                    var rs7=this.randomGL();
+                    var bss7=20;
+                    if(rs7<=5){
+                        bss7=40;
+                    }
+                    win=this.s7*bss7;
+                    break;
+                case 19:
+                    //通通有奖。所押注的分数随机翻倍。
+ 
+                    
+                    var ttbs = this.randomGL();;
+                    var bs=2;
+                    if(ttbs<=3){
+                        bs=10
+                    }
+                    else if(ttbs<=10){
+                        bs=8
+                    }
+                    else if(ttbs<=20){
+                        bs=6
+                    }
+                    else if(ttbs<=30){
+                        bs=4
+                    }
+                    this.caip="倍数";
+                    this.dx= bs+"倍";
+                    win=(this.bar+this.s7+this.sx+this.xg+this.ld+this.mg+this.jz+this.pg)*bs
+                    break; 
+                case 20:
+                    win=this.s7*2;
+                    break;
+                case 21:
+                    win=this.pg*5;
+                    break;    
+                case 22:
+                    win=this.mg*2;
+                    break;
+                case 23:
+                    var rrmg=this.randomGL();
+                    var mgbs2=10;
+                    if(rrmg<=15){
+                        mgbs2=15;
+                    }
+                    win=this.mg*mgbs2;
+                    break;    
+                case 24:
+                    var rsx=this.randomGL();
+                    var sxbs=20;
+                    if(rsx<=7){
+                        sxbs=30;
+                    }
+                    win=this.sx*sxbs;
+                    break; 
+                case 25:
+                    win=this.sx*2 
+                    break; 
+                case 26:
+                    var lchange=this.randomGL();
+                    //console.log('26号lucky')
+                    if(lchange<=20){
+                        this.dx='开火车';
+                        //多少节数 20%
+                        var huocheJS=this.randomGL();
+                        if(huocheJS<=2){
+                            //10
+                            this.hcqs=84+this.randomQS();
+                            this.kaihuoche(10,26);
+                        }
+                        else if(huocheJS<=10){
+                            this.hcqs=84+this.randomQS();
+                            this.kaihuoche(9,26);
+                        }
+                        else if(huocheJS<=22){
+                            this.hcqs=84+this.randomQS();
+                            this.kaihuoche(8,26);
+                        }
+                        else if(huocheJS<=37){
+                            this.hcqs=84+this.randomQS();
+                            this.kaihuoche(7,26);
+                        }
+                        else if(huocheJS<=57){
+                            this.hcqs=84+this.randomQS();
+                            this.kaihuoche(6,26);
+                        }
+                        else if(huocheJS<=80){
+                            this.hcqs=84+this.randomQS();
+                            this.kaihuoche(5,26);
+                        }
+                        else if(huocheJS<=100){
+                            this.hcqs=84+this.randomQS();
+                            this.kaihuoche(4,26);
+                        }
+                        
+                        
+                    }
+                    
+                    else if(lchange<=70){
+                        this.danqs=28+this.randomQS()
+                        this.cdan(26,26);
+                        this.dx='命中';
+                        this.lastPos=0;
+                    }
+                    else if(lchange<=100){
+                        this.dx='吞';
+                        win=0;
+                        this.lastPos=0;
+                    }
+                    break;
+                case 27:
+                    win=this.pg*5;
+                    break;
+                
+                                      
+                default:
+                    break;
+           }
+               this.winbak=win;
+               return win;
+            
+            },
+            shandeng(){
+                var ss=setTimeout(()=>{
+                    for(i=0;i<28;i++){
+                    if(i%2==this.yus){
+                        this.ac[i].ac = true;
+                    }
+                    else{
+                        this.ac[i].ac = false;
+                    }
+                    }
+                    if(this.yus==1){
+                        this.yus=0;
+                        this.sdCount++;
+                    }
+                    else{
+                        this.yus=1;
+                        this.sdCount++;
+                    }
+                    //闪灯次数15次退出
+                    if(this.sdCount>20){
+                        this.sdCount=0;
+                        for (var j = 0; j < this.ac.length; j++) {
+                        this.ac[j].ac = false;
+                       }
+
+                   // 
+                   var dsy = this.randomGL();
+                   if(dsy<=15){
+                        //大三元
+                        
+                        this.dx='大三元'
+                        this.ac[9].ac = true;
+                        this.ac[17].ac = true;
+                        this.ac[23].ac = true;
+                        this.win=this.suanfen(10)+this.suanfen(18)+this.suanfen(24);
+                        
+                        
+                   }
+                   else if(dsy<=45){
+                        //小三元
+                        this.dx='小三元'
+                        this.ac[1].ac = true;
+                        this.ac[14].ac = true;
+                        this.ac[22].ac = true;
+                        this.win=this.suanfen(2)+this.suanfen(15)+this.suanfen(23);
+                   }
+                   else{
+                        //小四喜
+                        this.dx='大四喜'
+                        this.ac[6].ac = true;
+                        this.ac[12].ac = true;
+                        this.ac[20].ac = true;
+                        this.ac[26].ac = true;
+                        this.win=this.suanfen(7)+this.suanfen(13)+this.suanfen(21)+this.suanfen(27);
+                        
+                    }
+                        this.sdCount=0;
+                        return;
+                    }
+                    this.shandeng()
+
+                },150)
+                
+
+            },
+            start() {
+                
+                
+                this.caip='彩票';
+                this.dx='机会';
+               
+                //检查是否有win的分数未清空
+                if(this.win>0){   
+                    this.flag=true; 
+                    if(this.win>=500){
+                        this.speed=0
+                    }
+                    else if(this.win>=300){
+                        this.speed=1
+                    }                 
+                    setTimeout(()=>{
+                        this.tuifen();
+                    },this.speed)                   
+                    return;
+                }
+                 
+                //计算下一次起点
+                //下次开什么
+                var nextTarg=this.randomGL();
+                if(nextTarg<=1){      //
+                    console.log('大满贯')
+
+                    this.nextTarget = 5;
+                }
+                else if(nextTarg<=2){
+                    //console.log('中了大福')
+                     
+                    this.nextTarget = 4;
+                }
+                else if(nextTarg<=4){
+                   // console.log('中了小福')
+                    this.nextTarget = 6;
+                }
+                else if(nextTarg<=10){
+                    //console.log('中了通通')
+                    this.nextTarget = 19;
+                }
+                else if(nextTarg<=15){      //28 --
+                    //console.log('中了Lucky')
+                    //多个lucky，选哪个？
+                    var sw=this.randomGL();
+                    if(sw<=50){
+                        this.nextTarget = 12;
+                    }
+                    else{
+                        this.nextTarget = 26;
+                    }
+                    
+                }
+                else if(nextTarg<=22){
+                    //console.log('中了双七')
+                    var sw=this.randomGL();
+                    if(sw<=5){
+                        this.nextTarget = 18;
+                    }
+                    else{
+                        this.nextTarget = 20;
+                    }
+                    
+                }
+                else if(nextTarg<=35){
+                    //console.log('中了双星星')
+                    var sw=this.randomGL();
+                    if(sw<=10){
+                        this.nextTarget = 24;
+                    }
+                    else{
+                        this.nextTarget = 25;
+                    }
+                    
+                }
+                else if(nextTarg<=49){
+                    //console.log('中了西瓜')
+                    var sw=this.randomGL();
+                    if(sw<=20){
+                        this.nextTarget = 10;
+                    }
+                    else{
+                        this.nextTarget = 11;
+                    }
+                 
+                }
+                else if(nextTarg<=62){
+                    //console.log('中了铃铛')
+                    var sw=this.randomGL();
+                    if(sw<=10){
+                        this.nextTarget = 16;
+                    }
+                    else if(sw<=20){
+                        this.nextTarget = 2;
+                    }
+                    else{
+                        this.nextTarget = 3;
+                    }
+                    
+                }
+                else if(nextTarg<=73){
+                   // console.log('中了芒果')
+                    var sw=this.randomGL();
+                    if(sw<=12){
+                        this.nextTarget = 9;
+                    }
+                    else if(sw<=24){
+                        this.nextTarget = 23;
+                    }
+                    else{
+                        this.nextTarget = 22;
+                    }
+                     
+                }
+                else if(nextTarg<=85){
+                   // console.log('中了橘子')
+                    var sw=this.randomGL();
+                    if(sw<=15){
+                        this.nextTarget = 15;
+                    }
+                    else if(sw<=30){
+                        this.nextTarget = 1;
+                    }
+                    else{
+                        this.nextTarget = 17;
+                    }
+                    
+                }
+                else if(nextTarg<=100){
+                   // console.log('中了苹果')
+                    var sw=this.randomGL();
+                    if(sw<=15){
+                        this.nextTarget = 7;
+                    }
+                    else if(sw<=30){
+                        this.nextTarget = 13;
+                    }
+                    else if(sw<=45){
+                        this.nextTarget = 21;
+                    }
+                    else if(sw<=60){
+                        this.nextTarget = 27;
+                    }
+                    else if(sw<=75){
+                        this.nextTarget = 0;
+                    }
+                    else if(sw<=90){
+                        this.nextTarget = 8;
+                    }
+                    else{
+                        this.nextTarget = 14;
+                    }
+                     
+                }
+                
+
+                //计算跑动距离，如果压分为0，不跑动
+                var juli = this.nextTarget - this.lastPos;
+                if(juli<0){
+                    //console.log("计算跑动距离"+juli )
+                    juli=28-Math.abs(this.nextTarget - this.lastPos);
+                }
+                 
+               // console.log("计算跑动距离"+juli+"===Target="+this.nextTarget+",上次位置"+this.lastPos)
+                this.zc = 28 * 3 + juli;
+                this.jd = Math.round(this.zc / 6); //至少6个阶段             
+                var yafen = this.bar + this.s7 + this.sx + this.xg + this.ld + this.mg + this.jz + this.pg;
+                if (yafen == 0) {
+                    this.$message({
+                        message: '请先投注在操作！',
+                        type: 'error'
+                    });
+                    this.flag=false; 
+                    return;
+                }
+
+
+                //消分操作完成后，随机出现达到大三元，小三元，小四喜。
+                //根据出现的随机数概率，判断走哪条路线。
+                this.teshu=this.randomGL();
+
+                if(this.teshu<=3){
+                    //闪灯气氛
+                   // console.log("大三元，小三元，小四喜="+this.teshu);
+                    this.shandeng();
+                    //闪灯结束
+                    this.lastPos=0;
+                    return; 
+                }
+
+               
+
+                
+           
+                
+                if(this.zf>=yafen){
+                    //准备跑圈，禁止按钮设置
+                    this.flag=true;
+                    this.ddd();
+                }
+                else{
+                    this.$message({
+                        message: '跟注积分不足，请充值！',
+                        type: 'error'
+                    });
+                    return;
+                }
+                
+ 
+                
+                //扣除押注分。
+                
+                if(this.zf>=yafen){
+                    console.log('扣除押注分'+yafen)
+                    this.zf=this.zf+this.shishik-yafen;
+                    this.updateJiFen('下注',yafen);
+                } 
+
+
+            }
+        },
+     
+    })
+ 
+ 
+</script>
+
+</html>
