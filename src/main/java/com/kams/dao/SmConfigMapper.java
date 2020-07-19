@@ -36,6 +36,10 @@ public interface SmConfigMapper {
 
 	List<SmConfig> getZhiRi();
 
+	List<SmConfig> getNextUser();
+
+	List<SmConfig> getCurrentZhiRi();
+
 	List<SmConfig> getCount();
 
 	void setCount(SmConfig smConfig);

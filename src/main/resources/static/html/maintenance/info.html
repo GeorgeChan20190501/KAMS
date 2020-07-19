@@ -267,9 +267,16 @@ var vm=new Vue({
 	  			this.res='未响应'
 	  		}
 	  		if(val==2){
-	  			this.dak='已打卡'
-	  			this.ok='已通知'
-	  			this.res='未响应'
+	  		    //判读通知时间是否符合范围
+	  		    var current =new Date();
+	  		    if(current.getHours()<=17){
+	  		    	this.tongzhi('提示：',"请于工作日下午17:00之后再交接！","error");
+	  		    	return;
+	  		    }
+	  			this.dak='已打卡';
+	  			this.ok='已通知';
+	  			this.res='未响应';
+	  			
 	  		}
 	  		if(val==3){
 	  			this.dak='已打卡'

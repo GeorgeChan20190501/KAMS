@@ -142,7 +142,15 @@ public class AppConfigService {
 	}
 
 	public List<SmConfig> getZhiRi() {
+		// 读取到1078
+		List<SmConfig> cur = smConfigMapper.getCurrentZhiRi();
+		if (cur.get(0).getId() == 1079) {
+			System.out.println("最后一人读取方案生效");
+			List<SmConfig> lastUser = smConfigMapper.getNextUser();
 
+			return lastUser;
+		}
+		System.out.println("没有生效");
 		return smConfigMapper.getZhiRi();
 	}
 
@@ -197,8 +205,9 @@ public class AppConfigService {
 			} else if (toUser.contains("george")) {
 				ccUser = "kevin.li@metlife.com,327052186@qq.com";
 			}
-			serviceMonitorService.sendEmail(toUser, ccUser, "INC监控轮值", "Hi " + nextUser
-					+ ",<p/>&nbsp;&nbsp;下一个工作日INC监控轮值到你啦！请今天务必到AMS运维管理系统中进行打卡响应，申明你已知晓。地址：http://10.164.25.148:9082/ &nbsp;&nbsp;<p/><p/>AMS运维团队");
+			serviceMonitorService.sendEmail(toUser, ccUser, "INC监控轮值", "Hi " + nextUser + ",<p/>&nbsp;&nbsp; "
+					+ currentUser
+					+ "想要和你进行INC监控交接！请到AMS运维管理系统中进行打卡响应，与TA完成交接吧！。地址：http://10.164.25.148:9082/html/logon.html  &nbsp;&nbsp;<p/><p/>AMS运维团队");
 
 			// 说明已经发送邮件了；
 			SmConfig smConfig = new SmConfig();
@@ -220,6 +229,14 @@ public class AppConfigService {
 		if (count != 3) {
 			logger.info("下一人未响应，不重置打卡人");
 			// System.out.println("下一人未响应，不重置打卡人");
+			return;
+		}
+		// 如果是最后1人，需要轮回。
+		// 获取当前监控人。
+		List<SmConfig> cur = smConfigMapper.getCurrentZhiRi();
+		if (cur.get(0).getId() == 1079) {
+			System.out.println("最后一人重置方案生效");
+			smDakarecordMapper.resetDakaTail();
 			return;
 		}
 		smDakarecordMapper.resetDaka();

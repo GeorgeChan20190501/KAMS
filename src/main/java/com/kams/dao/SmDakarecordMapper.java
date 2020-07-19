@@ -28,4 +28,6 @@ public interface SmDakarecordMapper {
 
 	void resetDaka();
 
+	void resetDakaTail();
+
 }

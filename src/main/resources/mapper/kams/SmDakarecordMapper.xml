@@ -213,6 +213,12 @@
 		update sm_dakaRecord set active='0',update_time=(select CONVERT(varchar(100), GETDATE(), 120)) where id='1';
 </update>
 
- 
+<update id="resetDakaTail">
+		update sm_config set chk='0' where type='daka' and chk='1';
+		update sm_config set chk='1' where type='daka' and id='1056'
+		update sm_dakaRecord set active='0',update_time=(select CONVERT(varchar(100), GETDATE(), 120)) where id='1';
+</update>
+
+
   
 </mapper>

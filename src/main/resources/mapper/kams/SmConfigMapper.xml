@@ -297,6 +297,15 @@
 			UNION 
 			SELECT id,type,ckey,chk FROM  sm_config where type='daka'  and id= (SELECT top 1 id+1 FROM  sm_config where type='daka' and chk='1')
   </select>
+    <select id="getNextUser" resultMap="BaseResultMap">
+  			SELECT id,type,ckey,chk FROM  sm_config where type='daka' and chk='1'
+			UNION 
+			SELECT id,type,ckey,chk FROM  sm_config where type='daka'  and id='1056'
+  </select>
+  
+  <select id="getCurrentZhiRi" resultMap="BaseResultMap">
+  			SELECT id,type,ckey,chk FROM  sm_config where type='daka' and chk='1'
+  </select>
 
 
     <select id="getCount"  resultMap="BaseResultMap">
