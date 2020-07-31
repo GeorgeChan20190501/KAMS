@@ -4,11 +4,17 @@
   <resultMap id="BaseResultMap" type="com.kams.bean.SmGonggao">
     <result column="id" jdbcType="INTEGER" property="id" />
     <result column="title" jdbcType="VARCHAR" property="title" />
-    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="discrib" jdbcType="VARCHAR" property="discrib" />
     <result column="timestamp" jdbcType="CHAR" property="timestamp" />
     <result column="type" jdbcType="VARCHAR" property="type" />
-    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="contentType" jdbcType="VARCHAR" property="contenttype" />
     <result column="href" jdbcType="VARCHAR" property="href" />
+    <result column="views" jdbcType="VARCHAR" property="views" />
+    <result column="favo" jdbcType="VARCHAR" property="favo" />
+    <result column="commNum" jdbcType="VARCHAR" property="commnum" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="is_Hot" jdbcType="CHAR" property="isHot" />
+    <result column="bg" jdbcType="VARCHAR" property="bg" />
     <result column="update_time" jdbcType="CHAR" property="updateTime" />
     <result column="chk" jdbcType="CHAR" property="chk" />
   </resultMap>
@@ -74,7 +80,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, title, content, timestamp, type, icon, href, update_time, chk
+    id, title, discrib, timestamp, type, contentType, href, views, favo, commNum, author, 
+    is_Hot, bg, update_time, chk
   </sql>
   <sql id="Blob_Column_List">
     artical
@@ -120,13 +127,17 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.kams.bean.SmGonggao">
-    insert into sm_gonggao (id, title, content, 
-      timestamp, type, icon, 
-      href, update_time, chk, artical
+    insert into sm_gonggao (id, title, discrib, 
+      timestamp, type, contentType, 
+      href, views, favo, 
+      commNum, author, is_Hot, 
+      bg, update_time, chk, artical
       )
-    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
-      #{timestamp,jdbcType=CHAR}, #{type,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
-      #{href,jdbcType=VARCHAR}, #{updateTime,jdbcType=CHAR}, #{chk,jdbcType=CHAR}, #{artical,jdbcType=LONGVARCHAR}
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{discrib,jdbcType=VARCHAR}, 
+      #{timestamp,jdbcType=CHAR}, #{type,jdbcType=VARCHAR}, #{contenttype,jdbcType=VARCHAR}, 
+      #{href,jdbcType=VARCHAR}, #{views,jdbcType=VARCHAR}, #{favo,jdbcType=VARCHAR}, 
+      #{commnum,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, #{isHot,jdbcType=CHAR}, 
+      #{bg,jdbcType=VARCHAR}, #{updateTime,jdbcType=CHAR}, #{chk,jdbcType=CHAR}, #{artical,jdbcType=LONGVARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.kams.bean.SmGonggao">
@@ -138,8 +149,8 @@
       <if test="title != null">
         title,
       </if>
-      <if test="content != null">
-        content,
+      <if test="discrib != null">
+        discrib,
       </if>
       <if test="timestamp != null">
         timestamp,
@@ -147,11 +158,29 @@
       <if test="type != null">
         type,
       </if>
-      <if test="icon != null">
-        icon,
+      <if test="contenttype != null">
+        contentType,
       </if>
       <if test="href != null">
         href,
+      </if>
+      <if test="views != null">
+        views,
+      </if>
+      <if test="favo != null">
+        favo,
+      </if>
+      <if test="commnum != null">
+        commNum,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="isHot != null">
+        is_Hot,
+      </if>
+      <if test="bg != null">
+        bg,
       </if>
       <if test="updateTime != null">
         update_time,
@@ -170,8 +199,8 @@
       <if test="title != null">
         #{title,jdbcType=VARCHAR},
       </if>
-      <if test="content != null">
-        #{content,jdbcType=VARCHAR},
+      <if test="discrib != null">
+        #{discrib,jdbcType=VARCHAR},
       </if>
       <if test="timestamp != null">
         #{timestamp,jdbcType=CHAR},
@@ -179,11 +208,29 @@
       <if test="type != null">
         #{type,jdbcType=VARCHAR},
       </if>
-      <if test="icon != null">
-        #{icon,jdbcType=VARCHAR},
+      <if test="contenttype != null">
+        #{contenttype,jdbcType=VARCHAR},
       </if>
       <if test="href != null">
         #{href,jdbcType=VARCHAR},
+      </if>
+      <if test="views != null">
+        #{views,jdbcType=VARCHAR},
+      </if>
+      <if test="favo != null">
+        #{favo,jdbcType=VARCHAR},
+      </if>
+      <if test="commnum != null">
+        #{commnum,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="isHot != null">
+        #{isHot,jdbcType=CHAR},
+      </if>
+      <if test="bg != null">
+        #{bg,jdbcType=VARCHAR},
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=CHAR},
@@ -211,8 +258,8 @@
       <if test="record.title != null">
         title = #{record.title,jdbcType=VARCHAR},
       </if>
-      <if test="record.content != null">
-        content = #{record.content,jdbcType=VARCHAR},
+      <if test="record.discrib != null">
+        discrib = #{record.discrib,jdbcType=VARCHAR},
       </if>
       <if test="record.timestamp != null">
         timestamp = #{record.timestamp,jdbcType=CHAR},
@@ -220,11 +267,29 @@
       <if test="record.type != null">
         type = #{record.type,jdbcType=VARCHAR},
       </if>
-      <if test="record.icon != null">
-        icon = #{record.icon,jdbcType=VARCHAR},
+      <if test="record.contenttype != null">
+        contentType = #{record.contenttype,jdbcType=VARCHAR},
       </if>
       <if test="record.href != null">
         href = #{record.href,jdbcType=VARCHAR},
+      </if>
+      <if test="record.views != null">
+        views = #{record.views,jdbcType=VARCHAR},
+      </if>
+      <if test="record.favo != null">
+        favo = #{record.favo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commnum != null">
+        commNum = #{record.commnum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.author != null">
+        author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isHot != null">
+        is_Hot = #{record.isHot,jdbcType=CHAR},
+      </if>
+      <if test="record.bg != null">
+        bg = #{record.bg,jdbcType=VARCHAR},
       </if>
       <if test="record.updateTime != null">
         update_time = #{record.updateTime,jdbcType=CHAR},
@@ -244,11 +309,17 @@
     update sm_gonggao
     set id = #{record.id,jdbcType=INTEGER},
       title = #{record.title,jdbcType=VARCHAR},
-      content = #{record.content,jdbcType=VARCHAR},
+      discrib = #{record.discrib,jdbcType=VARCHAR},
       timestamp = #{record.timestamp,jdbcType=CHAR},
       type = #{record.type,jdbcType=VARCHAR},
-      icon = #{record.icon,jdbcType=VARCHAR},
+      contentType = #{record.contenttype,jdbcType=VARCHAR},
       href = #{record.href,jdbcType=VARCHAR},
+      views = #{record.views,jdbcType=VARCHAR},
+      favo = #{record.favo,jdbcType=VARCHAR},
+      commNum = #{record.commnum,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      is_Hot = #{record.isHot,jdbcType=CHAR},
+      bg = #{record.bg,jdbcType=VARCHAR},
       update_time = #{record.updateTime,jdbcType=CHAR},
       chk = #{record.chk,jdbcType=CHAR},
       artical = #{record.artical,jdbcType=LONGVARCHAR}
@@ -260,11 +331,17 @@
     update sm_gonggao
     set id = #{record.id,jdbcType=INTEGER},
       title = #{record.title,jdbcType=VARCHAR},
-      content = #{record.content,jdbcType=VARCHAR},
+      discrib = #{record.discrib,jdbcType=VARCHAR},
       timestamp = #{record.timestamp,jdbcType=CHAR},
       type = #{record.type,jdbcType=VARCHAR},
-      icon = #{record.icon,jdbcType=VARCHAR},
+      contentType = #{record.contenttype,jdbcType=VARCHAR},
       href = #{record.href,jdbcType=VARCHAR},
+      views = #{record.views,jdbcType=VARCHAR},
+      favo = #{record.favo,jdbcType=VARCHAR},
+      commNum = #{record.commnum,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      is_Hot = #{record.isHot,jdbcType=CHAR},
+      bg = #{record.bg,jdbcType=VARCHAR},
       update_time = #{record.updateTime,jdbcType=CHAR},
       chk = #{record.chk,jdbcType=CHAR}
     <if test="_parameter != null">
@@ -272,11 +349,49 @@
     </if>
   </update>
   
-  <select id="fenyeQueryGongGao" resultMap="BaseResultMap">
-  			select * from sm_gonggao ORDER BY timestamp desc
+   <select id="fenyeQueryGongGao" resultMap="BaseResultMap"  parameterType="com.kams.bean.SmGonggao" >
+  			select * from sm_gonggao 
+  			<where>
+				<if test="type != null  and type !='' ">
+					and type = #{type}
+				</if>
+				<if test="author != null  and author !='' ">
+					and author = #{author}
+				</if>
+				<if test="contenttype != null  and contenttype !='' ">
+					and contentType = #{contenttype}
+				</if>
+				<if test="commnum != null  and commnum !='' ">
+					and commNum = #{commnum}
+				</if>
+				<if test="title != null  and title !='' ">
+					and title = #{title}
+				</if>
+				<if test="updateTime != null  and updateTime !='' ">
+					and update_time = #{updateTime}
+				</if>
+			</where>
+  			ORDER BY timestamp desc
   </select>
   
   <insert id="addGongGao"  parameterType="com.kams.bean.SmGonggao" >
-  			insert into sm_gonggao values(#{title},#{content},(select CONVERT(varchar(100), GETDATE(), 120)),'primary','el-icon-more',(CONCAT('link',(select replace(replace(replace(CONVERT(varchar, getdate(), 120 ),'-',''),' ',''),':','')))),#{artical},(select CONVERT(varchar(100), GETDATE(), 120)),'0');
+  			insert into sm_gonggao values(#{title},#{discrib},(select CONVERT(varchar(100), GETDATE(), 120)),#{type},#{contentType},(CONCAT('link',(select replace(replace(replace(CONVERT(varchar, getdate(), 120 ),'-',''),' ',''),':','')))),#{artical},'0','0','0',#{author},'0',#{bg},(select CONVERT(varchar(100), GETDATE(), 120)),'0');
   </insert>
+  
+  <select id="getHotAatical" resultMap="BaseResultMap" >
+  			select top 6 * from sm_gonggao where is_Hot='1'
+  </select>
+  
+  <select id="searchFunc"  parameterType="string" resultMap="BaseResultMap"  >
+  			select  * from sm_gonggao where type='artical' and(title like concat(concat('%',#{key}),'%')   or discrib like concat(concat('%',#{key}),'%')  
+  			 or contentType  like concat(concat('%',#{key}),'%')  or  artical like concat(concat('%',#{key}),'%')) ; 
+  </select>
+  
+  <select id="searchArtByType"  parameterType="string" resultMap="BaseResultMap"  >
+  			select  *  from sm_gonggao where type='artical' and contentType =#{key}  
+  </select>
+  
+  <update id="jiajing" parameterType="int">
+  			update sm_gonggao set is_Hot='1' where id=#{id}
+  </update>
 </mapper>

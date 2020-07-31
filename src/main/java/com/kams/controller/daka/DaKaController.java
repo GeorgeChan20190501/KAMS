@@ -71,8 +71,12 @@ public class DaKaController {
 
 	@PostMapping("/fenyeQueryGongGao")
 	public Map<String, Object> fenyeQueryGongGao(@RequestBody String param) {
-		System.out.println("公告参数===" + param);
-		List<SmGonggao> list = appConfigService.fenyeQueryGongGao();
+		System.out.println("参数===" + param);
+		JsonReqObject jsonReqObject = JSONArray.parseObject(param, JsonReqObject.class);
+		String obj = jsonReqObject.getMsg();
+		SmGonggao smGonggao = JSONArray.parseObject(obj, SmGonggao.class);
+
+		List<SmGonggao> list = appConfigService.fenyeQueryGongGao(smGonggao);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("list", list);
 		return map;
@@ -80,14 +84,14 @@ public class DaKaController {
 
 	@PostMapping("/addGongGao")
 	public String addGongGao(@RequestBody String param) {
-		System.out.println("公告参数===" + param);
+		System.out.println("参数===" + param);
 		JsonReqObject jsonReqObject = JSONArray.parseObject(param, JsonReqObject.class);
 		String obj = jsonReqObject.getMsg();
 		SmGonggao smGonggao = JSONArray.parseObject(obj, SmGonggao.class);
 
 		int a = appConfigService.addGongGao(smGonggao);
 		if (a > 0) {
-			return "恭喜，公告发布成功！";
+			return "发布成功，已进入审核状态，请耐心等待!";
 		} else {
 			return "发布异常，请查看日志！";
 		}
@@ -95,13 +99,13 @@ public class DaKaController {
 
 	@PostMapping("/delGongGao")
 	public String delGongGao(@RequestBody String param) {
-		System.out.println("删除公告参数===" + param);
+		System.out.println("删除参数===" + param);
 		JsonReqObject jsonReqObject = JSONArray.parseObject(param, JsonReqObject.class);
 		String id = jsonReqObject.getMsg();
 
 		int a = appConfigService.delGongGao(id);
 		if (a > 0) {
-			return "公告删除成功！";
+			return "删除成功！";
 		} else {
 			return "删除异常，请查看日志！";
 		}

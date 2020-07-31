@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AMS知识库</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="/js/vue.js"></script>
+<script src="/js/axios.js"></script>
+<script src="/js/index.js"></script>
+<script src="/js/component/elementUI/index.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/component/Ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/component/Ueditor/ueditor.all.min.js"> </script>
+    <!--建议手动加载语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+    <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+ <script type="text/javascript" charset="utf-8" src="/js/component/Ueditor/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript" src="/js/component/emoji/js/lan-emoji.js"></script>
+<link rel="stylesheet" href="/js/component/emoji/css/lan-emoji.css">
+<link rel="stylesheet" href="/js/component/emoji/css/index.css">
+<link rel="stylesheet" type="text/css"  href="/js/component/elementUI/theme-chalk/index.css" />
+<link rel="icon" href='/images/icon1.png' />
+<!-- 系统CSS或JS -->
+<link rel="stylesheet" href="/css/systab.css">
+
+<style>
+	.el-card__body{
+		padding:0;
+	}
+	.ccc{
+		color:rgb(249,184,38);
+	}
+	 
+</style>
+<body onkeydown="keyEnter();" >
+	<div id="app">
+		 <div v-if="hidd">
+		 <div v-if="hidd1">
+		  <div class=' myfont' style="padding-top:1px">
+		   	<el-row>
+			<el-col :span="24">
+			
+			<div class="bg-content">
+					<div class='bh2'  ></div>
+					<el-row type="flex" justify="center"> 
+							<div>
+									<div class="searchborder"><input class="search"  placeholder="搜索文章.."   v-model="searchContent"/></div><el-button class="searchbtn"   type="primary" icon="el-icon-search" @click="searchA">搜索</el-button>
+							</div>
+					</el-row>
+					<div class='bh1'  ></div>
+					<el-row type="flex" justify="center"> 
+							<div class="myfont" style="font-size:12px; ">
+		 							<el-link  @click="searchArtByType('java')">Java基础</el-link> | <el-link  @click="searchArtByType('data')">大数据</el-link> | <el-link  @click="searchArtByType('micro')">微服务</el-link> | <el-link  @click="searchArtByType('web')">Java Web</el-link> | <el-link  @click="searchArtByType('python')">人工智能</el-link> | <el-link  @click="searchArtByType('BT')">区块链</el-link> | <el-link  @click="searchArtByType('node')">Node/Vue</el-link> | <el-link  @click="searchArtByType('wechat')">小程序微商城</el-link>
+							</div>
+					</el-row>
+					<div class='bh1'  ></div>
+					<el-row type="flex" justify="end" class="myfont" > 
+							<el-col :span="2">
+									<el-button  type="text"  @click="searchArtByType('ams')">
+											<i class="el-icon-location"  type="primary"></i>
+				          					<span>企业知识</span>
+				          			</el-button>
+          					</el-col>
+          					<el-col  :span="2">
+          							 <el-button type="text" @click="hidd=!hidd" onclick=" UE.getEditor('editor').setShow()">
+									 <i class="el-icon-edit-outline"  type="primary"></i>
+		          					<span>发布文章</span>
+		          					</el-button>
+          					</el-col>
+					</el-row>
+					</div>
+ 
+				<div class='bh3'  ></div>
+			  
+			  <div class="bg-content">
+			  <div class='bh1'  ></div>
+  			  <el-row>
+  			  <el-col  :span="17">
+	 			  <div v-for="(activity, index) in tableData">
+	      				<el-card  style="height:40px; padding:10px;"  >
+	      						<el-row>   
+	      						    <el-col :span="2" ><el-tag type="danger"  class="el-icon-s-flag" size="small"  style="margin-top:10px;">{{activity.contentType}}</el-tag> </el-col> 
+	      							<el-col :span="16"  >
+	      								<span class="myfont" style="font-weight:bold;font-size:16px">{{activity.title}}</span><br/>
+	        							<el-link   @click="readArtical (activity.artical,activity.title,activity.contentType,activity.id,activity.author,activity.timestamp)" ><span style="line-height:30px;"><span style="color: rgb(245,108,108)">(摘要) </span> {{activity.discrib}}</span></el-link>
+	        						</el-col>
+	        						<el-col :span="4" style="margin-top:25px">	
+	        							<i class="el-icon-view"> {{activity.views}} </i>&nbsp;&nbsp; <i class="el-icon-star-off">  {{activity.favo}}</i>&nbsp;&nbsp; <i class="el-icon-chat-dot-square"> {{activity.commnum}}</i>
+	        						</el-col>
+				        			 
+				        			<el-col :span="2" >	
+				        					<el-button type="danger" size="mini" style="margin-top:20px;height:20px;padding:2px;width:30px;" @click="delGongGao(activity.id)"  v-show=" loginUser =='system' ? true : false"  >删除</el-button>
+				        					<el-button type="success" size="mini" style="margin-top:20px;height:20px;padding:2px;width:30px;" @click="jiajing(activity.id)"  v-show=" loginUser =='system' ? true : false"  >加精</el-button>
+				        			</el-col>
+	        				</el-row>		
+	      			 	</el-card>
+	      			 	<div class="bh1"></div>
+	 				</div>
+ 			 </el-col>
+  
+  		<el-col  :span="6" :offset="1">
+   					
+	      				<el-card  style=" padding:10px;"  >
+	      					<el-row class="myfont" style="color: rgb(245,108,108)">最新推荐</el-row>		
+	      					<el-divider></el-divider>
+	      					<div v-for="(activity, index) in hotAatical">
+	      						<el-row>    		
+	      							<el-col :span="3">
+	      							    <div class="demo-fit">
+											        <el-avatar shape="square" :size="41"   :style="{background: activity.bg , color:'white'}">{{activity.contentType}}</el-avatar>
+										</div>
+	      							</el-col>
+	      							<el-col :span="21">
+	        							<el-link   @click="readArtical (activity.artical,activity.title,activity.contenttype,activity.id,activity.author)" ><span style=" color:rgb(64,158,255) ;font-size:12px"><span style="color: rgb(245,108,108)">(摘要) </span>{{activity.discrib}}</span></el-link>
+	        						</el-col>
+	        				</el-row>	
+	        				<div class="bh1"></div>
+	        				</div>
+	      			 	</el-card>
+	      			 	
+	      			 	
+	 				
+  
+  </el-col>
+  </el-row>
+   </div>
+			  	<el-row type="flex" justify="center">
+			  <div  style="margin-top:30px;">
+					<el-pagination  @size-change="handleSizeChange"  @current-change="handleCurrentChange"
+					 		  :current-page="paginations.page_index"
+							  :page-sizes="paginations.page_sizes"
+							  :page-size="paginations.page_size"
+							  :layout="paginations.layout"
+							  :total="paginations.total">
+					</el-pagination>
+			</div>
+				</el-row>
+		</el-col>
+		  	 
+			
+		</el-row>
+		
+		
+	</div>
+	 </div>
+ </div>
+ 	
+ 	<div v-show="!hidd1">
+ 			 <div class="bg-content"  style="min-height:600px;position:relative;">
+ 			 <el-breadcrumb separator-class="el-icon-arrow-right">
+ 			 	  <el-breadcrumb-item>当前位置</el-breadcrumb-item>
+				  <el-breadcrumb-item>AMS知识库</el-breadcrumb-item>
+				  <el-breadcrumb-item>文章阅读</el-breadcrumb-item>
+				  <el-breadcrumb-item>{{contentType1}}</el-breadcrumb-item>
+				  <el-breadcrumb-item>{{title1}}</el-breadcrumb-item>
+				  <div style= "position:absolute; right:20px;" class="myfont">
+				  			作者：<span style="color:rgb(64,158,255)">{{author}}</span> &nbsp;&nbsp;&nbsp;&nbsp; 发表时间：{{artitime}}
+				  </div>
+			</el-breadcrumb>
+			
+			<el-divider></el-divider>
+ 			<span v-html="arti"></span>
+ 			     
+ 			<div class='bh3'></div>
+ 			
+   		 	</div>
+   		 	<div class='bg-content'>
+   		 	<el-row>
+   		 			<el-col :span="22">
+   		 	 				<el-button @click="ret1()"  type="primary" size="mini" >返回</el-button>	
+   		 	 		</el-col>		
+   		 			
+   		 			<el-col :span="2">
+   		 			<el-button  type="text" @click="dianz"  style="color:rgb(245,108,108)">赞一个<i :class="[xing ,'el-icon--right']"></i></el-button>
+   		 			</el-col>
+   		 	</el-row>
+   		 	</div>
+   		 	<div class='bh3'></div>
+   		 	<div>
+ 			<el-input  type="text" placeholder="亲，说点什么吧..." v-model="comm"  style="width:95%" ></el-input> <el-button @click="deployComm(artiId)" type="primary">评论</el-button>		   	        
+			</div>
+			<div class='bh3'></div>
+				<el-card  style=" padding:10px;"  >
+	      					<el-row class="myfont" style="color: rgb(245,108,108)">	最新评论</el-row>		
+	      					<el-divider></el-divider>
+	      					<div  v-for="(item,index) in comms" >
+	      						<el-row class="myfont" style="border-bottom:1px solid rgb(242,242,242)">    		
+	      							<el-col :span="1">
+	      							    <div class="demo-fit">
+											        <el-avatar shape="circle" :size="30"   :style="{color:'white' ,background: item.cval1}">{{item.commentuser | formatAvatar}}</el-avatar>
+										</div>
+	      							</el-col>
+	      							<el-col :span="23" style="margin-left:-20px;">
+	      							<el-row>
+	        							<el-col :span="22">{{item.commentuser}} </el-col>
+	        							<el-col :span="1">#{{order-index}} </el-col>
+	        							<el-col :span="1"> <el-button type="danger" size="mini" style="height:20px;padding:2px;width:30px;" @click=" delComm (item.id)"  v-show=" loginUser =='system' ? true : false"  >删除</el-button></el-col>
+	        						</el-row>
+	        						<span >{{item.comment}}</span>
+	        						</el-col>
+	        				</el-row>	
+	        				<div class="bh1"></div>
+	        				</div>
+	      			 	</el-card>
+ 	</div>
+ 	
+ 	
+ 		<div v-show="!hidd"><span id="editor" type="text/plain"  style="height:600px;width:100%"></span>
+ 			 <div class='bh3'></div>
+			 <el-row type="flex"  justify="end">
+			 		<el-button @click="ret()"  type="primary">返回</el-button>
+			 		<el-button onclick="setContent()"type="warning">修改</el-button>
+			 		<el-button   type="success"  :disabled="disa"  @click="comfir">确认</el-button>
+   		 	</el-row>
+		</div>
+			 <el-dialog title="发布文章" :visible.sync="dialogFormVisible"   :before-close="handleClose" >
+  <el-form :model="form"  label-position="top"   :rules="rules" ref="form"  class="demo-ruleForm">
+  	<el-form-item label="文章标题" prop="title">
+    <el-input v-model="form.title"></el-input>
+  </el-form-item>
+   <el-form-item label="文章分类" prop="discrib">
+      <el-select v-model="form.contenttype" placeholder="请选择活动区域">
+        <el-option label="Java" value="java"></el-option>
+        <el-option label="大数据" value="data"></el-option>
+        <el-option label=".Net" value=".Net"></el-option>
+        <el-option label="Java Web" value="web"></el-option>
+        <el-option label="AMS" value="ams"></el-option>
+        <el-option label="微服务" value="micro"></el-option>
+         <el-option label="人工智能" value="python"></el-option>
+          <el-option label="区块链" value="BT"></el-option>
+          <el-option label="Node | Vue" value="node"></el-option>
+           <el-option label="微信公众号/微信小程序" value="wechat"></el-option>
+        <el-option label="其他" value="other"></el-option>
+      </el-select>
+  </el-form-item>
+  <el-form-item label="文章简述" prop="discrib">
+    <el-input v-model="form.discrib"></el-input>
+  </el-form-item>
+    <el-form-item label="文章内容：" prop="artical">
+      <el-input v-model="form.artical" autocomplete="off"  type="textarea"  :rows="5"  disabled></el-input>
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisible = false">取 消</el-button>
+    <el-button type="primary" @click="deployed">发 布</el-button>
+  </div>
+</el-dialog>
+ </div>
+</body>
+<script>
+var vm=new Vue({
+  el: '#app',
+  data : {
+	  comm:'',
+	  comms:[],
+	  search:'',
+	  activeIndex: '1',
+      activeIndex2: '1',
+	  hidd:true,
+	  hidd1:true,
+	  reverse: false,
+	  bg:'#333',
+	  searchContent:'',
+      gonggao: [],
+      arti:'',
+      title1:'',
+      artiId:'',
+      author:'',
+      artitime:'',
+      xing:'el-icon-star-off',
+      contentType1:'',
+      disa: false,
+	  loginUser:'',
+	  order:1,
+	  dialogFormVisible: false,
+	     form: {
+	     	title:'',
+	     	discrib: '',
+	     	contenttype:'',
+	     	artical:'',
+	       },
+      rules: {
+      title: [
+          { required: true, message: '请输入文章主题', trigger: 'blur' },
+          { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+        ],
+        discrib: [
+          { required: true, message: '请输入文章简述', trigger: 'blur' },
+          { min: 10, max: 40, message: '长度在 10 到 40 个字符', trigger: 'blur' }
+        ],
+        contenttype: [
+            { required: true, message: '请输入文章类别', trigger: 'blur' }
+          ],
+        artical: [
+      	 { required: true, message: '请输入文章正文',trigger: 'blur' }
+        ]
+      
+      },
+      hotAatical:[],
+	  info: [],
+      tableData:[], //数据
+	  paginations:{
+			page_index:1, //当前页
+			total:0, //总数
+			page_size:6, //一页显示多少
+			page_sizes:[3,6,15,20], //每页显示多少条
+			layout:'prev, pager, next, jumper, sizes,total '
+		},
+      allTableData:[]  ,
+      currentPage:1,
+    
+  },
+   mounted () {
+	     this.getArtical();
+ 		 this.setLogin();
+ 		 this.getHotAatical();
+  }, 
+  filters:{
+		formatAvatar(value){	
+			    var avatar=value.toUpperCase().substring(0,1);
+				return avatar;
+		}	
+	},
+
+    methods:{
+    	jiajing(id){
+    		//文章加精
+    		axios({
+     			  method: 'post',           
+     			  url: '/jiajing',  								
+     			  data: {		
+     						msg:  id,
+     			  },
+     			}).then(res=>{ 
+     				var msg=res.data;
+       				if(msg.indexOf('成功')!=-1){this.message(msg,"success");}else{this.message(msg,"error");}	 
+     			} ,error=>{			
+     			}); 
+    	},
+    	searchArtByType(type){
+    		axios({
+   			  method: 'post',           
+   			  url: '/searchArtByType',  								
+   			  data: {		
+   						msg:  type,
+   			  },
+   			}).then(res=>{ 
+     				    var data=res.data.list;
+     				    if(data.length==0 ){
+     				    	this.message("没有搜索到结果！","info");
+     				    	return;
+     				    }
+     				    else{
+     				    	this.tableData=data;
+     				    }
+   			} ,error=>{			
+   			}); 
+    	},
+    	searchA(){
+    		var content=this.searchContent;
+    		if(content=='' || content==null){
+    			this.message("请输入搜索关键字!","error");
+    			return ;
+    		}
+    		
+    		axios({
+     			  method: 'post',           
+     			  url: '/searchFunc',  								
+     			  data: {		
+     						msg:  content,
+     			  },
+     			}).then(res=>{ 
+     				   var a=[];
+     				    var data=res.data.list;
+     				    if(data.length==0 ){
+     				    	this.message("没有搜索到结果！","info");
+     				    	return;
+     				    }
+     				    else{
+     				    	this.tableData=data;
+     				    }
+  						
+     			} ,error=>{			
+     			}); 
+    		
+    	},
+    	dianz(){
+    		var a=this.xing;
+    		var count=1;
+    		if(a=='el-icon-star-on'){
+    			this.xing='el-icon-star-off';
+    			count=-1;
+    		}
+    		if(a=='el-icon-star-off'){
+    			this.xing='el-icon-star-on';
+    		}
+    		
+    		//防止无限赞。
+    		axios({
+   			  method: 'post',           
+   			  url: '/addFavo',  								
+   			  data: {		
+   						msg:  this.artiId,
+   						msg1: count,
+   						msg2: this.loginUser
+   			  },
+   			}).then(res=>{ 
+						console.log(res.data)
+   			} ,error=>{			
+   			}); 
+    		
+    	},
+    	getHotAatical(){
+    		//获取推荐文章6篇。
+    		axios({
+   			  method: 'post',           
+   			  url: '/getHotAatical',  								
+   			  data: {		
+   						msg: null ,
+   			  },
+   			}).then(res=>{ 
+				  this.hotAatical=res.data.list;
+				  console.log( this.hotAatical)
+   			} ,error=>{			
+   			}); 
+    	},
+    	deployComm(artiId){
+    		console.log('当前发表的评论关联到了ID='+artiId);
+    		var comm=this.comm;
+    		console.log('评论='+comm);
+    		if(comm==null || comm=='' || comm.length==0){
+    			this.message("评论内容不可为空！","error")
+    			return ;
+    		}
+    		//根据当前评论人获取他的名字简称
+    		  var color=this.loginUser.toUpperCase().substring(0,1);
+    		  var cval1=userBG(color);
+    		 axios({
+   			  method: 'post',           
+   			  url: '/deployComm',  								
+   			  data: {		
+   						msg:  {'articalid':artiId,'commentuser':this.loginUser,'comment':comm,'cval1':cval1}
+   			  },
+   			}).then(res=>{ 
+   				var msg=res.data;
+   				this.getArtical();
+   				if(msg.indexOf('成功')!=-1){this.message(msg,"success");}else{this.message(msg,"error");}	 
+   			     
+   			    this.getComms(artiId);
+   			    this.comm='';
+   			} ,error=>{			
+   			});  
+    	},
+    	readArtical(art,title,contentType,id,author,time){
+    		this.hidd1=false;
+    		this.arti=art;
+    		this.title1=title;
+    		this.contentType1=contentType;
+    		this.artiId=id;
+    		this.author=author;
+    		this.artitime=time;
+    		//增加此文章阅读量+1；同一个人单天只能刷1次。
+ 
+    		axios({
+     			  method: 'post',           
+     			  url: '/addView',  								
+     			  data: {		
+     						msg: {'articalid':id,'reader':this.loginUser,'author':author} ,
+     			  },
+     			}).then(res=>{ 
+						console.log(res.data)
+     			} ,error=>{			
+     			}); 
+    		
+    		//获取此文章的所有评论。
+    	    this.getComms(id);
+    		//获取当前登录用户是否点赞过此文章
+    	    this.getIsDZ();
+    		
+    	},
+    	getIsDZ(){
+    		axios({
+   			  method: 'post',           
+   			  url: '/getIsDZ',	
+   			  data: {		
+   					msg:  this.artiId,
+					msg2: this.loginUser
+   			  },
+   			}).then(res=>{ 
+   				var a=res.data; 
+   				if(a=='1'){
+   					this.xing='el-icon-star-on';
+   				}
+   			} ,error=>{			
+   			}); 
+    	},
+    	getComms(id){
+		  //获取评论
+    		axios({
+     			  method: 'post',           
+     			  url: '/getComms',  								
+     			  data: {		
+     						msg:  {'articalid':id}
+     			  },
+     			}).then(res=>{ 
+						this.comms=res.data.list; 
+						this.order=this.comms.length;
+						console.log(this.comms)
+     			} ,error=>{			
+     			}); 
+	    },
+	  handleSelect(key, keyPath) {
+	        console.log(key, keyPath);
+	      },
+	  comfir(){
+		  this.dialogFormVisible = true;
+		  var artical=getContent().join("\n");
+		  this.form.artical=artical;
+	  },
+	  ret(){
+		  this.hidd=!this.hiidd;
+		  this.disa=false;
+		  setEnabled(); 
+	  },
+	  ret1(){
+		  this.hidd1=!this.hiidd1;
+		  this.comm='';
+	  },
+	  deployed(){
+		  ///检查是否有标题，简述，内容
+		 var isEmpty= hasContent().join("\n");
+		 if(isEmpty=='false' || this.form.title=='' || this.form.title ==null ||  this.form.discrib=='' || this.form.discrib ==null||  this.form.contenttype=='' || this.form.contenttype ==null){
+			 this.message('文章标题，简述，发布内容均不能为空!','error');
+			 return;
+		 }
+		 //
+		 var color=this.form.contenttype.toUpperCase().substring(0,1);
+		 console.log("=========color"+color);
+		 var bg=userBG(color);
+		 console.log("========="+bg);
+		 //检查合格，本地保存，状态为审核中，推送管理员审核。
+		this.form.type='artical';
+		this.form.bg=bg;
+		this.form.author=this.loginUser;
+		 axios({
+			  method: 'post',           
+			  url: '/addGongGao',  								
+			  data: {		
+						msg:  this.form
+			  },
+			}).then(res=>{ 
+				var msg=res.data;
+				this.getArtical();
+				if(msg.indexOf('成功')!=-1){this.message(msg,"success");}else{this.message(msg,"error");}	 
+			} ,error=>{			
+			});  
+		 this.disa=true;
+		 this.dialogFormVisible = false
+		 setDisabled();	  
+		
+		  
+	  },
+	  getArtical(){
+		  axios({
+			  method: 'post',           
+			  url: '/fenyeQueryGongGao',  								
+			  data: {		
+						msg:'{"type":"artical"}'
+			  },
+			}).then(res=>{ 
+				var a=res.data.list	;
+				this.allTableData=a;
+				this.setPaginations();
+				 
+			} ,error=>{				
+			}); 
+	  },
+	  
+	  setLogin(){
+		  this.loginUser=localStorage.username.toLowerCase();
+		 
+	  },
+	   
+	  setPaginations(){
+				this.paginations.total = this.allTableData.length; //数据的数量
+				this.paginations.page_index = 1; //默认显示第一页
+				this.paginations.page_size = 6; //每页显示多少数据
+				//显示数据
+				this.tableData = this.allTableData.filter((item,index) => {
+				return index < this.paginations.page_size;
+			})
+		},
+		handleSizeChange(page_size) {
+				this.paginations.page_index = 1; //第一页
+				this.paginations.page_size = page_size; //每页先显示多少数据
+				this.tableData = this.allTableData.filter((item,index) => {
+				return index < page_size
+			})
+		},
+		handleCurrentChange(page){
+			// 跳转页数
+			//获取当前页
+			this.currentPage=page;
+			let index = this.paginations.page_size * (page -1);
+			//获取总数
+			let allData = this.paginations.page_size * page;
+			let tablist=[];
+			for(let i = index;i<allData;i++) {
+				if (this.allTableData[i]) {
+					tablist.push(this.allTableData[i])
+				}
+				this.tableData = tablist
+			}
+		},
+	  	  
+	   
+	      message(msg,type) {   //消息框
+	          this.$message({
+	            message: msg,
+	            type: type
+	          });
+	        }
+	        ,handleClose(done) {
+		        this.$confirm('确认关闭？')
+		          .then(_ => {
+		            done();
+		          })
+		          .catch(_ => {});
+		      },
+	 	 
+	    
+			      
+			      delGongGao(id) {
+				         this.$confirm('确认删除？', '提示', {
+					           confirmButtonText: '确定',
+					           cancelButtonText: '取消',
+					           type: 'warning'
+					         }).then((value ) => {
+					        	 axios({
+					        		 method: 'post',           
+						 			  url: '/delGongGao',  	
+									  data: {		
+										  msg: id
+									  },
+									}).then(res=>{ 			 
+										var msg=res.data;
+						 				this.getArtical();
+						 				if(msg.indexOf('成功')!=-1){this.message(msg,"success");}else{this.message(msg,"error");}
+									} ,error=>{	
+										this.message( "操作异常 !","error")
+									}); 
+					         }).catch((e) => {
+					           this.$message({
+					             type: 'error',
+					             message: '操作取消'
+					           });   
+					           return false;
+					         });
+					       },
+					 delComm(id) {
+						         this.$confirm('确认删除？', '提示', {
+							           confirmButtonText: '确定',
+							           cancelButtonText: '取消',
+							           type: 'warning'
+							         }).then((value ) => {
+							        	 axios({
+							        		 method: 'post',           
+								 			  url: '/delComm',  	
+											  data: {		
+												  msg: id
+											  },
+											}).then(res=>{ 			 
+												var msg=res.data;
+								 				this.getComms(this.artiId);
+								 				if(msg.indexOf('成功')!=-1){this.message(msg,"success");}else{this.message(msg,"error");}
+											} ,error=>{	
+												this.message( "操作异常 !","error")
+											}); 
+							         }).catch((e) => {
+							           this.$message({
+							             type: 'error',
+							             message: '操作取消'
+							           });   
+							           return false;
+							         });
+							       },	       
+					       
+					 	 
+ 	 }
+})
+</script>
+<script type="text/javascript" src="/js/component/Ueditor/ueentity.js"></script>
+  <script>
+        const option = {
+            editor: 'editArea',
+            btn: 'btn',
+            icon: [{
+                path: '/js/component/emoji/img/tieba',
+                alias: {
+                    1: "hehe",
+                    2: "haha",
+                    3: "tushe",
+                    4: "a",
+                    5: "ku",
+                    6: "lu",
+                    7: "kaixin",
+                    8: "han",
+                    9: "lei",
+                    10: "heixian",
+                    11: "bishi",
+                    12: "bugaoxing",
+                    13: "zhenbang",
+                    14: "qian",
+                    15: "yiwen",
+                    16: "yinxian",
+                    17: "tu",
+                    18: "yi",
+                    19: "weiqu",
+                    20: "huaxin",
+                    21: "hu",
+                    22: "xiaonian",
+                    23: "neng",
+                    24: "taikaixin",
+                    25: "huaji",
+                    26: "mianqiang",
+                    27: "kuanghan",
+                    28: "guai",
+                    29: "shuijiao",
+                    30: "jinku",
+                    31: "shengqi",
+                    32: "jinya",
+                    33: "pen",
+                    34: "aixin",
+                    35: "xinsui",
+                    36: "meigui",
+                    37: "liwu",
+                    38: "caihong",
+                    39: "xxyl",
+                    40: "taiyang",
+                    41: "qianbi",
+                    42: "dnegpao",
+                    43: "chabei",
+                    44: "dangao",
+                    45: "yinyue",
+                    46: "haha2",
+                    47: "shenli",
+                    48: "damuzhi",
+                    49: "ruo",
+                    50: "OK"
+                }
+            }]
+        }
+
+        var _emoji = new emoji(option)
+
+        function emojiChange() {
+            _emoji.emojiChange()
+        }
+
+        function emojiParse() {
+            _emoji.emojiParse(document.querySelectorAll('#editArea'))
+        }
+
+        function emojiToggle() {
+            _emoji.toggle()
+        }
+
+       
+
+        var _emoji_ = new emoji(_option)
+
+        function editAreaParse() {
+            _emoji_.emojiParse(document.querySelectorAll('#editAreaParse'))
+        }
+    </script>
+</html>

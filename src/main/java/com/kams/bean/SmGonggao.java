@@ -1,103 +1,163 @@
 package com.kams.bean;
 
 public class SmGonggao {
-    private Integer id;
+	private Integer id;
 
-    private String title;
+	private String title;
 
-    private String content;
+	private String discrib;
 
-    private String timestamp;
+	private String timestamp;
 
-    private String type;
+	private String type;
 
-    private String icon;
+	private String contenttype;
 
-    private String href;
+	private String href;
 
-    private String updateTime;
+	private String views;
 
-    private String chk;
+	private String favo;
 
-    private String artical;
+	private String commnum;
 
-    public Integer getId() {
-        return id;
-    }
+	private String author;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	private String isHot;
 
-    public String getTitle() {
-        return title;
-    }
+	private String bg;
 
-    public void setTitle(String title) {
-        this.title = title == null ? null : title.trim();
-    }
+	private String updateTime;
 
-    public String getContent() {
-        return content;
-    }
+	private String chk;
 
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
-    }
+	private String artical;
 
-    public String getTimestamp() {
-        return timestamp;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp == null ? null : timestamp.trim();
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public String getType() {
-        return type;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
-    }
+	public void setTitle(String title) {
+		this.title = title == null ? null : title.trim();
+	}
 
-    public String getIcon() {
-        return icon;
-    }
+	public String getDiscrib() {
+		return discrib;
+	}
 
-    public void setIcon(String icon) {
-        this.icon = icon == null ? null : icon.trim();
-    }
+	public void setDiscrib(String discrib) {
+		this.discrib = discrib == null ? null : discrib.trim();
+	}
 
-    public String getHref() {
-        return href;
-    }
+	public String getTimestamp() {
+		return timestamp;
+	}
 
-    public void setHref(String href) {
-        this.href = href == null ? null : href.trim();
-    }
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp == null ? null : timestamp.trim();
+	}
 
-    public String getUpdateTime() {
-        return updateTime;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime == null ? null : updateTime.trim();
-    }
+	public void setType(String type) {
+		this.type = type == null ? null : type.trim();
+	}
 
-    public String getChk() {
-        return chk;
-    }
+	public String getContentType() {
+		return contenttype;
+	}
 
-    public void setChk(String chk) {
-        this.chk = chk == null ? null : chk.trim();
-    }
+	public void setContentType(String contenttype) {
+		this.contenttype = contenttype == null ? null : contenttype.trim();
+	}
 
-    public String getArtical() {
-        return artical;
-    }
+	public String getHref() {
+		return href;
+	}
 
-    public void setArtical(String artical) {
-        this.artical = artical == null ? null : artical.trim();
-    }
+	public void setHref(String href) {
+		this.href = href == null ? null : href.trim();
+	}
+
+	public String getViews() {
+		return views;
+	}
+
+	public void setViews(String views) {
+		this.views = views == null ? null : views.trim();
+	}
+
+	public String getFavo() {
+		return favo;
+	}
+
+	public void setFavo(String favo) {
+		this.favo = favo == null ? null : favo.trim();
+	}
+
+	public String getCommnum() {
+		return commnum;
+	}
+
+	public void setCommnum(String commnum) {
+		this.commnum = commnum == null ? null : commnum.trim();
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author == null ? null : author.trim();
+	}
+
+	public String getIsHot() {
+		return isHot;
+	}
+
+	public void setIsHot(String isHot) {
+		this.isHot = isHot == null ? null : isHot.trim();
+	}
+
+	public String getBg() {
+		return bg;
+	}
+
+	public void setBg(String bg) {
+		this.bg = bg == null ? null : bg.trim();
+	}
+
+	public String getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime == null ? null : updateTime.trim();
+	}
+
+	public String getChk() {
+		return chk;
+	}
+
+	public void setChk(String chk) {
+		this.chk = chk == null ? null : chk.trim();
+	}
+
+	public String getArtical() {
+		return artical;
+	}
+
+	public void setArtical(String artical) {
+		this.artical = artical == null ? null : artical.trim();
+	}
 }

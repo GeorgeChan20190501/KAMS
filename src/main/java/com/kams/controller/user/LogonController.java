@@ -36,13 +36,13 @@ public class LogonController {
 	public String logon(@RequestBody String param, HttpServletRequest request) {
 		System.out.println("用户登录参数===" + param);
 		JsonReqObject jsonReqObject = JSONArray.parseObject(param, JsonReqObject.class);
-		String username = jsonReqObject.getMsg();
+		String username = jsonReqObject.getMsg().toLowerCase();
 		String password = jsonReqObject.getMsg1();
 		boolean flag = logonService.checkUser(username, password);
 		if (flag) {
 			HttpSession session = request.getSession(true);
 			session.setAttribute("username", username);
-			session.setMaxInactiveInterval(5 * 60);
+			session.setMaxInactiveInterval(15 * 60);
 		}
 		System.out.println("验证登录flag=" + flag);
 		return flag + "";

@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>欢迎使用KAMS系统</title>
 <script src="/js/vue.js"></script>
-<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+<script src="/js/axios.js"></script>
 <script src="/js/component/elementUI/index.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="/js/component/elementUI/theme-chalk/index.css" />
@@ -93,9 +93,8 @@ el-menu-item {
 				<el-dropdown @command="handleCommand">
   						<span class="el-dropdown-link"> 欢迎您，{{username}}<i class="el-icon-arrow-down el-icon--right"></i></span>
 					  <el-dropdown-menu slot="dropdown">
-					    <el-dropdown-item command="self">个人资料</el-dropdown-item>
+					    <el-dropdown-item command="self" >个人资料</el-dropdown-item>
 					    <el-dropdown-item command="logout">重新登陆</el-dropdown-item>
-					    
 					  </el-dropdown-menu>
 				</el-dropdown>
 			</el-row>
@@ -134,7 +133,18 @@ el-menu-item {
 					style="border: 0; height: 100%; width: 100%;"></iframe>
 			</div>
 		</div>
-
+<el-dialog title="我的信息" :visible.sync="dialogTableVisible"    :before-close="handleClose">
+    <el-table :data="myInfo"  stripe border  height="150px" highlight-current-row  :header-cell-style="{fontSize:'14px',color:'black'}">>
+	      <el-table-column property="account" label="域账号"  width="120" ></el-table-column>
+	      <el-table-column property="username" label="用户名" ></el-table-column>
+	      <el-table-column property="mobile" label="联系" width="300"  ></el-table-column>
+	      <el-table-column property="mail" label="邮箱" min-width="250" ></el-table-column>
+	      <el-table-column property="roleName" label="用户角色" ></el-table-column>
+    </el-table>
+    <span slot="footer" class="dialog-footer">
+    <el-button type="primary" @click="dialogTableVisible= false">确 定</el-button>
+  </span>
+</el-dialog>
 	</div>
 </body>
 <script>
@@ -144,14 +154,29 @@ el-menu-item {
             return {
                 flag: true,
                 username:'',
-                userMenus:[]
+                userMenus:[],
+                dialogTableVisible:false,
+                myInfo: []
             }
         },
         created(){
 			this.getUserName();
 			this.getUserMenu();
+			this.getUserInfo(); //
 		},
         methods: {
+        	getUserInfo(){
+        		axios({
+					method: 'post',
+					url: '/queryUser',
+					data: {
+					    msg:{account:localStorage.username}
+					}
+				}).then(res => {
+						this.myInfo=res.data.list;
+				}, error => {
+				});
+        	},
         	handleOpen(key, keyPath) {
                  
               },
@@ -193,6 +218,12 @@ el-menu-item {
     				}, error => {
     				});
             	}
+            	if(command=='self'){   
+            		this.dialogTableVisible = true 
+            	}
+            
+            	
+            	
               }
             ,
             href(url){

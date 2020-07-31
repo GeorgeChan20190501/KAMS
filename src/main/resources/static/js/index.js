@@ -31,3 +31,94 @@ function href(myhref){
 	ifra.location.href=myhref;
 }
 
+function userBG(item){
+	var bg="Bisque";
+	switch(item){
+		case 'A':
+		   bg="Aqua";
+		   break;
+        case 'B':
+		   bg="Brown";
+		   break;
+		case 'C':
+		   bg="Coral";
+		   break;
+
+		case 'D':
+		   bg="DarkCyan";
+		   break;
+        case 'E':
+		   bg="Indigo";
+		   break;
+		case 'F':
+		   bg="Fuchsia";
+		   break;
+		case 'G':
+		   bg="Gray";
+		   break;
+		case 'H':
+		   bg="HotPink";
+		   break;
+        case 'I':
+		   bg="IndianRed";
+		   break;
+		case 'J':
+		   bg="DarkSlateGray";
+		   break;
+
+		case 'K':
+		   bg="Green";
+		   break;
+        case 'L':
+		   bg="MediumPurple";
+		   break;
+		case 'M':
+		   bg="LightSkyBlue";
+		   break;
+		case 'N':
+		   bg="Navy";
+		   break;
+		case 'O':
+		   bg="Orange";
+		   break;
+        case 'P':
+		   bg="PaleVioletRed";
+		   break;
+		case 'Q':
+		   bg="Purple";
+		   break;
+
+		case 'R':
+		   bg="Red";
+		   break;
+        case 'S':
+		   bg="SaddleBrown";
+		   break;
+		case 'T':
+		   bg="Thistle";
+		   break;
+		case 'U':
+		   bg="SlateGray";
+		   break;
+        case 'V':
+		   bg="SlateBlue";
+		   break;
+		case 'W':
+		   bg="Sienna";
+		   break;
+
+		case 'X':
+		   bg="RoyalBlue";
+		   break;
+        case 'Y':
+		   bg="Plum";
+		   break;
+		case 'Z':
+		   bg="Olive";
+		   break;
+	     default:
+			break;
+	}
+	return bg;
+}
+

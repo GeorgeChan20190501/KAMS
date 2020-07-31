@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="/js/vue.js"></script>
-<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+<script src="/js/axios.js"></script>
 <script src="/js/component/elementUI/index.js"></script>
 <link rel="stylesheet" type="text/css"  href="/js/component/elementUI/theme-chalk/index.css" />
 <link rel="icon" href='/images/icon1.png' />
@@ -55,7 +55,7 @@
 
 		<div class='bg-content myfont'>
 			<div><i class="el-icon-bell"></i> 最新公告： 
-		  			<el-button  size="mini"  type="success"  v-show=" loginUser =='SYSTEM' ? true : false"   @click="dialogFormVisible = true">发布公告</el-button>
+		  			<el-button  size="mini"  type="success"  v-show=" loginUser =='system' ? true : false"   @click="dialogFormVisible = true">发布公告</el-button>
 		   </div>
 	
 			<div>
@@ -73,15 +73,15 @@
 		  </el-row>
 	<div class="bh1"></div>
   <el-timeline   :reverse="reverse">
-    <el-timeline-item    v-for="(activity, index) in tableData" :timestamp="activity.timestamp"   :key="index" placement="top"       :icon="activity.icon"
-      :type="activity.type">
+    <el-timeline-item    v-for="(activity, index) in tableData" :timestamp="activity.timestamp"   :key="index" placement="top"       icon="el-icon-more"
+      type="primary">
       <el-card  style="height:50px; padding:10px;">
       		<el-row>
       				<el-col :span="21">
-        				<p>{{activity.content}}</p>
+        				<p>{{activity.discrib}}</p>
         			</el-col>
         			<el-col :span="3">	
-        					<el-button type="danger" size="mini" style="margin-top:10px;" @click="delGongGao(activity.id)"  v-show=" loginUser =='SYSTEM' ? true : false"  >删除</el-button>
+        					<el-button type="danger" size="mini" style="margin-top:10px;" @click="delGongGao(activity.id)"  v-show=" loginUser =='system' ? true : false"  >删除</el-button>
         			</el-col>
         	</el-row>		
       </el-card>
@@ -105,8 +105,8 @@
   	<el-form-item label="公告标题" prop="title">
     <el-input v-model="form.title"></el-input>
   </el-form-item>
-  <el-form-item label="公告简述" prop="content">
-    <el-input v-model="form.content"></el-input>
+  <el-form-item label="公告简述" prop="discrib">
+    <el-input v-model="form.discrib"></el-input>
   </el-form-item>
     <el-form-item label="公告内容：" prop="artical">
       <el-input v-model="form.artical" autocomplete="off"  type="textarea"  :rows="5"></el-input>
@@ -146,16 +146,15 @@ var vm=new Vue({
       dialogFormVisible: false,
       form: {
     	title:'',
-    	content: '',
+    	discrib: '',
     	artical:''
       },
-     
         rules: {
         	title: [
             { required: true, message: '请输入公告主题', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
           ],
-          content: [
+          discrib: [
             { required: true, message: '请输入公告简述', trigger: 'blur' }
           ],
           artical: [
@@ -175,6 +174,7 @@ var vm=new Vue({
 
 	  deployed(){
 		  this.dialogFormVisible = false;
+		  this.form.type='gonggao';
 		  axios({
 			  method: 'post',           
 			  url: '/addGongGao',  								
@@ -189,6 +189,7 @@ var vm=new Vue({
 			} ,error=>{			
 			}); 
 		  
+		  //
 
 		  
 	  },
@@ -197,7 +198,7 @@ var vm=new Vue({
 			  method: 'post',           
 			  url: '/fenyeQueryGongGao',  								
 			  data: {		
-						msg:null
+						msg:'{"type":"gonggao"}'
 			  },
 			}).then(res=>{ 
 				var a=res.data.list	;
@@ -269,7 +270,7 @@ var vm=new Vue({
 	  		if(val==2){
 	  		    //判读通知时间是否符合范围
 	  		    var current =new Date();
-	  		    if(current.getHours()<=17){
+	  		    if(current.getHours()<17){
 	  		    	this.tongzhi('提示：',"请于工作日下午17:00之后再交接！","error");
 	  		    	return;
 	  		    }

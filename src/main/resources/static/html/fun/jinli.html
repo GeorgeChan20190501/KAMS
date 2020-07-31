@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="/js/vue.js"></script>
-<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+<script src="/js/axios.js"></script>
 <script src="/js/component/elementUI/index.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="/js/component/elementUI/theme-chalk/index.css" />
@@ -592,30 +592,29 @@ html{
    					msg2: jifen
    				},
    			}).then(res => {
-   				   var oldzf=this.zf;
-   				   var total =res.data;	
-   				   if(total!=0){
-   					 this.zf=total;
-   					 if((this.zf -jifen)==oldzf ){
-    				    	this.$message({
-    	                        message: '充值成功！',
-    	                        type: 'success'
-    	                    });
-    				    }
-    				    else{
-    				    	this.$message({
-    	                        message: '充值异常！',
-    	                        type: 'error'
-    	                    });
-    				    }
-   				   }
-   				   else{
-   					this.$message({
-	                        message: '用户名不存在！',
+   				   
+   				     var total =res.data;
+   				     if(total==-1){
+   				    	this.$message({
+	                        message: '充值异常！',
 	                        type: 'error'
 	                    });
-   				   }
-   				   
+   				    	return;
+   				     }
+   				    if(total==0){
+ 				    	this.$message({
+	                        message: '用户不存在！',
+	                        type: 'error'
+	                    });
+ 				    	return;
+ 				     }
+   				     else{
+   				    	 this.zf=total;
+   				    	this.$message({
+	                        message: '充值成功！',
+	                        type: 'success'
+	                    });
+   				     }
    			}, error => {
    				
    			})

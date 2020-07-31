@@ -53,6 +53,8 @@
        <table schema=""  tableName="sm_userjf"/> -->
        <!-- <table schema=""  tableName="sm_dakaRecord"/> -->
        <table schema=""  tableName="sm_gonggao"/>
-       
+      <!--  <table schema=""  tableName="sm_comments"/> -->
+     <!--  <table schema=""  tableName="sm_useraction"/> -->
+      
 	</context>
 </generatorConfiguration>

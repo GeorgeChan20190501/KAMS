@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="/js/vue.js"></script>
-    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+    <script src="/js/axios.js"></script>
     <script src="/js/component/elementUI/index.js"></script>
     <link rel="stylesheet" type="text/css" href="/js/component/elementUI/theme-chalk/index.css" />
     <link rel="icon" href='/images/icon1.png' />
@@ -31,7 +31,7 @@
 
                             <el-form :inline="true" class="demo-form-inline" size="mini" :label-position="labelPosition">
                                 <el-form-item label="Effort Ower：" label-width="110px">
-                                    <el-select v-model="currUser.usercode" placeholder="Effort Ower" :disabled="userclass!='SYSTEM'? 'disabled': false">
+                                    <el-select v-model="currUser.usercode" placeholder="Effort Ower" :disabled="userclass!='system'? 'disabled': false">
                                      
                                         <el-option :label="item.account" :value="item.account" v-for="(item,index) in useroption"></el-option>
                                     </el-select>
@@ -52,7 +52,7 @@
                                 <el-col :span="24">
                                     <el-form :inline="true" class="demo-form-inline" size="mini" label-width="100px" :label-position="labelPosition">
                                         <el-form-item label="Effort Date：">
-                                            <el-date-picker :disabled="userclass=='SYSTEM'? 'disabled': false" v-model="effortObj.workday" size="mini" type="date" placeholder="选择日期" style="width:193px;"> </el-date-picker>
+                                            <el-date-picker :disabled="userclass=='system'? 'disabled': false" v-model="effortObj.workday" size="mini" type="date" placeholder="选择日期" style="width:193px;"> </el-date-picker>
                                         </el-form-item>
                                     </el-form>
                                 </el-col>
@@ -62,20 +62,20 @@
                                 <el-col :span="24">
                                     <el-form :inline="true" class="demo-form-inline" size="mini" :label-position="labelPosition">
                                         <el-form-item label="Task Type：" label-width="100px">
-                                            <el-select v-model="effortObj.tasktype" placeholder="Task Type" :disabled="userclass=='SYSTEM'? 'disabled': false">
+                                            <el-select v-model="effortObj.tasktype" placeholder="Task Type" :disabled="userclass=='system'? 'disabled': false">
                                                 <el-option :label="tasktype.type" :value="tasktype.type" v-for="tasktype in tasktypeList"></el-option> 													 
 											 </el-select> 
 									</el-form-item>
 									<el-form-item  label="App Name： "  label-width="100px " >
-													<el-select v-model="effortObj.eaicode "  placeholder="App Name "  :disabled="userclass=='SYSTEM' ? 'disabled': false " >
+													<el-select v-model="effortObj.eaicode "  placeholder="App Name "  :disabled="userclass=='system' ? 'disabled': false " >
 																	<el-option :label="app.cval1"  :value="app.ckey "v-for="app in appList "></el-option>
                                             </el-select>
                                         </el-form-item>
                                         <el-form-item label="Ticket No：" label-width="100px">
-                                            <el-input size="mini" v-model="effortObj.ticketnumber" placeholder="Ticket Number" :disabled="userclass=='SYSTEM'? 'disabled': false" style="width:193px;"></el-input>
+                                            <el-input size="mini" v-model="effortObj.ticketnumber" placeholder="Ticket Number" :disabled="userclass=='system'? 'disabled': false" style="width:193px;"></el-input>
                                         </el-form-item>
                                         <el-form-item label="Hours：" label-width="100px">
-                                            <el-input size="mini" v-model="effortObj.efforthours" placeholder="Hours" :disabled="userclass=='SYSTEM'? 'disabled': false" style="width:193px;"></el-input>
+                                            <el-input size="mini" v-model="effortObj.efforthours" placeholder="Hours" :disabled="userclass=='system'? 'disabled': false" style="width:193px;"></el-input>
                                         </el-form-item>
 
                                     </el-form>
@@ -569,7 +569,7 @@
                     this.effortObj.userid = this.currUser.usercode;
                     this.effortObj.username = this.currUser.username;
 
-                    if (this.currUser.usercode == 'SYSTEM') {
+                    if (this.currUser.usercode == 'system') {
                     	this.message('管理员无法填写Effort ! ','warning');
                         return false;
                     }

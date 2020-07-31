@@ -242,8 +242,8 @@ public class AppConfigService {
 		smDakarecordMapper.resetDaka();
 	}
 
-	public List<SmGonggao> fenyeQueryGongGao() {
-		return smGonggaoMapper.fenyeQueryGongGao();
+	public List<SmGonggao> fenyeQueryGongGao(SmGonggao smGonggao) {
+		return smGonggaoMapper.fenyeQueryGongGao(smGonggao);
 	}
 
 	public int addGongGao(SmGonggao smGonggao) {

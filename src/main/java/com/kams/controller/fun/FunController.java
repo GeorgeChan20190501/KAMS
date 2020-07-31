@@ -339,35 +339,39 @@ public class FunController {
 	@PostMapping("/czJifen")
 	@Transactional(rollbackFor = Exception.class)
 	public String czJifen(@RequestBody String param) {
-		System.out.println("消费积分参数===" + param);
-		JsonReqObject jsonReqObject = JSONArray.parseObject(param, JsonReqObject.class);
-		String accouont = jsonReqObject.getMsg1();
-		String val = jsonReqObject.getMsg2();
-		SmUserjf smUserjf = new SmUserjf();
+		String syNew = "";
+		try {
+			System.out.println("消费积分参数===" + param);
+			JsonReqObject jsonReqObject = JSONArray.parseObject(param, JsonReqObject.class);
+			String accouont = jsonReqObject.getMsg1();
+			String val = jsonReqObject.getMsg2();
+			SmUserjf smUserjf = new SmUserjf();
 
-		// 查询剩余积分
-		smUserjf.setAccount(accouont);
-		List<SmUserjf> list = funService.getUserJF(smUserjf);
-		if (list.size() <= 0) {
-			return "0";
+			// 查询剩余积分
+			smUserjf.setAccount(accouont);
+			List<SmUserjf> list = funService.getUserJF(smUserjf);
+			if (list.size() <= 0) {
+				return "0";
+			}
+			String sy = list.get(0).getTotalVal();
+			syNew = Integer.parseInt(sy) + Integer.parseInt(val) + "";
+			smUserjf.setTotalVal(syNew);
+
+			SmUserjfmx smUserjfmx = new SmUserjfmx();
+			smUserjfmx.setAccount(accouont);
+			// ('SYSTEM','1000','注册','+1000'
+			smUserjfmx.setTotalVal(syNew);
+
+			smUserjfmx.setOpType("谁是锦鲤-充值");
+
+			smUserjfmx.setOpVal("+" + val);
+			// update smUserjf
+			funService.updateJiFen(smUserjf);
+			// add smUserjfmx
+			funService.addJiFenRecord(smUserjfmx);
+		} catch (Exception e) {
+			return "-1";
 		}
-		String sy = list.get(0).getTotalVal();
-		String syNew = Integer.parseInt(sy) + Integer.parseInt(val) + "";
-		smUserjf.setTotalVal(syNew);
-
-		SmUserjfmx smUserjfmx = new SmUserjfmx();
-		smUserjfmx.setAccount(accouont);
-		// ('SYSTEM','1000','注册','+1000'
-		smUserjfmx.setTotalVal(syNew);
-
-		smUserjfmx.setOpType("谁是锦鲤-充值");
-
-		smUserjfmx.setOpVal("+" + val);
-		// update smUserjf
-		funService.updateJiFen(smUserjf);
-		// add smUserjfmx
-		funService.addJiFenRecord(smUserjfmx);
-
 		return syNew;
 	}
 

@@ -26,9 +26,17 @@ public interface SmGonggaoMapper {
 
 	int updateByExample(@Param("record") SmGonggao record, @Param("example") SmGonggaoExample example);
 
-	List<SmGonggao> fenyeQueryGongGao();
+	List<SmGonggao> fenyeQueryGongGao(SmGonggao smGonggao);
 
 	int addGongGao(SmGonggao smGonggao);
 
 	int deleteByPrimaryKey(int parseInt);
+
+	List<SmGonggao> getHotAatical();
+
+	List<SmGonggao> searchFunc(String key);
+
+	List<SmGonggao> searchArtByType(String key);
+
+	int jiajing(int parseInt);
 }

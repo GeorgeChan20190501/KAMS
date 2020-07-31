@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kams.dao.SmUseractionMapper">
+  <resultMap id="BaseResultMap" type="com.kams.bean.SmUseraction">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="reader" jdbcType="VARCHAR" property="reader" />
+    <result column="articalId" jdbcType="INTEGER" property="articalid" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="dianz" jdbcType="CHAR" property="dianz" />
+    <result column="shouc" jdbcType="CHAR" property="shouc" />
+    <result column="views" jdbcType="CHAR" property="views" />
+    <result column="update_time" jdbcType="CHAR" property="updateTime" />
+    <result column="chk" jdbcType="CHAR" property="chk" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, reader, articalId, author, dianz, shouc, views, update_time, chk
+  </sql>
+  <select id="selectByExample" parameterType="com.kams.bean.SmUseractionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sm_useraction
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.kams.bean.SmUseractionExample">
+    delete from sm_useraction
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kams.bean.SmUseraction">
+    insert into sm_useraction (id, reader, articalId, 
+      author, dianz, shouc, views, 
+      update_time, chk)
+    values (#{id,jdbcType=INTEGER}, #{reader,jdbcType=VARCHAR}, #{articalid,jdbcType=INTEGER}, 
+      #{author,jdbcType=VARCHAR}, #{dianz,jdbcType=CHAR}, #{shouc,jdbcType=CHAR}, #{views,jdbcType=CHAR}, 
+      #{updateTime,jdbcType=CHAR}, #{chk,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kams.bean.SmUseraction">
+    insert into sm_useraction
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="reader != null">
+        reader,
+      </if>
+      <if test="articalid != null">
+        articalId,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="dianz != null">
+        dianz,
+      </if>
+      <if test="shouc != null">
+        shouc,
+      </if>
+      <if test="views != null">
+        views,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="chk != null">
+        chk,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="reader != null">
+        #{reader,jdbcType=VARCHAR},
+      </if>
+      <if test="articalid != null">
+        #{articalid,jdbcType=INTEGER},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="dianz != null">
+        #{dianz,jdbcType=CHAR},
+      </if>
+      <if test="shouc != null">
+        #{shouc,jdbcType=CHAR},
+      </if>
+      <if test="views != null">
+        #{views,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=CHAR},
+      </if>
+      <if test="chk != null">
+        #{chk,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kams.bean.SmUseractionExample" resultType="java.lang.Long">
+    select count(*) from sm_useraction
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sm_useraction
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.reader != null">
+        reader = #{record.reader,jdbcType=VARCHAR},
+      </if>
+      <if test="record.articalid != null">
+        articalId = #{record.articalid,jdbcType=INTEGER},
+      </if>
+      <if test="record.author != null">
+        author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dianz != null">
+        dianz = #{record.dianz,jdbcType=CHAR},
+      </if>
+      <if test="record.shouc != null">
+        shouc = #{record.shouc,jdbcType=CHAR},
+      </if>
+      <if test="record.views != null">
+        views = #{record.views,jdbcType=CHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=CHAR},
+      </if>
+      <if test="record.chk != null">
+        chk = #{record.chk,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sm_useraction
+    set id = #{record.id,jdbcType=INTEGER},
+      reader = #{record.reader,jdbcType=VARCHAR},
+      articalId = #{record.articalid,jdbcType=INTEGER},
+      author = #{record.author,jdbcType=VARCHAR},
+      dianz = #{record.dianz,jdbcType=CHAR},
+      shouc = #{record.shouc,jdbcType=CHAR},
+      views = #{record.views,jdbcType=CHAR},
+      update_time = #{record.updateTime,jdbcType=CHAR},
+      chk = #{record.chk,jdbcType=CHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <select id="isRepeatView"  parameterType="com.kams.bean.SmUseraction" resultMap="BaseResultMap">
+  			select * from sm_useraction
+  				<where>
+					<if test="articalid != null  and articalid !='' ">
+       					  and articalId = #{articalid}
+     			    </if>
+     			    <if test="reader != null  and reader !='' ">
+       					  and reader = #{reader}
+     			    </if>
+     			    <if test="author != null  and author !='' ">
+       					  and author = #{author}
+     			    </if>
+     			</where>
+  </select>
+  
+  <insert id="newView"  parameterType="com.kams.bean.SmUseraction" >
+  			insert into sm_useraction values(#{reader},#{articalid},#{author},'0','false','0',(select CONVERT(varchar(100), GETDATE(), 120)),'0');
+  </insert>
+  
+    <select id="getgetIsDZ" parameterType="map" resultMap="BaseResultMap">
+   				select * from sm_useraction where articalId=#{id} and reader=#{reader}
+  </select>
+</mapper>

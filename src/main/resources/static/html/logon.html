@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>欢迎使用KAMS系统</title>
 <script src="/js/vue.js"></script>
-<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+<script src="/js/axios.js"></script>
 <script src="/js/component/elementUI/index.js"></script>
 <link rel="stylesheet" type="text/css"  href="/js/component/elementUI/theme-chalk/index.css" />
 <link rel="icon" href='/images/icon1.png' />
@@ -140,7 +140,7 @@ input {
 					if(isValidUser==true){
 							if(typeof(Storage)!=="undefined")
 								{
-									localStorage.username=this.username;
+									localStorage.username=this.username.toLowerCase();
 								}
 							else
 							{
