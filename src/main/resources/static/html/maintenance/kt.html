@@ -13,15 +13,15 @@
     <!--建议手动加载语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
     <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
  <script type="text/javascript" charset="utf-8" src="/js/component/Ueditor/lang/zh-cn/zh-cn.js"></script>
-<script type="text/javascript" src="/js/component/emoji/js/lan-emoji.js"></script>
-<link rel="stylesheet" href="/js/component/emoji/css/lan-emoji.css">
-<link rel="stylesheet" href="/js/component/emoji/css/index.css">
 <link rel="stylesheet" type="text/css"  href="/js/component/elementUI/theme-chalk/index.css" />
 <link rel="icon" href='/images/icon1.png' />
 <!-- 系统CSS或JS -->
 <link rel="stylesheet" href="/css/systab.css">
 
 <style>
+    html,body,#app{
+    	min-width: 1200px;
+    }
 	.el-card__body{
 		padding:0;
 	}
@@ -98,18 +98,18 @@
   
   		<el-col  :span="6" :offset="1">
    					
-	      				<el-card  style=" padding:10px;"  >
+	      				<el-card  style=" padding:10px;  "  >
 	      					<el-row class="myfont" style="color: rgb(245,108,108)">最新推荐</el-row>		
 	      					<el-divider></el-divider>
 	      					<div v-for="(activity, index) in hotAatical">
 	      						<el-row>    		
-	      							<el-col :span="3">
+	      							<el-col :span="4">
 	      							    <div class="demo-fit">
 											        <el-avatar shape="square" :size="41"   :style="{background: activity.bg , color:'white'}">{{activity.contentType}}</el-avatar>
 										</div>
 	      							</el-col>
-	      							<el-col :span="21">
-	        							<el-link   @click="readArtical (activity.artical,activity.title,activity.contenttype,activity.id,activity.author)" ><span style=" color:rgb(64,158,255) ;font-size:12px"><span style="color: rgb(245,108,108)">(摘要) </span>{{activity.discrib}}</span></el-link>
+	      							<el-col :span="20">
+	        							<el-link   @click="readArtical (activity.artical,activity.title,activity.contentType,activity.id,activity.author,activity.timestamp)" ><span style=" color:rgb(64,158,255) ;font-size:12px"><span style="color: rgb(245,108,108)">(摘要) </span>{{activity.discrib}}</span></el-link>
 	        						</el-col>
 	        				</el-row>	
 	        				<div class="bh1"></div>
@@ -166,8 +166,12 @@
    		 	<el-row>
    		 			<el-col :span="22">
    		 	 				<el-button @click="ret1()"  type="primary" size="mini" >返回</el-button>	
-   		 	 		</el-col>		
-   		 			
+   		 	 				<el-button @click="delGongGao(artiId)"  type="danger" size="mini"  v-show="author==loginUser">删帖</el-button>	
+		   		 	 				<el-button type="warning" size="mini"  v-show="author==loginUser" @click="updateArti()" onclick=" UE.getEditor('editor').setShow()">
+				          					<span>修改</span>
+				          			</el-button>
+   		 	 				</el-col>	
+   		 	 	 
    		 			<el-col :span="2">
    		 			<el-button  type="text" @click="dianz"  style="color:rgb(245,108,108)">赞一个<i :class="[xing ,'el-icon--right']"></i></el-button>
    		 			</el-col>
@@ -175,7 +179,7 @@
    		 	</div>
    		 	<div class='bh3'></div>
    		 	<div>
- 			<el-input  type="text" placeholder="亲，说点什么吧..." v-model="comm"  style="width:95%" ></el-input> <el-button @click="deployComm(artiId)" type="primary">评论</el-button>		   	        
+ 			<el-input  type="text" placeholder="亲，说点什么吧..." v-model="comm"  style="width:93%" ></el-input> <el-button @click="deployComm(artiId)" type="primary">评论</el-button>		   	        
 			</div>
 			<div class='bh3'></div>
 				<el-card  style=" padding:10px;"  >
@@ -207,8 +211,8 @@
  			 <div class='bh3'></div>
 			 <el-row type="flex"  justify="end">
 			 		<el-button @click="ret()"  type="primary">返回</el-button>
-			 		<el-button onclick="setContent()"type="warning">修改</el-button>
-			 		<el-button   type="success"  :disabled="disa"  @click="comfir">确认</el-button>
+			 		<el-button @click="updateA" type="warning"  v-show="upon">修改</el-button>
+			 		<el-button   type="success"  :disabled="disa"  @click="comfir"  v-show="!upon">确认</el-button>
    		 	</el-row>
 		</div>
 			 <el-dialog title="发布文章" :visible.sync="dialogFormVisible"   :before-close="handleClose" >
@@ -257,6 +261,7 @@ var vm=new Vue({
 	  hidd:true,
 	  hidd1:true,
 	  reverse: false,
+	  upon:false,
 	  bg:'#333',
 	  searchContent:'',
       gonggao: [],
@@ -518,11 +523,39 @@ var vm=new Vue({
 	  ret(){
 		  this.hidd=!this.hiidd;
 		  this.disa=false;
+		  this.upon=false;
 		  setEnabled(); 
+		  
 	  },
 	  ret1(){
 		  this.hidd1=!this.hiidd1;
 		  this.comm='';
+		  this.upon=false;
+	  },
+	  updateA(){
+		  var isEmpty= hasContent().join("\n");
+			 if(isEmpty=='false'){
+				 this.message('发布内容不能为空!','error');
+				 return;
+			 }
+			var artical=getContent().join("\n");
+			var id=this.artiId
+			 axios({
+				  method: 'post',           
+				  url: '/updateA',  								
+				  data: {		
+							msg:  {'id':id,'artical':artical}
+				  },
+				}).then(res=>{ 
+					var msg=res.data;
+					this.getArtical();
+					
+					if(msg.indexOf('成功')!=-1){this.message(msg,"success");}else{this.message(msg,"error");}	 
+				} ,error=>{			
+				});  
+			 this.disa=true;
+			 this.dialogFormVisible = false
+			 setDisabled();	  
 	  },
 	  deployed(){
 		  ///检查是否有标题，简述，内容
@@ -643,6 +676,7 @@ var vm=new Vue({
 									}).then(res=>{ 			 
 										var msg=res.data;
 						 				this.getArtical();
+						 				this.hidd1=!this.hiidd1;
 						 				if(msg.indexOf('成功')!=-1){this.message(msg,"success");}else{this.message(msg,"error");}
 									} ,error=>{	
 										this.message( "操作异常 !","error")
@@ -681,94 +715,20 @@ var vm=new Vue({
 							           });   
 							           return false;
 							         });
-							       },	       
+							       },	  
+							       updateArti(arti){
+							    	   console.log('修改文章')
+							    	   this.hidd1= !this.hidd1;
+							    	   this.hidd= !this.hidd;
+							    	   setContent(this.arti);
+							    	   this.upon=true;
+							       }		       
+							       
 					       
 					 	 
  	 }
 })
 </script>
 <script type="text/javascript" src="/js/component/Ueditor/ueentity.js"></script>
-  <script>
-        const option = {
-            editor: 'editArea',
-            btn: 'btn',
-            icon: [{
-                path: '/js/component/emoji/img/tieba',
-                alias: {
-                    1: "hehe",
-                    2: "haha",
-                    3: "tushe",
-                    4: "a",
-                    5: "ku",
-                    6: "lu",
-                    7: "kaixin",
-                    8: "han",
-                    9: "lei",
-                    10: "heixian",
-                    11: "bishi",
-                    12: "bugaoxing",
-                    13: "zhenbang",
-                    14: "qian",
-                    15: "yiwen",
-                    16: "yinxian",
-                    17: "tu",
-                    18: "yi",
-                    19: "weiqu",
-                    20: "huaxin",
-                    21: "hu",
-                    22: "xiaonian",
-                    23: "neng",
-                    24: "taikaixin",
-                    25: "huaji",
-                    26: "mianqiang",
-                    27: "kuanghan",
-                    28: "guai",
-                    29: "shuijiao",
-                    30: "jinku",
-                    31: "shengqi",
-                    32: "jinya",
-                    33: "pen",
-                    34: "aixin",
-                    35: "xinsui",
-                    36: "meigui",
-                    37: "liwu",
-                    38: "caihong",
-                    39: "xxyl",
-                    40: "taiyang",
-                    41: "qianbi",
-                    42: "dnegpao",
-                    43: "chabei",
-                    44: "dangao",
-                    45: "yinyue",
-                    46: "haha2",
-                    47: "shenli",
-                    48: "damuzhi",
-                    49: "ruo",
-                    50: "OK"
-                }
-            }]
-        }
-
-        var _emoji = new emoji(option)
-
-        function emojiChange() {
-            _emoji.emojiChange()
-        }
-
-        function emojiParse() {
-            _emoji.emojiParse(document.querySelectorAll('#editArea'))
-        }
-
-        function emojiToggle() {
-            _emoji.toggle()
-        }
-
-       
-
-        var _emoji_ = new emoji(_option)
-
-        function editAreaParse() {
-            _emoji_.emojiParse(document.querySelectorAll('#editAreaParse'))
-        }
-    </script>
+  
 </html>

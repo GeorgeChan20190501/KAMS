@@ -39,4 +39,6 @@ public interface SmGonggaoMapper {
 	List<SmGonggao> searchArtByType(String key);
 
 	int jiajing(int parseInt);
+
+	int updateA(SmGonggao smGonggao);
 }

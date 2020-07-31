@@ -162,4 +162,19 @@ public class ArticalController {
 
 	}
 
+	@PostMapping("/updateA")
+	public String updateA(@RequestBody String param) {
+		System.out.println("参数===" + param);
+		JsonReqObject jsonReqObject = JSONArray.parseObject(param, JsonReqObject.class);
+		String obj = jsonReqObject.getMsg();
+		SmGonggao smGonggao = JSONArray.parseObject(obj, SmGonggao.class);
+
+		int a = articalService.updateA(smGonggao);
+		if (a > 0) {
+			return "修改成功！";
+		}
+		return "修改异常！";
+
+	}
+
 }

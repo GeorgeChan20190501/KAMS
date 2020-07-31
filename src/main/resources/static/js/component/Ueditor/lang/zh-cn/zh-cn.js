@@ -93,7 +93,7 @@ UE.I18N['zh-cn'] = {
     'tableDrag':"表格拖动必须引入uiUtils.js文件！",
     'autofloatMsg':"工具栏浮动依赖编辑器UI，您首先需要引入UI文件!",
     'loadconfigError': '获取后台配置项请求出错，上传功能将不能正常使用！',
-    'loadconfigFormatError': '后台配置项返回格式出错，上传功能将不能正常使用！',
+    //'loadconfigFormatError': '后台配置项返回格式出错，上传功能将不能正常使用！',
     'loadconfigHttpError': '请求后台配置项http错误，上传功能将不能正常使用！',
     'snapScreen_plugin':{
         'browserMsg':"仅支持IE浏览器！",

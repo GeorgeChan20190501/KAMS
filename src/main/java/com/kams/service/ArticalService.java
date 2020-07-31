@@ -86,4 +86,8 @@ public class ArticalService {
 		return smCommentsMapper.delComm(Integer.parseInt(id));
 	}
 
+	public int updateA(SmGonggao smGonggao) {
+		return smGonggaoMapper.updateA(smGonggao);
+	}
+
 }
