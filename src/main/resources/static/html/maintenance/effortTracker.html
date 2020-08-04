@@ -95,12 +95,14 @@
 						</el-col>
 						<el-col :span="6">
 						<el-upload  class="upload-demo"  :on-preview="handlePreview"  :on-remove="handleRemove"  :before-remove="beforeRemove"  
-									  action="/efforts/upload"
+									  action="/efforts/upload/"
 									  :limit="1"
 									  :on-exceed="handleExceed"
 									  :on-success="handleUploadSuccess"
   									  :on-error="handleUploadError"
-									  :file-list="fileList">
+									  :file-list="fileList"
+									  :data="currUser"
+									  >
   									<el-button   type="primary">上传<i class="el-icon-upload2"></i></el-button>
   									<span slot="tip" class="el-upload__tip"  >只能上传Excle文件</span>
 						</el-upload>

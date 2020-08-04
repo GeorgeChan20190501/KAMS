@@ -253,9 +253,10 @@ public class EffortController {
 
 	@SuppressWarnings("rawtypes")
 	public boolean analysisFile(MultipartHttpServletRequest mreq, HttpServletRequest request) {
-		String effortuser = "";
-		HttpSession session = request.getSession(true);
-		String loginUsercode = (String) session.getAttribute("username");
+		String effortuser = mreq.getParameter("usercode");
+		if (effortuser.toUpperCase().equals("SYSTEM")) {
+			return false;
+		}
 		List<Map> maps = null;
 		List<SmEfforts> effortList = new ArrayList<SmEfforts>();
 
@@ -290,6 +291,9 @@ public class EffortController {
 					Map.Entry<String, String> entry = it.next();
 					if (entry.getKey().trim().equalsIgnoreCase("Date")) {
 						effort.setWorkday(entry.getValue());
+					}
+					if (entry.getKey().trim().equalsIgnoreCase("Associate Name")) {
+						effort.setUserid(entry.getValue());
 					}
 					if (entry.getKey().trim().equalsIgnoreCase("Associate Name")) {
 						effort.setUsername(entry.getValue());
@@ -390,13 +394,6 @@ public class EffortController {
 							return false;
 						}
 
-					}
-
-					// userid 匹配
-					if ("SYSTEM".equals(loginUsercode)) {
-
-					} else {
-						effortuser = loginUsercode;
 					}
 
 					effort.setUserid(effortuser);
