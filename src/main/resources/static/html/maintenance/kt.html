@@ -77,13 +77,13 @@
 	 			  <div v-for="(activity, index) in tableData">
 	      				<el-card  style="height:40px; padding:10px;"  >
 	      						<el-row>   
-	      						    <el-col :span="2" ><el-tag type="danger"  class="el-icon-s-flag" size="small"  style="margin-top:10px;">{{activity.contentType}}</el-tag> </el-col> 
+	      						    <el-col :span="2" ><el-tag type="danger"  class="el-icon-s-flag" size="small"  style="margin-top:10px;" v-cloak >{{activity.contentType}}</el-tag> </el-col> 
 	      							<el-col :span="16"  >
-	      								<span class="myfont" style="font-weight:bold;font-size:16px">{{activity.title}}</span><br/>
-	        							<el-link   @click="readArtical (activity.artical,activity.title,activity.contentType,activity.id,activity.author,activity.timestamp)" ><span style="line-height:30px;"><span style="color: rgb(245,108,108)">(摘要) </span> {{activity.discrib}}</span></el-link>
+	      								<span class="myfont" style="font-weight:bold;font-size:16px" v-cloak>{{activity.title}}</span><br/>
+	        							<el-link   @click="readArtical (activity.artical,activity.title,activity.contentType,activity.id,activity.author,activity.timestamp)" ><span style="line-height:30px;" v-cloak><span style="color: rgb(245,108,108)" v-cloak>(摘要) </span> {{activity.discrib}}</span></el-link>
 	        						</el-col>
 	        						<el-col :span="4" style="margin-top:25px">	
-	        							<i class="el-icon-view"> {{activity.views}} </i>&nbsp;&nbsp; <i class="el-icon-star-off">  {{activity.favo}}</i>&nbsp;&nbsp; <i class="el-icon-chat-dot-square"> {{activity.commnum}}</i>
+	        							<i class="el-icon-view" v-cloak> {{activity.views}} </i>&nbsp;&nbsp; <i class="el-icon-star-off" v-cloak>  {{activity.favo}}</i>&nbsp;&nbsp; <i class="el-icon-chat-dot-square" v-cloak> {{activity.commnum}}</i>
 	        						</el-col>
 				        			 
 				        			<el-col :span="2" >	
@@ -105,11 +105,11 @@
 	      						<el-row>    		
 	      							<el-col :span="4">
 	      							    <div class="demo-fit">
-											        <el-avatar shape="square" :size="41"   :style="{background: activity.bg , color:'white'}">{{activity.contentType}}</el-avatar>
+											        <el-avatar shape="square" :size="41"   :style="{background: activity.bg , color:'white'}" v-cloak>{{activity.contentType}}</el-avatar>
 										</div>
 	      							</el-col>
 	      							<el-col :span="20">
-	        							<el-link   @click="readArtical (activity.artical,activity.title,activity.contentType,activity.id,activity.author,activity.timestamp)" ><span style=" color:rgb(64,158,255) ;font-size:12px"><span style="color: rgb(245,108,108)">(摘要) </span>{{activity.discrib}}</span></el-link>
+	        							<el-link   @click="readArtical (activity.artical,activity.title,activity.contentType,activity.id,activity.author,activity.timestamp)" ><span style=" color:rgb(64,158,255) ;font-size:12px" v-cloak><span style="color: rgb(245,108,108)" v-cloak>(摘要) </span>{{activity.discrib}}</span></el-link>
 	        						</el-col>
 	        				</el-row>	
 	        				<div class="bh1"></div>
@@ -149,10 +149,10 @@
  			 	  <el-breadcrumb-item>当前位置</el-breadcrumb-item>
 				  <el-breadcrumb-item>AMS知识库</el-breadcrumb-item>
 				  <el-breadcrumb-item>文章阅读</el-breadcrumb-item>
-				  <el-breadcrumb-item>{{contentType1}}</el-breadcrumb-item>
-				  <el-breadcrumb-item>{{title1}}</el-breadcrumb-item>
-				  <div style= "position:absolute; right:20px;" class="myfont">
-				  			作者：<span style="color:rgb(64,158,255)">{{author}}</span> &nbsp;&nbsp;&nbsp;&nbsp; 发表时间：{{artitime}}
+				  <el-breadcrumb-item v-cloak>{{contentType1}}</el-breadcrumb-item>
+				  <el-breadcrumb-item v-cloak>{{title1}}</el-breadcrumb-item>
+				  <div style= "position:absolute; right:20px;" class="myfont" v-cloak>
+				  			作者：<span style="color:rgb(64,158,255)" v-cloak>{{author}}</span> &nbsp;&nbsp;&nbsp;&nbsp; 发表时间：{{artitime}}
 				  </div>
 			</el-breadcrumb>
 			
@@ -189,16 +189,16 @@
 	      						<el-row class="myfont" style="border-bottom:1px solid rgb(242,242,242)">    		
 	      							<el-col :span="1">
 	      							    <div class="demo-fit">
-											        <el-avatar shape="circle" :size="30"   :style="{color:'white' ,background: item.cval1}">{{item.commentuser | formatAvatar}}</el-avatar>
+											        <el-avatar shape="circle" :size="30"   :style="{color:'white' ,background: item.cval1}" v-cloak>{{item.commentuser | formatAvatar}}</el-avatar>
 										</div>
 	      							</el-col>
 	      							<el-col :span="23" style="margin-left:-20px;">
 	      							<el-row>
-	        							<el-col :span="22">{{item.commentuser}} </el-col>
-	        							<el-col :span="1">#{{order-index}} </el-col>
+	        							<el-col :span="22" v-cloak>{{item.commentuser}} </el-col>
+	        							<el-col :span="1" v-cloak>#{{order-index}} </el-col>
 	        							<el-col :span="1"> <el-button type="danger" size="mini" style="height:20px;padding:2px;width:30px;" @click=" delComm (item.id)"  v-show=" loginUser =='system' ? true : false"  >删除</el-button></el-col>
 	        						</el-row>
-	        						<span >{{item.comment}}</span>
+	        						<span v-cloak>{{item.comment}}</span>
 	        						</el-col>
 	        				</el-row>	
 	        				<div class="bh1"></div>

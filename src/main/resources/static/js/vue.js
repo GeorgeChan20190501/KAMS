@@ -12014,6 +12014,32 @@ function stdData(date){
 	}
 	return curryear+'-'+currmonth+'-'+currdate+" "+hour+":"+min+":"+sec ;
 }
+
+
+function stdDataDay(date){
+	var curryear= date.getFullYear();
+	var currmonth= date.getMonth()+1;
+	var currdate= date.getDate();
+	var hour = date.getHours();
+	var min = date.getMinutes();
+	var sec = date.getSeconds();
+	if(currmonth<10){
+		currmonth='0'+currmonth;
+	}
+	if(currdate<10){
+		currdate='0'+currdate;
+	}
+	if(hour<10){
+		hour='0'+hour;
+	}
+	if(min<10){
+		min='0'+min;
+	}
+	if(sec<10){
+		sec='0'+sec;
+	}
+	return curryear+'-'+currmonth+'-'+currdate ;
+}
 /*=======================日期格式化==结束=============================*/
 
 function filterTime(time) {

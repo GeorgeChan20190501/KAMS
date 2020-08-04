@@ -42,7 +42,7 @@ public class LogonController {
 		if (flag) {
 			HttpSession session = request.getSession(true);
 			session.setAttribute("username", username);
-			session.setMaxInactiveInterval(15 * 60);
+			session.setMaxInactiveInterval(120 * 60);
 		}
 		System.out.println("验证登录flag=" + flag);
 		return flag + "";

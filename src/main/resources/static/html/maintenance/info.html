@@ -44,7 +44,7 @@
 									
 										<el-button style="margin-top: 12px;" @click="next(1)"  :disabled="currentUser!=loginUser ||active==3? 'disabled': false" v-cloak>{{dak}}</el-button>
 										<el-button style="margin-top: 12px;" @click="next(2)" :disabled="currentUser!=loginUser||active==3 ? 'disabled': false" v-cloak>{{ok}}</el-button>
-										<el-button style="margin-top: 12px;margin-right:40px;" @click="next(3)" v-cloak  :disabled="nextUser!=loginUser ? 'disabled': active<2||active==3? 'disabled':false">{{res}}</el-button>
+										<el-button style="margin-top: 12px;margin-right:40px;" @click="next(3)" v-cloak  :disabled="nextUser!=loginUser ? 'disabled': active<2||active==3? 'disabled':false" v-cloak>{{res}}</el-button>
 									</el-col>
 								</el-row> 
 					</el-col>
@@ -78,7 +78,7 @@
       <el-card  style="height:50px; padding:10px;">
       		<el-row>
       				<el-col :span="21">
-        				<p>{{activity.discrib}}</p>
+        				<p v-cloak>{{activity.discrib}}</p>
         			</el-col>
         			<el-col :span="3">	
         					<el-button type="danger" size="mini" style="margin-top:10px;" @click="delGongGao(activity.id)"  v-show=" loginUser =='system' ? true : false"  >删除</el-button>

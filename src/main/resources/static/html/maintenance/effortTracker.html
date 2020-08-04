@@ -38,10 +38,10 @@
                                 </el-form-item>
 
                                 <el-form-item label="Start Date：" label-width="100px">
-                                    <el-date-picker v-model="startworkday" size="mini" type="date" placeholder="选择日期" style="width:193px;"> </el-date-picker>
+                                    <el-date-picker v-model="startworkday" size="mini" type="date" placeholder="选择日期" style="width:193px;" value-format="yyyy-MM-dd"> </el-date-picker>
                                 </el-form-item>
                                 <el-form-item label="End Date：" label-width="100px">
-                                    <el-date-picker v-model="endworkday" size="mini" type="date" placeholder="选择日期" style="width:193px;"> </el-date-picker>
+                                    <el-date-picker v-model="endworkday" size="mini" type="date" placeholder="选择日期" style="width:193px;" value-format="yyyy-MM-dd"> </el-date-picker>
                                 </el-form-item>
 
                             </el-form>
@@ -52,7 +52,7 @@
                                 <el-col :span="24">
                                     <el-form :inline="true" class="demo-form-inline" size="mini" label-width="100px" :label-position="labelPosition">
                                         <el-form-item label="Effort Date：">
-                                            <el-date-picker :disabled="userclass=='system'? 'disabled': false" v-model="effortObj.workday" size="mini" type="date" placeholder="选择日期" style="width:193px;"> </el-date-picker>
+                                            <el-date-picker :disabled="userclass=='system'? 'disabled': false" v-model="effortObj.workday"  value-format="yyyy-MM-dd" size="mini" type="date" placeholder="选择日期" style="width:193px;"> </el-date-picker>
                                         </el-form-item>
                                     </el-form>
                                 </el-col>
@@ -197,7 +197,7 @@
 					</el-table-column>
                     <el-table-column label="操作" width="150px;">
                         <template slot-scope="scope">
-							        <el-button size="mini"  @click="handleEdit (scope.$index, scope.row, 'op')"> {{scope.row.flag?'保存':"修改"}}</el-button>  
+							        <el-button size="mini"  @click="handleEdit (scope.$index, scope.row, 'op')" v-cloak> {{scope.row.flag?'保存':"修改"}}</el-button>  
 							        <el-button size="mini" type="warning" v-show="scope.row.flag" @click="handleEdit(scope.$index, scope.row, 'cancle' )">取消</el-button>
 							        <el-button size="mini" type="danger" v-show="!scope.row.flag"  @click="handleDelete (scope.$index, scope.row)">删除</el-button>
       							</template>
@@ -308,12 +308,20 @@
             },
 
             methods: {
-            	
-           
                 handleUploadSuccess(res, file, fileList) {
-                 
             		var msg=res;
+            		//Effort Tracker George_202006.xlsx
+            		var uploadYearMonth=fileList[0].name.substr(fileList[0].name.indexOf('_')+1,6);
+            		var year =uploadYearMonth.substr(0,4);
+            		var month =uploadYearMonth.substr(4,2);
+            		this.startworkday = year+"-"+month+"-01";
+            		var data=new Date(year,month);
+            		data.setDate(data.getDate()-1);
+                    this.endworkday =  stdDataDay(data)
+                    console.log('======'+this.startworkday+"===="+this.endworkday);
+            		this.queryEffort();
             		if(msg.indexOf('成功')!=-1){this.message(msg,"success");}else{this.message(msg,"error");}
+            		
                 },
                 handleUploadError(err, file, fileList){
                     //文件上传失败后的操作
@@ -438,7 +446,10 @@
                         return false;
                     });
                 },
+                
                 queryEffort() {
+                	console.log(this.startworkday)
+                	console.log("====查询了===结束"+(this.endworkday))
                     axios({
                         method: 'post',
                         url: "/efforts/query",
@@ -446,6 +457,7 @@
                             startworkday: this.startworkday,
                             endworkday: this.endworkday,
                             usercode: this.currUser.usercode
+                            
                         },
                     }).then(res => {
                         this.allEfforts = [];
@@ -463,15 +475,13 @@
                                 "Hours": item.effortsHours
                             });
                         });
-                        log("导出：--》")
-                        log(this.allEfforts);
+                    
                     }, error => {
                         log(error);
                     })
                 },
                 download() {
                     log("start ...");
-                    log(this.allEfforts)
                     var filename = "Effort_" + this.currUser.username + "_" + this.newdate();
                     exportExcel(this.allEfforts, filename);
                     this.message("下载成功！",'success');
@@ -513,9 +523,8 @@
                         method: 'get',
                         url: '/efforts/applist',
                     }).then(res => {
-                        log("applist=====");
                         this.appList = res.data;
-                        log(res.data);
+                      
                     }, error => {});
                 },
                 getUsers() {
@@ -523,9 +532,9 @@
                         method: 'get',
                         url: '/efforts/users',
                     }).then(res => {
-                        log(res.data);
+     
                         this.useroption = res.data;
-                        log(this.useroption);
+          
 
                     }, error => {});
                 },
@@ -534,7 +543,7 @@
                         method: 'get',
                         url: '/efforts/loginuser',
                     }).then(res => {
-                        log(res.data);
+               
                         this.currUser.usercode = res.data;
                         this.userclass = res.data;
                         this.useroption.forEach((item, index) => {
@@ -550,7 +559,7 @@
                         url: '/json/tasktype.json',
                     }).then(res => {
                         this.tasktypeList = res.data;
-                        log(this.tasktypeList);
+               
 
                     }, error => {});
                 },

@@ -134,7 +134,7 @@ public class EffortController {
 				+ endworkday);
 		if (Strings.isEmpty(usercode)) {// 传入usercode为空
 
-			if (null != loginUsercode && (!loginUsercode.equals("SYSTEM"))) {// 普通用户
+			if (null != loginUsercode && (!loginUsercode.toUpperCase().equals("SYSTEM"))) {// 普通用户
 				List<SmEfforts> effortList = effortService.queryEffortsByUser(loginUsercode);
 				map.put("list", effortList);
 				return map;
