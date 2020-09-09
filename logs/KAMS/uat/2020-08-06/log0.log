@@ -1,0 +1,9 @@
+[INFO ] 2020-08-05 17:43:21 [pool-4-thread-1] [com.kams.scheduler.DakaReset] ====message: 重置打卡情况
+[INFO ] 2020-08-05 17:43:21 [pool-4-thread-1] [com.kams.scheduler.DakaReset] ====message: 重置完成！
+[INFO ] 2020-08-05 17:43:21 [RMI TCP Connection(2)-127.0.0.1] [o.s.b.a.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin] ====message: Application shutdown requested.
+[INFO ] 2020-08-05 17:43:21 [RMI TCP Connection(2)-127.0.0.1] [org.quartz.core.QuartzScheduler] ====message: Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+[INFO ] 2020-08-05 17:43:21 [RMI TCP Connection(2)-127.0.0.1] [o.s.s.quartz.SchedulerFactoryBean] ====message: Shutting down Quartz Scheduler
+[INFO ] 2020-08-05 17:43:21 [RMI TCP Connection(2)-127.0.0.1] [org.quartz.core.QuartzScheduler] ====message: Scheduler quartzScheduler_$_NON_CLUSTERED shutting down.
+[INFO ] 2020-08-05 17:43:21 [RMI TCP Connection(2)-127.0.0.1] [org.quartz.core.QuartzScheduler] ====message: Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+[INFO ] 2020-08-05 17:43:21 [RMI TCP Connection(2)-127.0.0.1] [org.quartz.core.QuartzScheduler] ====message: Scheduler quartzScheduler_$_NON_CLUSTERED shutdown complete.
+[INFO ] 2020-08-05 17:43:21 [RMI TCP Connection(2)-127.0.0.1] [o.s.s.c.ThreadPoolTaskExecutor] ====message: Shutting down ExecutorService 'applicationTaskExecutor'

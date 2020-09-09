@@ -1,0 +1,31 @@
+[INFO ] 2020-08-17 17:24:15 [main] [com.kams.KamsApplicationTests] ====message: Starting KamsApplicationTests on CNHTPYHZ2 with PID 13420 (started by change in D:\TFS\Local\KAMS)
+[INFO ] 2020-08-17 17:24:15 [main] [com.kams.KamsApplicationTests] ====message: The following profiles are active: uat
+[INFO ] 2020-08-17 17:24:15 [MLog-Init-Reporter] [com.mchange.v2.log.MLog] ====message: MLog clients using slf4j logging.
+[INFO ] 2020-08-17 17:24:15 [main] [com.mchange.v2.c3p0.C3P0Registry] ====message: Initializing c3p0-0.9.5.4 [built 23-March-2019 23:00:48 -0700; debug? true; trace: 10]
+[INFO ] 2020-08-17 17:24:15 [main] [o.s.s.c.ThreadPoolTaskExecutor] ====message: Initializing ExecutorService 'applicationTaskExecutor'
+[INFO ] 2020-08-17 17:24:15 [main] [org.quartz.impl.StdSchedulerFactory] ====message: Using default implementation for ThreadExecutor
+[INFO ] 2020-08-17 17:24:15 [main] [o.quartz.core.SchedulerSignalerImpl] ====message: Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+[INFO ] 2020-08-17 17:24:15 [main] [org.quartz.core.QuartzScheduler] ====message: Quartz Scheduler v.2.3.2 created.
+[INFO ] 2020-08-17 17:24:15 [main] [org.quartz.simpl.RAMJobStore] ====message: RAMJobStore initialized.
+[INFO ] 2020-08-17 17:24:15 [main] [org.quartz.core.QuartzScheduler] ====message: Scheduler meta-data: Quartz Scheduler (v2.3.2) 'quartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+[INFO ] 2020-08-17 17:24:15 [main] [org.quartz.impl.StdSchedulerFactory] ====message: Quartz scheduler 'quartzScheduler' initialized from an externally provided properties instance.
+[INFO ] 2020-08-17 17:24:15 [main] [org.quartz.impl.StdSchedulerFactory] ====message: Quartz scheduler version: 2.3.2
+[INFO ] 2020-08-17 17:24:15 [main] [org.quartz.core.QuartzScheduler] ====message: JobFactory set to: org.springframework.scheduling.quartz.SpringBeanJobFactory@479b5066
+[INFO ] 2020-08-17 17:24:15 [main] [o.s.s.quartz.SchedulerFactoryBean] ====message: Starting Quartz Scheduler now
+[INFO ] 2020-08-17 17:24:15 [main] [org.quartz.core.QuartzScheduler] ====message: Scheduler quartzScheduler_$_NON_CLUSTERED started.
+[INFO ] 2020-08-17 17:24:15 [main] [c.m.v.c.i.AbstractPoolBackedDataSource] ====message: Initializing c3p0 pool... com.mchange.v2.c3p0.ComboPooledDataSource [ acquireIncrement -> 3, acquireRetryAttempts -> 30, acquireRetryDelay -> 1000, autoCommitOnClose -> false, automaticTestTable -> null, breakAfterAcquireFailure -> false, checkoutTimeout -> 0, connectionCustomizerClassName -> null, connectionTesterClassName -> com.mchange.v2.c3p0.impl.DefaultConnectionTester, contextClassLoaderSource -> caller, dataSourceName -> 2ybz1nab1xuhxlr9qactn|2f98635e, debugUnreturnedConnectionStackTraces -> false, description -> null, driverClass -> com.microsoft.sqlserver.jdbc.SQLServerDriver, extensions -> {}, factoryClassLocation -> null, forceIgnoreUnresolvedTransactions -> false, forceSynchronousCheckins -> false, forceUseNamedDriverClass -> false, identityToken -> 2ybz1nab1xuhxlr9qactn|2f98635e, idleConnectionTestPeriod -> 0, initialPoolSize -> 3, jdbcUrl -> jdbc:sqlserver://10.164.4.53:1433;DatabaseName=TestEnv, maxAdministrativeTaskTime -> 0, maxConnectionAge -> 0, maxIdleTime -> 0, maxIdleTimeExcessConnections -> 0, maxPoolSize -> 15, maxStatements -> 0, maxStatementsPerConnection -> 0, minPoolSize -> 3, numHelperThreads -> 3, preferredTestQuery -> null, privilegeSpawnedThreads -> false, properties -> {user=******, password=******}, propertyCycle -> 0, statementCacheNumDeferredCloseThreads -> 0, testConnectionOnCheckin -> false, testConnectionOnCheckout -> false, unreturnedConnectionTimeout -> 0, userOverrides -> {}, usesTraditionalReflectiveProxies -> false ]
+[INFO ] 2020-08-17 17:24:15 [main] [o.s.s.a.ScheduledAnnotationBeanPostProcessor] ====message: No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
+[INFO ] 2020-08-17 17:24:15 [main] [com.kams.KamsApplicationTests] ====message: Started KamsApplicationTests in 5.05 seconds (JVM running for 6.141)
+[INFO ] 2020-08-17 17:24:15 [SpringContextShutdownHook] [org.quartz.core.QuartzScheduler] ====message: Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+[INFO ] 2020-08-17 17:24:15 [SpringContextShutdownHook] [o.s.s.quartz.SchedulerFactoryBean] ====message: Shutting down Quartz Scheduler
+[INFO ] 2020-08-17 17:24:15 [SpringContextShutdownHook] [org.quartz.core.QuartzScheduler] ====message: Scheduler quartzScheduler_$_NON_CLUSTERED shutting down.
+[INFO ] 2020-08-17 17:24:15 [SpringContextShutdownHook] [org.quartz.core.QuartzScheduler] ====message: Scheduler quartzScheduler_$_NON_CLUSTERED paused.
+[INFO ] 2020-08-17 17:24:15 [SpringContextShutdownHook] [org.quartz.core.QuartzScheduler] ====message: Scheduler quartzScheduler_$_NON_CLUSTERED shutdown complete.
+[INFO ] 2020-08-17 17:24:15 [SpringContextShutdownHook] [o.s.s.c.ThreadPoolTaskExecutor] ====message: Shutting down ExecutorService 'applicationTaskExecutor'

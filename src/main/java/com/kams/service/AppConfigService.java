@@ -176,7 +176,7 @@ public class AppConfigService {
 			int count = Integer.parseInt(list1.get(0).getCval1());
 			String diffString = DateFormatUtils.dateDiff(lastTime, now);
 			logger.info("距离上次邮件时间是：" + diffString + "分钟");
-			int diff = Integer.parseInt(diffString);
+			int diff = Math.abs(Integer.parseInt(diffString));
 			if (diff <= 120 && count > 0) {
 				logger.info("距离上次邮件时间不足2小时，不发送邮件！");
 				return "2";
@@ -207,7 +207,7 @@ public class AppConfigService {
 			}
 			serviceMonitorService.sendEmail(toUser, ccUser, "INC监控轮值", "Hi " + nextUser + ",<p/>&nbsp;&nbsp; "
 					+ currentUser
-					+ "想要和你进行INC监控交接！请到AMS运维管理系统中进行打卡响应，与TA完成交接吧！。地址：http://10.164.25.148:9082/html/logon.html  &nbsp;&nbsp;<p/><p/>AMS运维团队");
+					+ "想要和你进行INC监控交接！请到AMS运维管理系统中进行打卡响应，与TA完成交接吧！地址：http://10.164.25.148:9082/html/logon.html  &nbsp;&nbsp;<p/><p/>AMS运维团队");
 
 			// 说明已经发送邮件了；
 			SmConfig smConfig = new SmConfig();
